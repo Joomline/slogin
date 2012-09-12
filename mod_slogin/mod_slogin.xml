@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.7" method="upgrade" client="site">
+	<name>mod_smlogin</name>
+	<author>SmokerMan</author>
+	<creationDate>23.05.2012</creationDate>
+	<copyright>© 2012. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail>kolyamba831@inbox.ru</authorEmail>
+	<authoreUrl>http://joomla-code.ru</authoreUrl>
+	<version>1.0</version>
+	<description>MOD_SMLOGIN_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_smlogin">mod_smlogin.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_smlogin.xml</filename>
+		<folder>tmpl</folder>
+		<folder>media</folder>
+	</files>
+	<languages folder="language">
+		<language tag="ru-RU">ru-RU/ru-RU.mod_smlogin.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.mod_smlogin.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_smlogin.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_smlogin.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="vkontakte"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_VKONTAKTE_LABEL"
+					description="MOD_SMLOGIN_FIELD_VKONTAKTE_DESC" />
+				<field
+					name="google"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_GOOGLE_LABEL"
+					description="MOD_SMLOGIN_FIELD_GOOGLE_DESC" />
+				<field
+					name="facebook"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_FACEBOOK_LABEL"
+					description="MOD_SMLOGIN_FIELD_FACEBOOK_DESC" />
+				<field
+					name="twitter"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_TWITTER_LABEL"
+					description="MOD_SMLOGIN_FIELD_TWITTER_DESC" />	
+				<field
+					name="odnoklassniki"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_ODNOKLASSNIKI_LABEL"
+					description="MOD_SMLOGIN_FIELD_ODNOKLASSNIKI_DESC" />	
+				<field
+					name="mail"
+					type="checkbox"
+					filter="int"
+					value="1"
+					label="MOD_SMLOGIN_FIELD_MAIL_LABEL"
+					description="MOD_SMLOGIN_FIELD_MAIL_DESC" />												
+					
+				<field
+					type="spacer"
+					filter="unset"
+					hr="true" />	
+																									
+				<field
+					name="inittext"
+					type="textarea"
+					filter="safehtml"
+					cols="30"
+					rows="5"
+					label="MOD_SMLOGIN_FIELD_INIT_TEXT_LABEL"
+					description="MOD_SMLOGIN_FIELD_INIT_TEXT_DESC" />				
+				<field
+					name="pretext"
+					type="textarea"
+					filter="safehtml"
+					cols="30"
+					rows="5"
+					label="MOD_SMLOGIN_FIELD_PRE_TEXT_LABEL"
+					description="MOD_SMLOGIN_FIELD_PRE_TEXT_DESC" />
+				<field
+					name="posttext"
+					type="textarea"
+					filter="safehtml"
+					cols="30"
+					rows="5"
+					label="MOD_SMLOGIN_FIELD_POST_TEXT_LABEL"
+					description="MOD_SMLOGIN_FIELD_POST_TEXT_DESC" />
+
+				<field
+					name="login"
+					type="menuitem"
+					disable="separator"
+					label="MOD_SMLOGIN_FIELD_LOGIN_REDIRECTURL_LABEL"
+					description="MOD_SMLOGIN_FIELD_LOGIN_REDIRECTURL_DESC" >
+					<option
+						value="">JDEFAULT</option>
+				</field>					
+				<field
+					name="logout"
+					type="menuitem"
+					disable="separator"
+					label="MOD_SMLOGIN_FIELD_LOGOUT_REDIRECTURL_LABEL"
+					description="MOD_SMLOGIN_FIELD_LOGOUT_REDIRECTURL_DESC" >
+					<option
+						value="">JDEFAULT</option>
+				</field>				
+			</fieldset>
+			
+			
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>			
+		</fields>	
+	</config>
+</extension>
