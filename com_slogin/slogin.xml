@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="1.7" method="upgrade">
-	<name>com_smlogin</name>
+	<name>com_slogin</name>
 	<author>SmokerMan</author>
 	<creationDate>23.05.2012</creationDate>
 	<copyright>© 2012. All rights reserved.</copyright>
@@ -8,16 +8,16 @@
 	<authorEmail>kolyamba831@inbox.ru</authorEmail>
 	<authoreUrl>http://joomla-code.ru</authoreUrl>
 	<version>1.0</version>
-	<description>COM_SMLOGIN_XML_DESCRIPTION</description>
+	<description>COM_SLOGIN_XML_DESCRIPTION</description>
     <administration>
     
-	<menu img="../media/com_smlogin/icon_16x16.png">COM_SMLOGIN_MAIN_MENU</menu>
+	<menu img="../media/com_slogin/icon_16x16.png">COM_SLOGIN_MAIN_MENU</menu>
 
 	<languages folder="languages/admin">
-		<language tag="ru-RU">ru-RU/ru-RU.com_smlogin.sys.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.com_smlogin.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_smlogin.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_smlogin.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.com_slogin.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.com_slogin.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_slogin.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_slogin.ini</language>
 	</languages>
 	
 	<files folder="admin">
@@ -26,25 +26,25 @@
 		<folder>views</folder>
 		<filename>config.xml</filename>
 		<filename>controller.php</filename>
-		<filename>smlogin.php</filename>
+		<filename>slogin.php</filename>
 	</files>
 
 	</administration>
 
-	<media destination="com_smlogin" folder="media">
+	<media destination="com_slogin" folder="media">
 		<filename>icon_48x48.png</filename>
 		<filename>icon_16x16.png</filename>
 	</media>
 
 	<languages folder="languages/site">
-		<language tag="ru-RU">ru-RU/ru-RU.com_smlogin.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_smlogin.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.com_slogin.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_slogin.ini</language>
 	</languages>
 	
 	<files folder="site">
 		<folder>controllers</folder>
 		<folder>views</folder>
 		<filename>controller.php</filename>
-		<filename>smlogin.php</filename>
+		<filename>slogin.php</filename>
 	</files>
 </extension>

@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.view');
  * @author Николай
  *
  */
-class SMLoginViewRedirect extends JView
+class SLoginViewRedirect extends JView
 {
 
 	/**

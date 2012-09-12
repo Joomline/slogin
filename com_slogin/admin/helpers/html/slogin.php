@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  * 
  * @version 	1.0	
  * @author		SmokerMan
@@ -16,8 +16,8 @@ defined('_JEXEC') or die('(@)|(@)');
  *
  * @static
  * @package		Joomla.Administrator
- * @subpackage	com_smlogin
+ * @subpackage	com_slogin
  */
-class JHtmlSMLogin
+class JHtmlSLogin
 {
 }

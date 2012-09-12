@@ -10,7 +10,7 @@
 
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@'); 
-$url = JURI::base().'index.php?option=com_smlogin&amp;task=sredirect';
+$url = JURI::base().'index.php?option=com_slogin&amp;task=sredirect';
 ?>
 
 <!DOCTYPE html>

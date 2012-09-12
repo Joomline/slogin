@@ -1,40 +1,40 @@
-#smlogin-buttons span {
-	background: url(../../../modules/mod_smlogin/media/socials_sprite.png) no-repeat;
+#slogin-buttons span {
+	background: url(../../../modules/mod_slogin/media/socials_sprite.png) no-repeat;
 	height: 25px;
     width: 90px;
 	display:block;
 }
-#smlogin-buttons a, #smlogin-buttons a:hover { 
+#slogin-buttons a, #slogin-buttons a:hover {
 	border:1px solid #c0c0c0;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	text-decoration:none;
 }
-#smlogin-buttons a {
+#slogin-buttons a {
 	display: block;
 	width: 90px;
 	padding:5px 10px 5px 10px; 
 	margin:5px 0 0 0;
 }
-#smlogin-buttons a:hover {
+#slogin-buttons a:hover {
 	background:#f4f3f2;
 }
-#smlogin-buttons .vkontakte {
+#slogin-buttons .vkontakte {
 	background-position: 0 -75px;
 }
-#smlogin-buttons .google {
+#slogin-buttons .google {
 	background-position: 0 0px;
 }
-#smlogin-buttons .facebook {
+#slogin-buttons .facebook {
 	background-position: 0 -100px;
 }
-#smlogin-buttons .twitter {
+#slogin-buttons .twitter {
 	background-position: 0 -125px;
 }
-#smlogin-buttons .mail {
+#slogin-buttons .mail {
 	background-position: 0 -50px;
 }
-#smlogin-buttons .odnoklassniki {
+#slogin-buttons .odnoklassniki {
 	background-position: 0 -450px;
 }

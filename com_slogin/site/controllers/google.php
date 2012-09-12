@@ -1,6 +1,6 @@
 <?php
 /**
-* SMLogin
+* SLogin
 *
 * @version 	1.0
 * @author		SmokerMan
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 
-class SMLoginControllerGoogle extends SMLoginController
+class SLoginControllerGoogle extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -35,7 +35,7 @@ class SMLoginControllerGoogle extends SMLoginController
 	{
 		parent::auth();
 		
-		$redirect = urlencode(JURI::base().'?option=com_smlogin&task=google.check');
+		$redirect = urlencode(JURI::base().'?option=com_slogin&task=google.check');
 		$scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 	
 		$params = array(
@@ -63,7 +63,7 @@ class SMLoginControllerGoogle extends SMLoginController
 		if ($code = $input->get('code', null, 'STRING')) {
 				
 			// get access_token for google API
-			$redirect = urlencode(JURI::base().'?option=com_smlogin&task=google.check');
+			$redirect = urlencode(JURI::base().'?option=com_slogin&task=google.check');
 			$scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 
 			$params = array(

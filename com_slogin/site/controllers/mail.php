@@ -1,6 +1,6 @@
 <?php
 /**
-* SMLogin
+* SLogin
 *
 * @version 	1.0
 * @author		SmokerMan
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 
-class SMLoginControllerMail extends SMLoginController
+class SLoginControllerMail extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -34,7 +34,7 @@ class SMLoginControllerMail extends SMLoginController
 	*/
 	public function auth()
 	{
-		$redirect = urlencode(JURI::base().'?option=com_smlogin&task=mail.check');
+		$redirect = urlencode(JURI::base().'?option=com_slogin&task=mail.check');
 	
 		$params = array(
 			        'response_type=code',
@@ -58,7 +58,7 @@ class SMLoginControllerMail extends SMLoginController
 		if ($code = $input->get('code', null, 'STRING')) {
 				
 			// get access_token from mail  API
-			$redirect = urlencode(JURI::base().'?option=com_smlogin&task=mail.check');
+			$redirect = urlencode(JURI::base().'?option=com_slogin&task=mail.check');
 			$params = array(
 					'client_id=' . $this->client_id,
 					'client_secret=' . $this->client_secret,

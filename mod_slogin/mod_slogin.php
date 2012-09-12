@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  * 
  * @version 	1.0	
  * @author		SmokerMan
@@ -19,5 +19,5 @@ $return	= modLoginHelper::getReturnURL($params, $type);
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-require JModuleHelper::getLayoutPath('mod_smlogin', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  *
  * @version 	1.0
  * @author		SmokerMan
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 
-class SMLoginControllerFb extends SMLoginController
+class SLoginControllerFb extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -34,7 +34,7 @@ class SMLoginControllerFb extends SMLoginController
 	public function auth()
 	{
 
-		$redirect = urlencode(JURI::base().'?option=com_smlogin&task=fb.check');
+		$redirect = urlencode(JURI::base().'?option=com_slogin&task=fb.check');
 
 		$params = array(
 				'client_id=' . $this->client_id,
@@ -57,7 +57,7 @@ class SMLoginControllerFb extends SMLoginController
 		$input = JFactory::getApplication()->input;
 
 		if ($code = $input->get('code')) {
-			$redirect = urlencode(JURI::base().'?option=com_smlogin&task=fb.check');
+			$redirect = urlencode(JURI::base().'?option=com_slogin&task=fb.check');
 			//подключение к API
 			$params = array(
 							'client_id=' . $this->client_id,

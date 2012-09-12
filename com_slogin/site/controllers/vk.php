@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  *
  * @version 	1.0
  * @author		SmokerMan
@@ -14,7 +14,7 @@ defined('_JEXEC') or die('(@)|(@)');
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 require_once JPATH_SITE.'/FirePHPCore/fb.php';
 
-class SMLoginControllerVk extends SMLoginController
+class SLoginControllerVk extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -35,7 +35,7 @@ class SMLoginControllerVk extends SMLoginController
 	public function auth()
 	{
 		parent::auth();
-		$redirect = urlencode(JURI::base().'?option=com_smlogin&task=vk.check');
+		$redirect = urlencode(JURI::base().'?option=com_slogin&task=vk.check');
 
 		$params = array(
 				'client_id=' . $this->client_id,

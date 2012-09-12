@@ -1,10 +1,10 @@
-if (typeof(SMLogin) === 'undefined') {
-	var SMLogin = {};
+if (typeof(SLogin) === 'undefined') {
+	var SLogin = {};
 }
 
 
-SMLogin.intit = function() {
-	var block = document.getElementById('smlogin-buttons');
+SLogin.intit = function() {
+	var block = document.getElementById('slogin-buttons');
 	if (block === null) return;
 	var elements = block.getElementsByTagName('a');
 	var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes"
@@ -15,11 +15,11 @@ SMLogin.intit = function() {
 				PopUpWindow.close();
 			}
 			var el = this.getElementsByTagName('span');
-			var size = SMLogin.getPopUpSize(el[0].className);
+			var size = SLogin.getPopUpSize(el[0].className);
 			var result = regexp.exec(size)
 			var popup_width = result[1];
 			var popup_height = result[2];
-			var win_size = SMLogin.WindowSize();
+			var win_size = SLogin.WindowSize();
 			var centerWidth = (win_size[1] - popup_width) / 2;
 			var centerHeight = (win_size[2] - popup_height) / 2;
 			var PopUpWindow = window.open(this.href, 'LoginPopUp', size + ',left=' + centerWidth + ',top=' + centerHeight + ',' + params);
@@ -30,7 +30,7 @@ SMLogin.intit = function() {
 	}	
 	
 }
-SMLogin.WindowSize = function() {
+SLogin.WindowSize = function() {
 	var myWidth = 0, myHeight = 0, size = [];
 	if( typeof( window.innerWidth ) == 'number' ) {
 		//Non-IE
@@ -51,7 +51,7 @@ SMLogin.WindowSize = function() {
 	return size;
 }
 
-SMLogin.getPopUpSize = function(el) 
+SLogin.getPopUpSize = function(el)
 {
 	var size = null; 
 	switch (el) {
@@ -75,4 +75,4 @@ SMLogin.getPopUpSize = function(el)
 	return size;
 }
 
-window.onload = SMLogin.intit;
+window.onload = SLogin.intit;

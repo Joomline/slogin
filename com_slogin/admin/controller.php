@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  * 
  * @version 	1.0	
  * @author		SmokerMan
@@ -12,12 +12,12 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 /**
- * SMLogin Main Controller
+ * SLogin Main Controller
  *
  * @package		Joomla.Administrator
- * @subpackage	com_smlogin
+ * @subpackage	com_slogin
  */
-class SMLoginController extends JController
+class SLoginController extends JController
 {
 	/**
 	 * Typical view method for MVC based architecture

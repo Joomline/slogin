@@ -1,6 +1,6 @@
 <?php
 /**
-* SMLogin
+* SLogin
 *
 * @version 	1.0
 * @author		SmokerMan
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 
-class SMLoginControllerOdnoklassniki extends SMLoginController
+class SLoginControllerOdnoklassniki extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -39,7 +39,7 @@ class SMLoginControllerOdnoklassniki extends SMLoginController
 	{
 		parent::auth();
 		
-		$redirect = urlencode(JURI::base().'?option=com_smlogin&task=odnoklassniki.check');
+		$redirect = urlencode(JURI::base().'?option=com_slogin&task=odnoklassniki.check');
 		$params = array(
 				'client_id=' . $this->client_id,
 			    'response_type=code',
@@ -63,7 +63,7 @@ class SMLoginControllerOdnoklassniki extends SMLoginController
 		$input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
 			// get access_token from mail  API
-			$redirect = urlencode(JURI::base().'?option=com_smlogin&task=odnoklassniki.check');
+			$redirect = urlencode(JURI::base().'?option=com_slogin&task=odnoklassniki.check');
 			$params = array(
 					'client_id=' . $this->client_id,
 					'client_secret=' . $this->client_secret,

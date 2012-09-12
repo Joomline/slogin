@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  * 
  * @version 	1.0	
  * @author		SmokerMan
@@ -17,12 +17,12 @@ jimport('joomla.application.component.controller');
 
 jimport('joomla.environment.http');
 /**
- * SMLogin Controller
+ * SLogin Controller
  *
  * @package		Joomla.Site
- * @subpackage	com_smlogin
+ * @subpackage	com_slogin
  */
-class SMLoginController extends JController
+class SLoginController extends JController
 {
 	protected $config;
 	
@@ -32,7 +32,7 @@ class SMLoginController extends JController
 		$cofig = array();
 		parent::__construct($cofig);
 		
-		$this->config = JComponentHelper::getParams('com_smlogin');
+		$this->config = JComponentHelper::getParams('com_slogin');
 	}
 	
 	/**
@@ -44,7 +44,7 @@ class SMLoginController extends JController
 		
 		$session = JFactory::getSession();
 		//устанавливаем страницу возврата в сессию
-		$session->set('smlogin_return', $return);
+		$session->set('slogin_return', $return);
 	}	
 	/**
 	 * Метод для отправки запросов
@@ -217,7 +217,7 @@ class SMLoginController extends JController
 	 */
 	public function setError($error) {
 		$session = JFactory::getSession();
-		$error =  $session->set('smlogin_errors', $error);
+		$error =  $session->set('slogin_errors', $error);
 		$this->displayRedirect();
 		
 		return false;
@@ -231,10 +231,10 @@ class SMLoginController extends JController
 	{
 		$session = JFactory::getSession();
 		$app = JFactory::getApplication();
-		$redirect = base64_decode($session->get('smlogin_return', ''));
-		$session->clear('smlogin_return');
-		if ($error =  $session->get('smlogin_errors', null)) {
-			$session->clear('smlogin_errors');
+		$redirect = base64_decode($session->get('slogin_return', ''));
+		$session->clear('slogin_return');
+		if ($error =  $session->get('slogin_errors', null)) {
+			$session->clear('slogin_errors');
 			$app->redirect($redirect, $error, 'error');
 			return false;
 		} else {

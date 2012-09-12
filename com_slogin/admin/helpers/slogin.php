@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  * 
  * @version 	1.0	
  * @author		SmokerMan
@@ -12,12 +12,12 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 /**
- * SMLogin helper.
+ * SLogin helper.
  *
  * @package		Joomla.Administrator
- * @subpackage	com_smlogin
+ * @subpackage	com_slogin
  */
-class SMLoginHelper
+class SLoginHelper
 {
 
 	
@@ -25,7 +25,7 @@ class SMLoginHelper
 	{
 		$user	= JFactory::getUser();
 		$result	= new JObject;
-		$assetName = 'com_smlogin';
+		$assetName = 'com_slogin';
 		$actions = array('core.admin', 'core.manage');
 
 		foreach ($actions as $action) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * SMLogin
+ * SLogin
  *
  * @version 	1.0
  * @author		SmokerMan
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
 
-class SMLoginControllerTw extends SMLoginController
+class SLoginControllerTw extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
@@ -75,7 +75,7 @@ class SMLoginControllerTw extends SMLoginController
 			$oauth_token = $session->get('oauth_token');
 			$oauth_signature = $session->get('oauth_signature');
 			
-			$redirect = urlencode(JURI::base().'?option=com_smlogin&task=tw.check');
+			$redirect = urlencode(JURI::base().'?option=com_slogin&task=tw.check');
 			//подключение к API
 			$params = array(
 							'oauth_consumer_key=' . $this->client_id,

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="settings" 
-			label="COM_SMLOGIN_FIELDSET_CONFIG_LABEL" 
-			description="COM_SMLOGIN_FIELDSET_CONFIG_DESC"
-			addfieldpath="administrator/components/com_smlogin/models/fields"
+			label="COM_SLOGIN_FIELDSET_CONFIG_LABEL"
+			description="COM_SLOGIN_FIELDSET_CONFIG_DESC"
+			addfieldpath="administrator/components/com_slogin/models/fields"
 			>
 		<field
 			name="user_name"
 			type="list"
-			label="COM_SMLOGIN_FIELD_USER_NAME_LABEL"
-			description="COM_SMLOGIN_FIELD_USER_NAME_DESC"
+			label="COM_SLOGIN_FIELD_USER_NAME_LABEL"
+			description="COM_SLOGIN_FIELD_USER_NAME_DESC"
 			default="1"
 			>
-				<option value="1">COM_SMLOGIN_FIRST_AND_LAST_NAME</option>
-				<option value="0">COM_SMLOGIN_FIRST_NAME</option>
+				<option value="1">COM_SLOGIN_FIRST_AND_LAST_NAME</option>
+				<option value="0">COM_SLOGIN_FIRST_NAME</option>
 		</field>
 		
 				
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_VKONTAKTE"
+			label="COM_SLOGIN_VKONTAKTE"
 			filter="unset"
 			class="red"
 		/>
@@ -31,23 +31,23 @@
 		<field
 			name="vk_client_id"
 			type="text"
-			label="COM_SMLOGIN_VK_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_VK_CLIENT_ID_DESC"
+			label="COM_SLOGIN_VK_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_VK_CLIENT_ID_DESC"
 			filter="int"
 			size="50"
 		/>
 		<field
 			name="vk_client_secret"
 			type="text"
-			label="COM_SMLOGIN_VK_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_VK_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_VK_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_VK_CLIENT_SECRET_DESC"
 			size="50"
 		/>	
 		<field
 			name="vk_callback_url"
 			type="callbackurl"
-			label="COM_SMLOGIN_VK_CALLBACK_URL_LABEL"
-			description="COM_SMLOGIN_VK_CALLBACK_URL_DESC"
+			label="COM_SLOGIN_VK_CALLBACK_URL_LABEL"
+			description="COM_SLOGIN_VK_CALLBACK_URL_DESC"
 			filter="unset"
 			readonly="true"
 			class="readonly"
@@ -55,7 +55,7 @@
 		
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_GOOGLE"
+			label="COM_SLOGIN_GOOGLE"
 			filter="unset"
 			class="red"
 		/>
@@ -67,22 +67,22 @@
 		<field
 			name="google_client_id"
 			type="text"
-			label="COM_SMLOGIN_GOOGLE_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_GOOGLE_CLIENT_ID_DESC"
+			label="COM_SLOGIN_GOOGLE_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_GOOGLE_CLIENT_ID_DESC"
 			size="50"
 		/>	
 		<field
 			name="google_client_secret"
 			type="text"
-			label="COM_SMLOGIN_GOOGLE_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_GOOGLE_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_GOOGLE_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_GOOGLE_CLIENT_SECRET_DESC"
 			size="50"
 		/>
 		<field
 			name="google_callback_url"
 			type="callbackurl"
-			label="COM_SMLOGIN_GOOGLE_CALLBACK_URL_LABEL"
-			description="COM_SMLOGIN_GOOGLE_CALLBACK_URL_DESC"
+			label="COM_SLOGIN_GOOGLE_CALLBACK_URL_LABEL"
+			description="COM_SLOGIN_GOOGLE_CALLBACK_URL_DESC"
 			filter="unset"
 			readonly="true"
 			task="google"
@@ -91,7 +91,7 @@
 		
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_FACEBOOK"
+			label="COM_SLOGIN_FACEBOOK"
 			filter="unset"
 			class="red"
 		/>
@@ -103,22 +103,22 @@
 		<field
 			name="fb_client_id"
 			type="text"
-			label="COM_SMLOGIN_FB_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_FB_CLIENT_ID_DESC"
+			label="COM_SLOGIN_FB_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_FB_CLIENT_ID_DESC"
 			size="50"
 		/>	
 		<field
 			name="fb_client_secret"
 			type="text"
-			label="COM_SMLOGIN_FB_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_FB_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_FB_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_FB_CLIENT_SECRET_DESC"
 			size="50"
 		/>	
 		<field
 			name="fb_callback_url"
 			type="callbackurl"
-			label="COM_SMLOGIN_FB_CALLBACK_URL_LABEL"
-			description="COM_SMLOGIN_FB_CALLBACK_URL_DESC"
+			label="COM_SLOGIN_FB_CALLBACK_URL_LABEL"
+			description="COM_SLOGIN_FB_CALLBACK_URL_DESC"
 			filter="unset"
 			readonly="true"
 			class="readonly"
@@ -126,7 +126,7 @@
 		
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_TWITTER"
+			label="COM_SLOGIN_TWITTER"
 			filter="unset"
 			class="red"
 		/>
@@ -138,22 +138,22 @@
 		<field
 			name="tw_client_id"
 			type="text"
-			label="COM_SMLOGIN_TW_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_TW_CLIENT_ID_DESC"
+			label="COM_SLOGIN_TW_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_TW_CLIENT_ID_DESC"
 			size="50"
 		/>	
 		<field
 			name="tw_client_secret"
 			type="text"
-			label="COM_SMLOGIN_TW_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_TW_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_TW_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_TW_CLIENT_SECRET_DESC"
 			size="50"
 		/>	
 		<field
 			name="tw_callback_url"
 			type="callbackurl"
-			label="COM_SMLOGIN_TW_CALLBACK_URL_LABEL"
-			description="COM_SMLOGIN_TW_CALLBACK_URL_DESC"
+			label="COM_SLOGIN_TW_CALLBACK_URL_LABEL"
+			description="COM_SLOGIN_TW_CALLBACK_URL_DESC"
 			filter="unset"
 			readonly="true"
 			task="tw"
@@ -162,7 +162,7 @@
 		
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_ODNOKLASSNIKI"
+			label="COM_SLOGIN_ODNOKLASSNIKI"
 			filter="unset"
 			class="red"
 		/>
@@ -174,28 +174,28 @@
 		<field
 			name="odnoklassniki_client_id"
 			type="text"
-			label="COM_SMLOGIN_ODNOKLASSNIKI_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_ODNOKLASSNIKI_CLIENT_ID_DESC"
+			label="COM_SLOGIN_ODNOKLASSNIKI_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_ODNOKLASSNIKI_CLIENT_ID_DESC"
 			size="50"
 		/>	
 		<field
 			name="odnoklassniki_client_secret"
 			type="text"
-			label="COM_SMLOGIN_ODNOKLASSNIKI_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_ODNOKLASSNIKI_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_ODNOKLASSNIKI_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_ODNOKLASSNIKI_CLIENT_SECRET_DESC"
 			size="50"
 		/>	
 		<field
 			name="odnoklassniki_application_key"
 			type="text"
-			label="COM_SMLOGIN_ODNOKLASSNIKI_APPLICATION_KEY_LABEL"
-			description="COM_SMLOGIN_ODNOKLASSNIKI_APPLICATION_KEY_DESC"
+			label="COM_SLOGIN_ODNOKLASSNIKI_APPLICATION_KEY_LABEL"
+			description="COM_SLOGIN_ODNOKLASSNIKI_APPLICATION_KEY_DESC"
 			size="50"
 		/>							
 
 		<field
 			type="Spacer"
-			label="COM_SMLOGIN_MAIL"
+			label="COM_SLOGIN_MAIL"
 			filter="unset"
 			class="red"
 		/>
@@ -207,15 +207,15 @@
 		<field
 			name="mail_client_id"
 			type="text"
-			label="COM_SMLOGIN_MAIL_CLIENT_ID_LABEL"
-			description="COM_SMLOGIN_MAIL_CLIENT_ID_DESC"
+			label="COM_SLOGIN_MAIL_CLIENT_ID_LABEL"
+			description="COM_SLOGIN_MAIL_CLIENT_ID_DESC"
 			size="50"
 		/>	
 		<field
 			name="mail_client_secret"
 			type="text"
-			label="COM_SMLOGIN_MAIL_CLIENT_SECRET_LABEL"
-			description="COM_SMLOGIN_MAIL_CLIENT_SECRET_DESC"
+			label="COM_SLOGIN_MAIL_CLIENT_SECRET_LABEL"
+			description="COM_SLOGIN_MAIL_CLIENT_SECRET_DESC"
 			size="50"
 		/>	
 	</fieldset>
@@ -232,7 +232,7 @@
 			class="inputbox"
 			validate="rules"
 			filter="rules"
-			component="com_smlogin"
+			component="com_slogin"
 			section="component" />
 	</fieldset>	
 </config>
