@@ -18,7 +18,7 @@ class SLoginControllerVk extends SLoginController
 {
 	protected $client_id;
 	protected $client_secret;
-	
+
 	public function __construct()
 	{
 	
@@ -26,7 +26,7 @@ class SLoginControllerVk extends SLoginController
 		parent::__construct($cofig);
 		$this->client_id =  $this->config->get('vk_client_id');
 		$this->client_secret = $this->config->get('vk_client_secret');
-	
+
 	}
 	
 	/**
@@ -45,7 +45,7 @@ class SLoginControllerVk extends SLoginController
 		);
 		$params = implode('&', $params);
 
-		$url = 'http://oauth.vkontakte.ru/oauth/authorize?' . $params;
+		$url = 'http://oauth.vk.com/authorize?' . $params;
 
 		header('Location:' . $url);
 	}
@@ -57,20 +57,26 @@ class SLoginControllerVk extends SLoginController
 	public function check()
 	{
 		$input = JFactory::getApplication()->input;
+        $code = $input->get('code');
+        $redirect = urlencode(JURI::base().'?option=com_slogin&task=vk.check');
 
-		if ($code = $input->get('code')) {
+		if ($code) {
 			//подключение к API
 			$params = array(
 							'client_id=' . $this->client_id,
 						    'client_secret=' . $this->client_secret,
-						    'code=' . $code
+						    'code=' . $code,
+                            'redirect_uri=' . $redirect
 			);
 			$params = implode('&', $params);			
-			
-			$url = 'https://api.vkontakte.ru/oauth/access_token?' . $params;
+
+			$url = 'https://oauth.vk.com/access_token?' . $params;
+
 			$data = json_decode($this->open_http($url));
-			if ($data->error) {
-				die($data->error_description);
+
+			if (empty($data->access_token) && $data->error) {
+                $error = (!empty($data->error_description)) ? $data->error_description : $data->info;
+				die($error);
 			}
 			
 // 			Получение данных о пользователе поле fields
@@ -90,7 +96,7 @@ class SLoginControllerVk extends SLoginController
 // 			предложный – abl. 
 // 			По умолчанию nom.
 			
-			$ResponseUrl = 'https://api.vkontakte.ru/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
+			$ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
 			$type = 'vk';

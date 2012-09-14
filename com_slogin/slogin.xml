@@ -24,8 +24,10 @@
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
+		<filename>access.xml</filename>
 		<filename>config.xml</filename>
 		<filename>controller.php</filename>
+		<filename>index.html</filename>
 		<filename>slogin.php</filename>
 	</files>
 
@@ -45,6 +47,7 @@
 		<folder>controllers</folder>
 		<folder>views</folder>
 		<filename>controller.php</filename>
+		<filename>index.html</filename>
 		<filename>slogin.php</filename>
 	</files>
 </extension>
