@@ -99,25 +99,24 @@ class SLoginControllerVk extends SLoginController
 			$ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
-			$type = 'vk';
-			$id = $request->uid;
+            $provider = 'vk';
+			$uid = $request->uid;
 
-			$username = $this->getUserName($type, $id);
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
+            $user_id = $this->GetUserId($uid, $provider);
 
-			FB::log($data->expires_in); 
-			
-			if (!$user_id) {
-				//вконтакте не дают email пользователя!
-				//присваиваем случаййное
-				$email = $id . '@' . $type. '.com';
-				$name = $this->setUserName($request->first_name, $request->last_name);
-				$this->storeUser($username, $name, $email);
-			} else {
+            if (!$user_id){
+                //вконтакте не дают email пользователя!
+                //присваиваем случаййное
+                $email = $uid . '@' . $provider. '.com';
+                $name = $this->setUserName($request->first_name, $request->last_name);
+
+                $this->storeUser($username, $name, $email, $uid, $provider);
+            }
+            else {
 				$this->loginUser($user_id);
 			}
-
 		}
 
 	}

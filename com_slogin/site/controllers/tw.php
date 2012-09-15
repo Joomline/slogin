@@ -104,20 +104,20 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-			$type = 'tw';
-			$id = $data['user_id'];
+            $provider = 'tw';
+            $uid = $data['user_id'];
 			
-			$username = $this->getUserName($type, $id);
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
+            $user_id = $this->GetUserId($uid, $provider);
 
 			
 			if (!$user_id) {
 				//Twitter не дают email пользователя!
 				//присваиваем случаййное
-				$email = $id . '@' . $type. '.com';
+				$email = $uid . '@' . $provider. '.com';
 				$name = $data['screen_name'];
-				$this->storeUser($username, $name, $email);
+				$this->storeUser($username, $name, $email, $uid, $provider);
 			} else {
 				$this->loginUser($user_id);
 			}

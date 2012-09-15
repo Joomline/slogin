@@ -78,22 +78,19 @@ class SLoginControllerFb extends SLoginController
 			
 			$ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
 			$request = json_decode($this->open_http($ResponseUrl));
-			
 
-			$type = 'fb';
-			$id = $request->id;
 
-			$username = $this->getUserName($type, $id);
+            $provider = 'fb';
+            $uid = $request->id;
+
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
-
-			if (!$user_id)
-				$user_id = $this->CheckEmail($request->email);
+            $user_id = $this->GetUserId($uid, $provider);
 			
 			if (!$user_id) {
 				$email = $request->email;
 				$name = $this->setUserName($request->first_name,  $request->last_name);
-				$this->storeUser($username, $name, $email);
+				$this->storeUser($username, $name, $email, $uid, $provider);
 			} else {
 				$this->loginUser($user_id);
 			}

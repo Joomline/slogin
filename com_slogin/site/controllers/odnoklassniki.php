@@ -102,16 +102,17 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$request = json_decode($this->open_http($url));
 
 			//username prefix for Joomla
-			$type = 'odnoklassniki';
-			$id = $request->uid;
+            $provider = 'odnoklassniki';
+			$uid = $request->uid;
 			
-			$username = $this->getUserName($type, $id);
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
+            $user_id = $this->GetUserId($uid, $provider);
+
 			if (!$user_id) {
-				$email = $id . '@' . $type;
+				$email = $uid . '@' . $provider;
 				$name = $this->setUserName($request->first_name, $request->last_name);
-				$this->storeUser($username, $name, $email);
+				$this->storeUser($username, $name, $email, $uid, $provider);
 			} else {
 				$this->loginUser($user_id);
 			}

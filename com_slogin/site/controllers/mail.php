@@ -122,20 +122,17 @@ class SLoginControllerMail extends SLoginController
 
 			$request = $request[0];
 			//username prefix for Joomla
-			$type = 'mail';
-			$id = $request->uid;
+            $provider = 'mail';
+			$uid = $request->uid;
 			
-			$username = $this->getUserName($type, $id);
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
-			
-			if (!$user_id)
-				$user_id = $this->CheckEmail($request->email);
+            $user_id = $this->GetUserId($uid, $provider);
 			
 			if (!$user_id) {
 				$email = $request->email;
 				$name = $this->setUserName($request->first_name, $request->last_name);
-				$this->storeUser($username, $name, $email);
+				$this->storeUser($username, $name, $email, $uid, $provider);
 			} else {
 				$this->loginUser($user_id);
 			}

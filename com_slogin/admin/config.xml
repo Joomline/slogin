@@ -15,6 +15,17 @@
 				<option value="1">COM_SLOGIN_FIRST_AND_LAST_NAME</option>
 				<option value="0">COM_SLOGIN_FIRST_NAME</option>
 		</field>
+
+		<field
+			name="collate_users"
+			type="radio"
+			label="COM_SLOGIN_COLLATE_USERS"
+			description="COM_SLOGIN_COLLATE_USERS_DESC"
+			default="0"
+			>
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
 		
 				
 		<field
@@ -217,7 +228,7 @@
 			label="COM_SLOGIN_MAIL_CLIENT_SECRET_LABEL"
 			description="COM_SLOGIN_MAIL_CLIENT_SECRET_DESC"
 			size="50"
-		/>	
+		/>
 	</fieldset>
 	<fieldset
 		name="permissions"

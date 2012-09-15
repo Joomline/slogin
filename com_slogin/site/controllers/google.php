@@ -98,20 +98,17 @@ class SLoginControllerGoogle extends SLoginController
 			$request = json_decode($this->open_http($url));
 				
 			//username prefix for Joomla
-			$type = 'google';
-			$id = $request->id;
+            $provider = 'google';
+			$uid = $request->id;
 			
-			$username = $this->getUserName($type, $id);
+			$username = $this->getUserName($provider, $uid);
 			//проверяем существует ли пользователь с таким именем
-			$user_id = JUserHelper::getUserId($username);
-			
-			if (!$user_id)
-				$user_id = $this->CheckEmail($request->email);
-			
+            $user_id = $this->GetUserId($uid, $provider);
+
 			if (!$user_id) {
 				$email = $request->email;
 				$name = $this->setUserName($request->given_name,  $request->family_name);
-				$this->storeUser($username, $name, $email);
+				$this->storeUser($username, $name, $email, $uid, $provider);
 			} else {
 				$this->loginUser($user_id);
 			}
