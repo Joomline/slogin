@@ -179,19 +179,6 @@ class SLoginController extends JController
             $this->setError(JText::_('JERROR_NOLOGIN_BLOCKED'));
         }
 
-        // Authorise the user based on the group information
-// 		if (!isset($options['group'])) {
-// 			$options['group'] = 'USERS';
-// 		}
-
-        // Chek the user can login.
-// 		$result	= $instance->authorise($options['action']);
-// 		if (!$result) {
-
-// 			JError::raiseWarning(401, JText::_('JERROR_LOGIN_DENIED'));
-// 			return false;
-// 		}
-
         // Mark the user as logged in
         $instance->set('guest', 0);
 
