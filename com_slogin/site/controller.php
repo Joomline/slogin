@@ -320,10 +320,8 @@ class SLoginController extends JController
         $credentials['password'] = $data['password'];
 
         // Perform the log in.
-        $error = $app->login($credentials, $options);
-
         // Check if the log in succeeded.
-        if (!JError::isError($error)) {
+        if (true === $app->login($credentials, $options)) {
             $app->setUserState('users.login.form.data', array());
             $this->storeSloginUser($user_id, $slogin_id, $provider);
             $app->redirect(JRoute::_($data['return'], false));
@@ -340,7 +338,6 @@ class SLoginController extends JController
         $SloginUser->user_id = $user_id;
         $SloginUser->slogin_id = $slogin_id;
         $SloginUser->provider = $provider;
-        $SloginUser->confirmed = 1;
         $SloginUser->store();
     }
 
