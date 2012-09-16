@@ -27,6 +27,17 @@
 				<option value="0">JNO</option>
 		</field>
 
+        <field
+                name="add_info_new_user"
+                type="radio"
+                label="COM_SLOGIN_ADD_INFO"
+                description="COM_SLOGIN_ADD_INFO_DESC"
+                default="0"
+                >
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+
 		<field
 			name="local_debug"
 			type="radio"

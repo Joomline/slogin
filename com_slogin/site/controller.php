@@ -178,7 +178,7 @@ class SLoginController extends JController
 
         $this->storeSloginUser($user_object->id, $uid, $provider);
 
-        $this->loginUser($user_object->id);
+        $this->loginUser($user_object->id, true);
 
     }
 
@@ -186,7 +186,7 @@ class SLoginController extends JController
      * Метод для авторизцаии пользователя
      * @param int $id    ID пользователя в Joomla
      */
-    protected function loginUser($id)
+    protected function loginUser($id, $firstLogin = false)
     {
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
@@ -222,6 +222,13 @@ class SLoginController extends JController
 
         // Hit the user last visit field
         $instance->setLastVisit();
+
+        if($firstLogin && $this->config->get('add_info_new_user', 0) == 1){
+            $return = base64_encode(JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
+            $session = JFactory::getSession();
+            //устанавливаем страницу возврата в сессию
+            $session->set('slogin_return', $return);
+        }
         $this->displayRedirect();
     }
 
@@ -344,7 +351,7 @@ class SLoginController extends JController
         // Check if the log in succeeded.
         if (true === $app->login($credentials, $options)) {
             $app->setUserState('users.login.form.data', array());
-            $this->storeSloginUser($user_id, $slogin_id, $provider);
+            $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider);
             $app->redirect(JRoute::_($data['return'], false));
         } else {
             $data['remember'] = (int)$options['remember'];
