@@ -1,10 +1,10 @@
 <?php
 /**
  * SLogin
- * 
- * @version 	1.0	
+ *
+ * @version 	1.0
  * @author		SmokerMan
- * @copyright	© 2012. All rights reserved. 
+ * @copyright	© 2012. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -29,7 +29,7 @@ $doc->addStyleSheet('modules/mod_slogin/media/slogin.css');
 		<input type="hidden" name="return" value="<?php echo $return; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
-</form>	
+</form>
 <?php else : ?>
 <?php if ($params->get('inittext')): ?>
 	<div class="pretext">
@@ -51,16 +51,17 @@ $doc->addStyleSheet('modules/mod_slogin/media/slogin.css');
 	<?php endif; ?>
 	<?php if ($params->get('mail')): ?>
 		<a href="index.php?option=com_slogin&amp;task=mail.auth&amp;return=<?php echo $return; ?>"><span class="mail">&nbsp;</span></a>
-	<?php endif; ?>		
+	<?php endif; ?>
 	<?php if ($params->get('odnoklassniki')): ?>
 		<a href="index.php?option=com_slogin&amp;task=odnoklassniki.auth&amp;return=<?php echo $return; ?>"><span class="odnoklassniki">&nbsp;</span></a>
-	<?php endif; ?>	
+	<?php endif; ?>
 </div>
 <?php if ($params->get('pretext')): ?>
 	<div class="pretext">
 	<p><?php echo $params->get('pretext'); ?></p>
 	</div>
 <?php endif; ?>
+<?php if ($params->get('show_login_form')): ?>
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" >
 	<fieldset class="userdata">
 	<p id="form-login-username">
@@ -107,5 +108,5 @@ $doc->addStyleSheet('modules/mod_slogin/media/slogin.css');
 		</div>
 	<?php endif; ?>
 </form>
-
+<?php endif; ?>
 <?php endif; ?>

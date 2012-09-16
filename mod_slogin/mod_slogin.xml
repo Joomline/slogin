@@ -71,7 +71,20 @@
 				<field
 					type="spacer"
 					filter="unset"
-					hr="true" />	
+					hr="true" />
+
+                <field
+                        name="show_login_form"
+                        type="checkbox"
+                        filter="int"
+                        value="1"
+                        label="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM"
+                        description="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM_DESC" />
+
+				<field
+					type="spacer"
+					filter="unset"
+					hr="true" />
 																									
 				<field
 					name="inittext"
