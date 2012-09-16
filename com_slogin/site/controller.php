@@ -109,6 +109,26 @@ class SLoginController extends JController
         return $name;
     }
 
+    private function CheckUniqueName($username){
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $uname = $username;
+        $i = 0;
+        while($uname){
+            $name = ($i == 0) ? $username : $username.'-'.$i;
+
+            $query->clear();
+            $query->select($db->quoteName('username'));
+            $query->from($db->quoteName('#__users'));
+            $query->where($db->quoteName('username') . ' = ' . $db->quote($name));
+            $db->setQuery($query, 0, 1);
+            $uname = $db->loadResult();
+
+            $i++;
+        }
+        return $name;
+    }
+
     /**
      * Метод для добавления новой учетной записи
      * @param string $username        Username учетной записи (не больше 150)
@@ -131,6 +151,7 @@ class SLoginController extends JController
             $this->displayRedirect();
         }
 
+        $username = $this->CheckUniqueName($username);
         $user['username'] = $username;
         $user['name'] = $name;
         $user['email'] = $email;
