@@ -165,7 +165,7 @@ class SLoginController extends JController
 
         $this->storeSloginUser($user_object->id, $uid, $provider);
 
-        $this->loginUser($user_object->id, true);
+        $this->loginUser($user_object->id, true, $uid, $provider);
 
     }
 
@@ -173,7 +173,7 @@ class SLoginController extends JController
      * Метод для авторизцаии пользователя
      * @param int $id    ID пользователя в Joomla
      */
-    protected function loginUser($id, $firstLogin = false)
+    protected function loginUser($id, $firstLogin = false, $uid=null, $provider=null)
     {
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
@@ -188,7 +188,6 @@ class SLoginController extends JController
         $instance->set('guest', 0);
 
         // Register the needed session variables
-        $session = JFactory::getSession();
         $session->set('user', $instance);
 
         $db = JFactory::getDBO();
@@ -209,13 +208,20 @@ class SLoginController extends JController
 
         // Hit the user last visit field
         $instance->setLastVisit();
-
-        if($firstLogin && $this->config->get('add_info_new_user', 0) == 1){
-            $return = base64_encode(JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
-            $session = JFactory::getSession();
-            //устанавливаем страницу возврата в сессию
-            $session->set('slogin_return', $return);
+        if($firstLogin){
+            if($this->config->get('add_info_new_user', 0) == 1){
+                $return = base64_encode(JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
+                //устанавливаем страницу возврата в сессию
+                $session->set('slogin_return', $return);
+            }
+            else if($this->config->get('add_info_new_user', 0) == 2){
+                $user = JFactory::getUser();
+                $return = base64_encode(JRoute::_('index.php?option=com_slogin&view=linking_user&email='.$user->get('email').'&id='.$user->get('id').'&provider='.$provider.'&slogin_id='.$uid));
+                //устанавливаем страницу возврата в сессию
+                $session->set('slogin_return', $return);
+            }
         }
+
         $this->displayRedirect();
     }
 
