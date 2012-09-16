@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.7" method="upgrade" client="site">
 	<name>mod_slogin</name>
-	<author>SmokerMan</author>
+	<author>SmokerMan, Arkadiy, Joomline</author>
 	<creationDate>23.05.2012</creationDate>
 	<copyright>© 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail>kolyamba831@inbox.ru</authorEmail>
-	<authoreUrl>http://joomla-code.ru</authoreUrl>
+	<authorUrl>http://joomline.ru</authorUrl>
 	<version>1.0</version>
 	<description>MOD_SLOGIN_XML_DESCRIPTION</description>
 	<files>

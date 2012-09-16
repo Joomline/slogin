@@ -1,11 +1,12 @@
 <?php
 /**
-* @version      2.7.3 26.01.2011
-* @author       MAXXmarketing GmbH
-* @package      Jshopping
-* @copyright    Copyright (C) 2010 webdesigner-profi.de. All rights reserved.
-* @license      GNU/GPL
-*/
+ * Social Login
+ *
+ * @version 	1.0
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
+ */
 
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.model');

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="1.7" method="upgrade">
     <name>com_slogin</name>
-    <author>SmokerMan</author>
+    <author>SmokerMan, Arkadiy, Joomline</author>
     <creationDate>23.05.2012</creationDate>
     <copyright>© 2012. All rights reserved.</copyright>
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>kolyamba831@inbox.ru</authorEmail>
-    <authoreUrl>http://joomla-code.ru</authoreUrl>
+    <authoreUrl>http://joomline.ru</authoreUrl>
     <version>1.0</version>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 

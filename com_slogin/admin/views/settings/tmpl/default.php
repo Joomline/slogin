@@ -1,10 +1,11 @@
 <?php
+
 /**
- * SLogin
- * 
- * @version 	1.0	
- * @author		SmokerMan
- * @copyright	© 2012. All rights reserved. 
+ * Social Login
+ *
+ * @version 	1.0
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -19,4 +20,4 @@ defined('_JEXEC') or die('(@)|(@)');
 	<li><?php echo JText::sprintf('COM_SLOGIN_MODULE_VERSION', $this->module['version']); ?></li>
 </ul>
 <?php $date = JFactory::getDate()->format('Y') > '2012' ? '2012 - '. JFactory::getDate()->format('Y') : '2012'?>
-<div>&copy; <?php echo $date;?> SmokerMan | <a href="http://joomla-code.ru">joomla-code.ru</a></div>
+<div>&copy; <?php echo $date;?> </div>

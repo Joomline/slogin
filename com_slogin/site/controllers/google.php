@@ -105,7 +105,7 @@ class SLoginControllerGoogle extends SLoginController
 			// locale 			The user's registered locale. If the user has no public profile, this field is not included.
 			// timezone 		the default timezone of the logged in user
 			// gender 			the gender of the logged in user (other|female|male)
-	
+
 			$url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$request->access_token;
 			$request = json_decode($this->open_http($url));
 

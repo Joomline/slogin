@@ -1,8 +1,11 @@
 <?php
 /**
- * @version		1.0.4 from Arkadiy Sedelnikov
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later;
+ * Social Login
+ *
+ * @version 	1.0
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access to this file

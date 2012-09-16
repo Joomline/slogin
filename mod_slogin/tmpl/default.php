@@ -1,9 +1,9 @@
 <?php
 /**
- * SLogin
+ * Social Login
  *
  * @version 	1.0
- * @author		SmokerMan
+ * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */

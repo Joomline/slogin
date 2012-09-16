@@ -1,11 +1,11 @@
 <?php
 /**
- * SLogin
+ * Social Login
  *
- * @version     1.0
- * @author        SmokerMan
- * @copyright    © 2012. All rights reserved.
- * @license     GNU/GPL v.3 or later.
+ * @version 	1.0
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access.
@@ -114,6 +114,21 @@ class SLoginController extends JController
             $i++;
         }
         return $name;
+    }
+
+    private function getSloginUserStringId($user_id, $slogin_id, $provider){
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+            $query->select($db->quoteName('id'));
+            $query->from($db->quoteName('#__slogin_users'));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+            $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
+            $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+            $db->setQuery($query, 0, 1);
+            $id = $db->loadResult();
+
+        return $id;
     }
 
     /**
@@ -343,8 +358,14 @@ class SLoginController extends JController
         // Perform the log in.
         // Check if the log in succeeded.
         if (true === $app->login($credentials, $options)) {
+            $user_object = new JUser;
+            if($user_id != JFactory::getUser()->id){
+                $user_object->id = $user_id;
+                $user_object->delete();
+                $oldUser = $this->getSloginUserStringId($user_id, $slogin_id, $provider);
+                $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider, $oldUser);
+            }
             $app->setUserState('users.login.form.data', array());
-            $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider);
             $app->redirect(JRoute::_($data['return'], false));
         } else {
             $data['remember'] = (int)$options['remember'];
@@ -353,9 +374,10 @@ class SLoginController extends JController
         }
     }
 
-    private function storeSloginUser($user_id, $slogin_id, $provider){
+    private function storeSloginUser($user_id, $slogin_id, $provider, $id=null){
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
         $SloginUser = &JTable::getInstance('slogin_users', 'SloginTable');
+        $SloginUser->id = $id;
         $SloginUser->user_id = $user_id;
         $SloginUser->slogin_id = $slogin_id;
         $SloginUser->provider = $provider;

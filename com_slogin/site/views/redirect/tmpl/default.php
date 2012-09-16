@@ -1,11 +1,11 @@
 <?php
 /**
- * SMFAQ
+ * Social Login
  *
- * @package		component for Joomla 2.5+
- * @version		1.7 beta 2
- * @copyright	(C)2009 - 2011 by SmokerMan (http://joomla-code.ru)
- * @license		GNU/GPL v.3 see http://www.gnu.org/licenses/gpl.html
+ * @version 	1.0
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
  */
 
 // защита от прямого доступа
