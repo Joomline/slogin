@@ -37,6 +37,7 @@ JHtml::_('behavior.keepalive');
                        class="validate-password required" size="25">
             </div>
             <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
+            <a class="button" href="<?php echo $this->params->get('login_redirect_url', $this->form->getValue('return')) ?>"><?php echo JText::_('COM_SLOGIN_CHANCEL'); ?></a>
             <input type="hidden" name="return"
                    value="<?php echo base64_encode($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>"/>
             <input type="hidden" name="user_id" value="<?php echo $this->id; ?>"/>

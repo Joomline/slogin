@@ -364,7 +364,7 @@ class SLoginController extends JController
 
     protected function storeOrLogin($first_name= null, $last_name= null, $email= null, $uid= null, $provider= null)
     {
-        $username = $this->transliterate($first_name.'-'.$last_name);
+        $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
         //проверяем существует ли пользователь с таким именем
         $user_id = $this->GetUserId($uid, $provider);
 
