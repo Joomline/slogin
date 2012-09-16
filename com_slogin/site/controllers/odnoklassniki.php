@@ -39,11 +39,17 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	{
 		parent::auth();
 		
-		$redirect = urlencode(JURI::base().'?option=com_slogin&task=odnoklassniki.check');
+		$redirect = JURI::base().'?option=com_slogin&task=odnoklassniki.check';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
+
 		$params = array(
 				'client_id=' . $this->client_id,
 			    'response_type=code',
-			    'redirect_uri=' . $redirect,
+			    'redirect_uri=' . urlencode($redirect),
 				'scope=VALUABLE ACCESS'
 		);
 		$params = implode('&', $params);
@@ -59,7 +65,12 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	*/	
 	public function check()
 	{
-		
+        $provider = 'odnoklassniki';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
+
 		$input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
 			// get access_token from mail  API
@@ -101,21 +112,9 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
 			$request = json_decode($this->open_http($url));
 
-			//username prefix for Joomla
-            $provider = 'odnoklassniki';
-			$uid = $request->uid;
-			
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
+            $email = $request->uid . '@' . $provider;
 
-			if (!$user_id) {
-				$email = $uid . '@' . $provider;
-				$name = $this->setUserName($request->first_name, $request->last_name);
-				$this->storeUser($username, $name, $email, $uid, $provider);
-			} else {
-				$this->loginUser($user_id);
-			}
+            $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
 	
 		} elseif ($err = $input->get('error')) {
 			die($err);
@@ -129,7 +128,8 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	 * @return string	Параметры для запроса
 	 */
 	protected function get_server_params(array $request_params) {
-		ksort($request_params);
+		$params = '';
+        ksort($request_params);
 		foreach ($request_params as $key => $value) {
 			$params .= "$key=$value&";
 		}

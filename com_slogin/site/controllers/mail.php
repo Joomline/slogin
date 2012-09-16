@@ -34,11 +34,16 @@ class SLoginControllerMail extends SLoginController
 	*/
 	public function auth()
 	{
-		$redirect = urlencode(JURI::base().'?option=com_slogin&task=mail.check');
+		$redirect = JURI::base().'?option=com_slogin&task=mail.check';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
 	
 		$params = array(
 			        'response_type=code',
-			        'redirect_uri=' . $redirect,
+			        'redirect_uri=' . urlencode($redirect),
 			        'client_id=' . $this->client_id
 		);
 		$params = implode('&', $params);
@@ -54,7 +59,13 @@ class SLoginControllerMail extends SLoginController
 	*/	
 	public function check()
 	{
-		$input = JFactory::getApplication()->input;
+        $provider = 'mail';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
+
+        $input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
 				
 			// get access_token from mail  API
@@ -121,27 +132,14 @@ class SLoginControllerMail extends SLoginController
 			$request = json_decode($this->open_http($url));
 
 			$request = $request[0];
-			//username prefix for Joomla
-            $provider = 'mail';
-			$uid = $request->uid;
-			
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
-			
-			if (!$user_id) {
-				$email = $request->email;
-				$name = $this->setUserName($request->first_name, $request->last_name);
-				$this->storeUser($username, $name, $email, $uid, $provider);
-			} else {
-				$this->loginUser($user_id);
-			}
-	
+
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
 		}
 	
 	}	
 	
 	protected function get_server_params(array $request_params) {
+        $params = '';
 		ksort($request_params);
 		foreach ($request_params as $key => $value) {
 			$params .= "$key=$value&";

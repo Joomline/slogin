@@ -125,7 +125,10 @@ class SLoginController extends JController
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($email);
         if($userId){
-            $app->redirect(JRoute::_('index.php?option=com_slogin&view=comparison_user&email='.$email.'&id='.$userId.'&provider='.$provider.'&slogin_id='.$uid, false));
+            $session = JFactory::getSession();
+            $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=comparison_user&email='.$email.'&id='.$userId.'&provider='.$provider.'&slogin_id='.$uid));
+            $session->set('slogin_return', $redirect);
+            $this->displayRedirect();
         }
 
         $user['username'] = $username;
@@ -152,13 +155,7 @@ class SLoginController extends JController
             //throw new Exception($user_object->getError());
         }
 
-        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-        $SloginUser = &JTable::getInstance('slogin_users', 'SloginTable');
-        $SloginUser->user_id = $user_object->id;
-        $SloginUser->slogin_id = $uid;
-        $SloginUser->provider = $provider;
-        $SloginUser->confirmed = 1;
-        $SloginUser->store();
+        $this->storeSloginUser($user_object->id, $uid, $provider);
 
         $this->loginUser($user_object->id);
 
@@ -291,7 +288,7 @@ class SLoginController extends JController
         return $userId;
     }
 
-    public function comp_email(){
+    public function join_email(){
         $input = new JInput;
         JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
 
@@ -328,11 +325,7 @@ class SLoginController extends JController
         // Check if the log in succeeded.
         if (!JError::isError($error)) {
             $app->setUserState('users.login.form.data', array());
-
-            JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-            $SloginUser = &JTable::getInstance('Slogin_users', 'SloginTable');
-            $SloginUser->confirm_email($user_id, $slogin_id, $provider);
-
+            $this->storeSloginUser($user_id, $slogin_id, $provider);
             $app->redirect(JRoute::_($data['return'], false));
         } else {
             $data['remember'] = (int)$options['remember'];
@@ -341,4 +334,27 @@ class SLoginController extends JController
         }
     }
 
+    private function storeSloginUser($user_id, $slogin_id, $provider){
+        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
+        $SloginUser = &JTable::getInstance('slogin_users', 'SloginTable');
+        $SloginUser->user_id = $user_id;
+        $SloginUser->slogin_id = $slogin_id;
+        $SloginUser->provider = $provider;
+        $SloginUser->confirmed = 1;
+        $SloginUser->store();
+    }
+
+    protected function storeOrLogin($first_name= null, $last_name= null, $email= null, $uid= null, $provider= null)
+    {
+        $username = $this->getUserName($provider, $uid);
+        //проверяем существует ли пользователь с таким именем
+        $user_id = $this->GetUserId($uid, $provider);
+
+        if (!$user_id) {
+            $name = $this->setUserName($first_name,  $last_name);
+            $this->storeUser($username, $name, $email, $uid, $provider);
+        } else {
+            $this->loginUser($user_id);
+        }
+    }
 }

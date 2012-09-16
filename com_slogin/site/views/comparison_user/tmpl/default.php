@@ -19,7 +19,7 @@ JHtml::_('behavior.keepalive');
         <?php echo JText::sprintf('COM_SLOGIN_COMPARISON_DESC', $this->email); ?>
     </div>
 
-    <form action="<?php echo JRoute::_('index.php?option=com_slogin&task=comp_email'); ?>" method="post">
+    <form action="<?php echo JRoute::_('index.php?option=com_slogin&task=join_email'); ?>" method="post">
         <fieldset>
             <div class="login-fields">
                 <label id="username-lbl" for="username" class=" required">

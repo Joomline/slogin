@@ -34,11 +34,16 @@ class SLoginControllerFb extends SLoginController
 	public function auth()
 	{
 
-		$redirect = urlencode(JURI::base().'?option=com_slogin&task=fb.check');
+		$redirect = JURI::base().'?option=com_slogin&task=fb.check';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
 
 		$params = array(
 				'client_id=' . $this->client_id,
-			    'redirect_uri=' . $redirect,
+			    'redirect_uri=' . urlencode($redirect),
 				'scope=email'
 		);
 		$params = implode('&', $params);
@@ -55,6 +60,11 @@ class SLoginControllerFb extends SLoginController
 	public function check()
 	{
 		$input = JFactory::getApplication()->input;
+        $provider = 'fb';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
 
 		if ($code = $input->get('code')) {
 			$redirect = urlencode(JURI::base().'?option=com_slogin&task=fb.check');
@@ -79,22 +89,7 @@ class SLoginControllerFb extends SLoginController
 			$ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
 			$request = json_decode($this->open_http($ResponseUrl));
 
-
-            $provider = 'fb';
-            $uid = $request->id;
-
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
-			
-			if (!$user_id) {
-				$email = $request->email;
-				$name = $this->setUserName($request->first_name,  $request->last_name);
-				$this->storeUser($username, $name, $email, $uid, $provider);
-			} else {
-				$this->loginUser($user_id);
-			}
-
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $provider);
 		}
 
 	}

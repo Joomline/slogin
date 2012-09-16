@@ -35,12 +35,18 @@ class SLoginControllerGoogle extends SLoginController
 	{
 		parent::auth();
 		
-		$redirect = urlencode(JURI::base().'?option=com_slogin&task=google.check');
+		$redirect = JURI::base().'?option=com_slogin&task=google.check';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
+
 		$scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 	
 		$params = array(
 			        'response_type=code',
-			        'redirect_uri=' . $redirect,
+			        'redirect_uri=' . urlencode($redirect),
 			        'client_id=' . $this->client_id,
 			        'scope=' . $scope
 			        //,'access_type=offline'
@@ -59,6 +65,12 @@ class SLoginControllerGoogle extends SLoginController
 	*/	
 	public function check()
 	{
+        $provider = 'google';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
+
 		$input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
 				
@@ -96,23 +108,8 @@ class SLoginControllerGoogle extends SLoginController
 	
 			$url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$request->access_token;
 			$request = json_decode($this->open_http($url));
-				
-			//username prefix for Joomla
-            $provider = 'google';
-			$uid = $request->id;
-			
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
 
-			if (!$user_id) {
-				$email = $request->email;
-				$name = $this->setUserName($request->given_name,  $request->family_name);
-				$this->storeUser($username, $name, $email, $uid, $provider);
-			} else {
-				$this->loginUser($user_id);
-			}
-	
+            $this->storeOrLogin($request->given_name, $request->family_name, $request->email, $request->id, $provider);
 		}
 	
 	}	

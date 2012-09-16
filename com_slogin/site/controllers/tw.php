@@ -32,6 +32,12 @@ class SLoginControllerTw extends SLoginController
 	 */
 	public function auth()
 	{
+        if($this->config->get('local_debug', 0) == 1){
+            $redirect = JURI::base().'?option=com_slogin&task=tw.check';
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
+
 		parent::auth();
 		//получение oauth_token OAuth 1.0
 		$config['key'] = $this->client_id;
@@ -57,8 +63,6 @@ class SLoginControllerTw extends SLoginController
 		//редирект на страницу авторизации
 		$url = 'http://api.twitter.com/oauth/authenticate?oauth_token=' . $data_array['oauth_token'];
 		header('Location:' . $url);
-
-
 	}
 
 	/**
@@ -67,6 +71,12 @@ class SLoginControllerTw extends SLoginController
 	 */
 	public function check()
 	{
+        $provider = 'tw';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
+
 		$input = JFactory::getApplication()->input;
 
 		if ($code = $input->get('oauth_verifier')) {
@@ -104,24 +114,9 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-            $provider = 'tw';
-            $uid = $data['user_id'];
-			
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
+            $email = $data['user_id'] . '@' . $provider. '.com';
 
-			
-			if (!$user_id) {
-				//Twitter не дают email пользователя!
-				//присваиваем случаййное
-				$email = $uid . '@' . $provider. '.com';
-				$name = $data['screen_name'];
-				$this->storeUser($username, $name, $email, $uid, $provider);
-			} else {
-				$this->loginUser($user_id);
-			}
-
+            $this->storeOrLogin($provider, $data['user_id'], $email, $data['user_id'], $provider);
 		}
 
 	}

@@ -35,12 +35,17 @@ class SLoginControllerVk extends SLoginController
 	public function auth()
 	{
 		parent::auth();
-		$redirect = urlencode(JURI::base().'?option=com_slogin&task=vk.check');
+        $redirect = JURI::base().'?option=com_slogin&task=vk.check';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
 
 		$params = array(
 				'client_id=' . $this->client_id,
 			    'response_type=code',
-			    'redirect_uri=' . $redirect,
+			    'redirect_uri=' . urlencode($redirect),
 				'scope=offline'
 		);
 		$params = implode('&', $params);
@@ -59,6 +64,11 @@ class SLoginControllerVk extends SLoginController
 		$input = JFactory::getApplication()->input;
         $code = $input->get('code');
         $redirect = urlencode(JURI::base().'?option=com_slogin&task=vk.check');
+        $provider = 'vk';
+
+        if($this->config->get('local_debug', 0) == 1){
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
 
 		if ($code) {
 			//подключение к API
@@ -99,24 +109,9 @@ class SLoginControllerVk extends SLoginController
 			$ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
-            $provider = 'vk';
-			$uid = $request->uid;
+            $email = $request->uid . '@' . $provider. '.com';
 
-			$username = $this->getUserName($provider, $uid);
-			//проверяем существует ли пользователь с таким именем
-            $user_id = $this->GetUserId($uid, $provider);
-
-            if (!$user_id){
-                //вконтакте не дают email пользователя!
-                //присваиваем случаййное
-                $email = $uid . '@' . $provider. '.com';
-                $name = $this->setUserName($request->first_name, $request->last_name);
-
-                $this->storeUser($username, $name, $email, $uid, $provider);
-            }
-            else {
-				$this->loginUser($user_id);
-			}
+            $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
 		}
 
 	}

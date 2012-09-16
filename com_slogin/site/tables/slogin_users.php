@@ -16,26 +16,5 @@ class SloginTableSlogin_users extends JTable
     {
         parent::__construct('#__slogin_users', 'id', $_db );
     }
-
-    function confirm_email($user_id, $slogin_id, $provider){
-
-        $query = "SELECT `id` FROM #__slogin_users WHERE `user_id`='".$user_id."'";
-        $this->_db->setQuery($query);
-        $ids = $this->_db->loadColumn();
-
-        if(empty($ids)){
-            $this->user_id = $user_id;
-            $this->slogin_id = $slogin_id;
-            $this->provider = $provider;
-            $this->confirmed = 1;
-            $this->store();
-        }
-
-        foreach($ids as $id){
-            $this->load($id);
-            $this->confirmed = 1;
-            $this->store();
-        }
-    }
 }
 ?>
