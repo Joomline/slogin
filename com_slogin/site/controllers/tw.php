@@ -36,11 +36,8 @@ class SLoginControllerTw extends SLoginController
         $input = $app->input;
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
-        if($this->config->get('local_debug', 0) == 1){
-            $redirect = JURI::base().'?option=com_slogin&task=tw.check';
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $redirect = JURI::base().'?option=com_slogin&task=tw.check';
+        $this->localAuthDebug($redirect);
 
 		parent::auth();
 		//получение oauth_token OAuth 1.0
@@ -79,13 +76,8 @@ class SLoginControllerTw extends SLoginController
         $app	= JFactory::getApplication();
         $input = $app->input;
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+
+        $this->localCheckDebug($provider);
 
 		$input = JFactory::getApplication()->input;
 
@@ -124,14 +116,16 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-            $email = $data['user_id'] . '@' . $provider. '.com';
 
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($data['user_id'], $provider);
-                return;
+
+            if($this->config->get('query_email', 0)){
+                $this->queryEmail($provider, $data['user_id'], '', $data['user_id'], $provider);
+            }
+            else{
+                $email = $data['user_id'] . '@' . $provider. '.com';
             }
 
-            $this->storeOrLogin($provider, $data['user_id'], $email, $data['user_id'], $provider);
+            $this->storeOrLogin($provider, $data['user_id'], $data['email'], $data['user_id'], $provider);
 		}
 
 	}

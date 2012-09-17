@@ -23,16 +23,20 @@ class SloginViewLinking_user extends JView
 	function display($tpl = null) 
 	{
         $input = new JInput;
+        $app	= JFactory::getApplication();
+
+        $data = $app->getUserState('com_slogin.comparison_user.data');
+        $app->setUserState('com_slogin.comparison_user.data', array());
 
         $this->params       = JComponentHelper::getParams('com_users');
         $this->user		    = JFactory::getUser();
 
         $this->form		    = $this->get('Form');
 
-        $this->email        = $input->Get('email', '', 'STRING');
-        $this->id           = $input->Get('id', 0, 'INT');
-        $this->provider     = $input->Get('provider', '', 'STRING');
-        $this->slogin_id    = $input->Get('slogin_id', '', 'STRING');
+        $this->email        = $data['email'];
+        $this->id           = $data['id'];
+        $this->provider     = $data['provider'];
+        $this->slogin_id    = $data['slogin_id'];
 
 		// Display the view
 		parent::display($tpl);

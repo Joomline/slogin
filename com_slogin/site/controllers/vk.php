@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 require_once JPATH_COMPONENT_SITE.DS.'controller.php';
-require_once JPATH_SITE.'/FirePHPCore/fb.php';
 
 class SLoginControllerVk extends SLoginController
 {
@@ -42,10 +41,7 @@ class SLoginControllerVk extends SLoginController
 
         $redirect = JURI::base().'?option=com_slogin&task=vk.check';
 
-        if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $this->localAuthDebug($redirect);
 
 		$params = array(
 				'client_id=' . $this->client_id,
@@ -72,13 +68,7 @@ class SLoginControllerVk extends SLoginController
         $provider = 'vk';
         $app	= JFactory::getApplication();
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+        $this->localCheckDebug($provider);
 
 		if ($code) {
 			//подключение к API
@@ -119,15 +109,8 @@ class SLoginControllerVk extends SLoginController
 			$ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
-            $email = $request->uid . '@' . $provider. '.com';
-
-            if($input->getString('action', '') == 'fusion'){
-                $this->fusion($request->uid, $provider);
-            }
-
-            $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
 		}
 
 	}
-
 }

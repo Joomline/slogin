@@ -10,11 +10,6 @@
 
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
-$user = JFactory::getUser();
-$doc = JFactory::getDocument();
-$doc->addScript('modules/mod_slogin/media/slogin.js');
-$doc->addStyleSheet('modules/mod_slogin/media/slogin.css');
-
 ?>
 <?php if ($type == 'logout') : ?>
 
@@ -36,7 +31,7 @@ $doc->addStyleSheet('modules/mod_slogin/media/slogin.css');
 	<p><?php echo $params->get('inittext'); ?></p>
 	</div>
 <?php endif; ?>
-<div id="slogin-buttons">
+<div id="slogin-buttons" class="slogin-buttons <?php echo $moduleclass_sfx?>">
 	<?php if ($params->get('vkontakte')): ?>
 		<a href="index.php?option=com_slogin&amp;task=vk.auth&amp;return=<?php echo $return; ?>"><span class="vkontakte">&nbsp;</span></a>
 	<?php endif; ?>

@@ -148,7 +148,15 @@ class SLoginController extends JController
         $userId = $this->CheckEmail($email);
         if($userId){
             $session = JFactory::getSession();
-            $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=comparison_user&email='.$email.'&id='.$userId.'&provider='.$provider.'&slogin_id='.$uid));
+            $app	= JFactory::getApplication();
+            $data = array(
+               'email' => $email,
+               'id' => $userId,
+               'provider' => $provider,
+               'slogin_id' => $uid,
+            );
+            $app->setUserState('com_slogin.comparison_user.data', $data);
+            $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=comparison_user'));
             $session->set('slogin_return', $redirect);
             $this->displayRedirect();
         }
@@ -231,7 +239,15 @@ class SLoginController extends JController
             }
             else if($this->config->get('add_info_new_user', 0) == 2){
                 $user = JFactory::getUser();
-                $return = base64_encode(JRoute::_('index.php?option=com_slogin&view=linking_user&email='.$user->get('email').'&id='.$user->get('id').'&provider='.$provider.'&slogin_id='.$uid));
+                $app	= JFactory::getApplication();
+                $data = array(
+                    'email' => $user->get('email'),
+                    'id' => $user->get('id'),
+                    'provider' => $provider,
+                    'slogin_id' => $uid,
+                );
+                $app->setUserState('com_slogin.comparison_user.data', $data);
+                $return = base64_encode(JRoute::_('index.php?option=com_slogin&view=linking_user'));
                 //устанавливаем страницу возврата в сессию
                 $session->set('slogin_return', $return);
             }
@@ -399,20 +415,63 @@ class SLoginController extends JController
         $SloginUser->store();
     }
 
-    protected function storeOrLogin($first_name= null, $last_name= null, $email= null, $uid= null, $provider= null)
-    {
-        $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
-        //проверяем существует ли пользователь с таким именем
-        $user_id = $this->GetUserId($uid, $provider);
+    //проверка майла после ручного заполнения пользователем
+    public function check_mail(){
+        $input = new JInput;
+        $first_name =   $input->Get('first_name',   '', 'STRING');
+        $last_name =    $input->Get('last_name',    '', 'STRING');
+        $email =        $input->Get('email',        '', 'STRING');
+        $slogin_id =    $input->Get('slogin_id',    '', 'STRING');
+        $provider =     $input->Get('provider',     '', 'STRING');
 
+        //маленькая валидация
+        if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+             $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
+        }
+        else{
+             $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider);
+        }
+    }
+
+    protected function storeOrLogin($first_name= null, $last_name= null, $email= null, $slogin_id= null, $provider= null)
+    {
+
+        //проверяем существует ли пользователь с таким уидои и провайдером
+        $user_id = $this->GetUserId($slogin_id, $provider);
+
+        //если такого пользователя нет, то создаем
         if (!$user_id) {
+            $app = JFactory::getApplication();
+
+            //проверка пустого мыла
+            if($this->config->get('query_email', 0) && empty($email)){
+                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
+            }
+            else{
+                $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
+            }
+
+            //если разрешено слияние - сливаем
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion($slogin_id, $provider);
+                return;
+            }
+
+            //логин пользователя
+            $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+
             $name = $this->setUserName($first_name,  $last_name);
-            $this->storeUser($username, $name, $email, $uid, $provider);
-        } else {
+            $this->storeUser($username, $name, $email, $slogin_id, $provider);
+        }
+        else {   //или логинимся
             $this->loginUser($user_id);
         }
     }
 
+    /**  Слияние пользователей
+     * @param null $slogin_id - ид выдаваемый провайдером
+     * @param null $provider  - провайдер
+     */
     protected function fusion($slogin_id= null, $provider= null)
     {
         //проверяем существует ли пользователь с таким именем
@@ -432,6 +491,7 @@ class SLoginController extends JController
     }
 
     private function transliterate($str){
+
         $trans = array("а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d","е"=>"e",
             "ё"=>"yo","ж"=>"j","з"=>"z","и"=>"i","й"=>"i","к"=>"k","л"=>"l",
             "м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r","с"=>"s","т"=>"t",
@@ -442,9 +502,55 @@ class SLoginController extends JController
             "М"=>"M","Н"=>"N","О"=>"O","П"=>"P", "Р"=>"R","С"=>"S","Т"=>"T","У"=>"Y",
             "Ф"=>"F", "Х"=>"H","Ц"=>"C","Ч"=>"Ch","Ш"=>"Sh","Щ"=>"Sh", "Ы"=>"I","Э"=>"E",
             "Ю"=>"U","Я"=>"Ya","Ї"=>"I","І"=>"I");
+
         $res=str_replace(" ","-",strtr($str,$trans));
+
         //если надо, вырезаем все кроме латинских букв, цифр и дефиса (например для формирования логина)
         $res=preg_replace("|[^a-zA-Z0-9-]|","",$res);
+
         return $res;
+    }
+
+    protected function localAuthDebug($redirect){
+        if($this->config->get('local_debug', 0) == 1){
+            $app = JFactory::getApplication();
+            $app->redirect($redirect);
+        }
+    }
+
+    protected function localCheckDebug($provider){
+        if($this->config->get('local_debug', 0) == 1){
+
+            if($this->config->get('query_email', 0)){
+                $this->queryEmail('Вася', 'Пупкин', '', '12345678910', $provider);
+            }
+
+            $app	= JFactory::getApplication();
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion('12345678910', $provider);
+                return;
+            }
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+        }
+    }
+
+    protected function queryEmail($first_name, $last_name, $email, $slogin_id, $provider)
+    {
+        $app	= JFactory::getApplication();
+
+        $data = array(
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'slogin_id' => $slogin_id,
+            'provider' => $provider
+        );
+        $app->setUserState('com_slogin.provider.data', $data);
+
+        $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=mail'));
+
+        $session = JFactory::getSession();
+        $session->set('slogin_return', $redirect);
+        $this->displayRedirect();
     }
 }

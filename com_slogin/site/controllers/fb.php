@@ -39,10 +39,7 @@ class SLoginControllerFb extends SLoginController
 
 		$redirect = JURI::base().'?option=com_slogin&task=fb.check';
 
-        if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $this->localAuthDebug($redirect);
 
 		$params = array(
 				'client_id=' . $this->client_id,
@@ -66,13 +63,7 @@ class SLoginControllerFb extends SLoginController
         $input = $app->input;
         $provider = 'fb';
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+        $this->localCheckDebug($provider);
 
 		if ($code = $input->get('code')) {
 			$redirect = urlencode(JURI::base().'?option=com_slogin&task=fb.check');
@@ -96,12 +87,6 @@ class SLoginControllerFb extends SLoginController
 			
 			$ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
 			$request = json_decode($this->open_http($ResponseUrl));
-
-
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($request->id, $provider);
-                return;
-            }
 
             $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $provider);
 		}

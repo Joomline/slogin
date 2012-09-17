@@ -41,10 +41,7 @@ class SLoginControllerGoogle extends SLoginController
 
         $redirect = JURI::base().'?option=com_slogin&task=google.check';
 
-        if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $this->localAuthDebug($redirect);
 
 		$scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 	
@@ -73,13 +70,7 @@ class SLoginControllerGoogle extends SLoginController
         $input = $app->input;
         $provider = 'google';
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+        $this->localCheckDebug($provider);
 
 		if ($code = $input->get('code', null, 'STRING')) {
 				
@@ -117,11 +108,6 @@ class SLoginControllerGoogle extends SLoginController
 
 			$url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$request->access_token;
 			$request = json_decode($this->open_http($url));
-
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($request->id, $provider);
-                return;
-            }
 
             $this->storeOrLogin($request->given_name, $request->family_name, $request->email, $request->id, $provider);
 		}

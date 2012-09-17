@@ -40,10 +40,7 @@ class SLoginControllerMail extends SLoginController
 
         $redirect = JURI::base().'?option=com_slogin&task=mail.check';
 
-        if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $this->localAuthDebug($redirect);
 	
 		$params = array(
 			        'response_type=code',
@@ -67,13 +64,7 @@ class SLoginControllerMail extends SLoginController
         $input = $app->input;
         $provider = 'mail';
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+        $this->localCheckDebug($provider);
 
         $input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
@@ -142,11 +133,6 @@ class SLoginControllerMail extends SLoginController
 			$request = json_decode($this->open_http($url));
 
 			$request = $request[0];
-
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($request->uid, $provider);
-                return;
-            }
 
             $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
 		}

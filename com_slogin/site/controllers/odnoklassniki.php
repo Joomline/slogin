@@ -45,10 +45,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
 		
 		$redirect = JURI::base().'?option=com_slogin&task=odnoklassniki.check';
 
-        if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect($redirect);
-        }
+        $this->localAuthDebug($redirect);
 
 		$params = array(
 				'client_id=' . $this->client_id,
@@ -73,13 +70,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
         $app	= JFactory::getApplication();
         $input = $app->input;
 
-        if($this->config->get('local_debug', 0) == 1){
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
-        }
+        $this->localCheckDebug($provider);
 
 		$input = JFactory::getApplication()->input;
 		if ($code = $input->get('code', null, 'STRING')) {
@@ -122,14 +113,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
 			$request = json_decode($this->open_http($url));
 
-            $email = $request->uid . '@' . $provider;
-
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($request->uid, $provider);
-                return;
-            }
-
-            $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
 	
 		} elseif ($err = $input->get('error')) {
 			die($err);
