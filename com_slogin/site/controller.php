@@ -425,8 +425,7 @@ class SLoginController extends JController
         $provider =     $input->Get('provider',     '', 'STRING');
 
         //маленькая валидация
-        //if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-        if(empty($email)){
+        if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
              $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
         }
         else{
