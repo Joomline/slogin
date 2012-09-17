@@ -425,7 +425,8 @@ class SLoginController extends JController
         $provider =     $input->Get('provider',     '', 'STRING');
 
         //маленькая валидация
-        if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+        //if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+        if(empty($email)){
              $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
         }
         else{
@@ -433,7 +434,7 @@ class SLoginController extends JController
         }
     }
 
-    protected function storeOrLogin($first_name= null, $last_name= null, $email= null, $slogin_id= null, $provider= null)
+    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider)
     {
 
         //проверяем существует ли пользователь с таким уидои и провайдером
@@ -444,10 +445,10 @@ class SLoginController extends JController
             $app = JFactory::getApplication();
 
             //проверка пустого мыла
-            if($this->config->get('query_email', 0) && empty($email)){
+            if($this->config->get('query_email', 0)==1 && empty($email)){
                 $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
             }
-            else{
+            else if(empty($email)){
                 $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
             }
 
