@@ -324,6 +324,21 @@ class SLoginController extends JController
         return $userId;
     }
 
+    public function GetSloginStringId($slogin_id, $user_id, $provider)
+    {
+        // Initialise some variables
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select($db->quoteName('id'));
+        $query->from($db->quoteName('#__slogin_users'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $db->setQuery($query, 0, 1);
+        $userId = $db->loadResult();
+        return $userId;
+    }
+
     public function join_email(){
         $input = new JInput;
         JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
@@ -396,6 +411,24 @@ class SLoginController extends JController
         } else {
             $this->loginUser($user_id);
         }
+    }
+
+    protected function fusion($slogin_id= null, $provider= null)
+    {
+        //проверяем существует ли пользователь с таким именем
+        $slogin_user_id = $this->GetUserId($slogin_id, $provider);
+        $user_id = JFactory::getUser()->id;
+
+        if (!$slogin_user_id) {
+            $this->storeSloginUser($user_id, $slogin_id, $provider);
+        } else {
+            $id = $this->GetSloginStringId($slogin_id, $slogin_user_id, $provider);
+            $this->storeSloginUser($user_id, $slogin_id, $provider, $id);
+        }
+        $session = JFactory::getSession();
+        $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=fusion'));
+        $session->set('slogin_return', $redirect);
+        $this->displayRedirect();
     }
 
     private function transliterate($str){

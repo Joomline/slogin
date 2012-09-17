@@ -35,6 +35,11 @@ class SLoginControllerVk extends SLoginController
 	public function auth()
 	{
 		parent::auth();
+
+        $app	= JFactory::getApplication();
+        $input = $app->input;
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
+
         $redirect = JURI::base().'?option=com_slogin&task=vk.check';
 
         if($this->config->get('local_debug', 0) == 1){
@@ -65,8 +70,13 @@ class SLoginControllerVk extends SLoginController
         $code = $input->get('code');
         $redirect = urlencode(JURI::base().'?option=com_slogin&task=vk.check');
         $provider = 'vk';
+        $app	= JFactory::getApplication();
 
         if($this->config->get('local_debug', 0) == 1){
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion('12345678910', $provider);
+                return;
+            }
             $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
         }
 
@@ -110,6 +120,10 @@ class SLoginControllerVk extends SLoginController
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
             $email = $request->uid . '@' . $provider. '.com';
+
+            if($input->getString('action', '') == 'fusion'){
+                $this->fusion($request->uid, $provider);
+            }
 
             $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
 		}

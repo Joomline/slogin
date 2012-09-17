@@ -7,7 +7,7 @@
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>kolyamba831@inbox.ru</authorEmail>
     <authoreUrl>http://joomline.ru</authoreUrl>
-    <version>1.0</version>
+    <version>1.1</version>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 
     <install> <!-- Runs on install -->
@@ -59,9 +59,12 @@
 
     <files folder="site">
         <folder>controllers</folder>
+        <folder>models</folder>
+        <folder>tables</folder>
         <folder>views</folder>
         <filename>controller.php</filename>
         <filename>index.html</filename>
+        <filename>metadata.xml</filename>
         <filename>slogin.php</filename>
     </files>
 </extension>

@@ -20,4 +20,7 @@ defined('_JEXEC') or die('(@)|(@)');
 	<li><?php echo JText::sprintf('COM_SLOGIN_MODULE_VERSION', $this->module['version']); ?></li>
 </ul>
 <?php $date = JFactory::getDate()->format('Y') > '2012' ? '2012 - '. JFactory::getDate()->format('Y') : '2012'?>
-<div>&copy; <?php echo $date;?> </div>
+<div>
+    &copy; <?php echo $date;?> SmokerMan, Arkadiy, Joomline
+    <a target="_blank" href="http://joomline.ru/stati/53-komponenty/306-sozdanie-prilozhenij-dlja-socialnoj-avtoriziacii.html">Инструкция по настройке (Setting manual)</a>
+</div>

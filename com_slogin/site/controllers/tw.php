@@ -32,6 +32,10 @@ class SLoginControllerTw extends SLoginController
 	 */
 	public function auth()
 	{
+        $app	= JFactory::getApplication();
+        $input = $app->input;
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
+
         if($this->config->get('local_debug', 0) == 1){
             $redirect = JURI::base().'?option=com_slogin&task=tw.check';
             $app = JFactory::getApplication();
@@ -72,8 +76,14 @@ class SLoginControllerTw extends SLoginController
 	public function check()
 	{
         $provider = 'tw';
+        $app	= JFactory::getApplication();
+        $input = $app->input;
 
         if($this->config->get('local_debug', 0) == 1){
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion('12345678910', $provider);
+                return;
+            }
             $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
         }
 
@@ -115,6 +125,11 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_signature');
 
             $email = $data['user_id'] . '@' . $provider. '.com';
+
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion($data['user_id'], $provider);
+                return;
+            }
 
             $this->storeOrLogin($provider, $data['user_id'], $email, $data['user_id'], $provider);
 		}

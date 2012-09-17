@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <menu>
+        <options var="view">
+            <option name='COM_SLOGIN_MENU_FUSION' value="fusion" msg="COM_SLOGIN_MENU_FUSION" />
+        </options>
+    </menu>
+</metadata>

@@ -37,7 +37,11 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	*/
 	public function auth()
 	{
-		parent::auth();
+        $app	= JFactory::getApplication();
+        $input = $app->input;
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
+
+        parent::auth();
 		
 		$redirect = JURI::base().'?option=com_slogin&task=odnoklassniki.check';
 
@@ -66,8 +70,14 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	public function check()
 	{
         $provider = 'odnoklassniki';
+        $app	= JFactory::getApplication();
+        $input = $app->input;
 
         if($this->config->get('local_debug', 0) == 1){
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion('12345678910', $provider);
+                return;
+            }
             $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
         }
 
@@ -113,6 +123,11 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$request = json_decode($this->open_http($url));
 
             $email = $request->uid . '@' . $provider;
+
+            if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                $this->fusion($request->uid, $provider);
+                return;
+            }
 
             $this->storeOrLogin($request->first_name, $request->last_name, $email, $request->uid, $provider);
 	
