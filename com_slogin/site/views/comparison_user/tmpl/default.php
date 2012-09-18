@@ -51,11 +51,11 @@ JHtml::_('behavior.keepalive');
 
     <?php echo JText::_('COM_SLOGIN_LOST_PASS'); ?>
 
-    <form id="user-registration" action="/index.php?option=com_users&amp;task=reset.request" method="post"
+    <form id="user-registration" action="<?php echo JRoute::_('/index.php?option=com_users&task=reset.request') ?>" method="post"
           class="form-validate">
         <p><?php echo JText::_('COM_SLOGIN_LOST_PASS_DESC'); ?></p>
         <fieldset>
-            <input type="text" name="jform[email]" id="jform_email" value="<?php echo $this->email ?>" disabled="disabled" class="validate-username required invalid" size="30" aria-required="true" required="required" aria-invalid="true" />
+            <input type="text" name="jform[email]" id="jform_email" value="<?php echo $this->email ?>" readonly="readonly" class="validate-email required invalid" size="30" aria-required="true" required="required" aria-invalid="true" />
         </fieldset>
         <button type="submit" class="validate"><?php echo JText::_('COM_SLOGIN_SUBMIT'); ?></button>
         <?php echo JHtml::_('form.token'); ?>
