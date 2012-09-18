@@ -355,7 +355,11 @@ class SLoginController extends JController
         return $userId;
     }
 
-    public function join_email(){
+    public function join_email()
+    {
+        // Check for request forgeries.
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
         $input = new JInput;
         JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
 
@@ -416,7 +420,11 @@ class SLoginController extends JController
     }
 
     //проверка майла после ручного заполнения пользователем
-    public function check_mail(){
+    public function check_mail()
+    {
+        // Check for request forgeries.
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
         $input = new JInput;
         $first_name =   $input->Get('first_name',   '', 'STRING');
         $last_name =    $input->Get('last_name',    '', 'STRING');
