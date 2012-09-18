@@ -57,6 +57,7 @@ defined('_JEXEC') or die('(@)|(@)');
 	</div>
 <?php endif; ?>
 <?php if ($params->get('show_login_form')): ?>
+<div class="slogin-clear"></div>
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" >
 	<fieldset class="userdata">
 	<p id="form-login-username">

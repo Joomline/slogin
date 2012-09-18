@@ -1,3 +1,6 @@
+div.slogin-clear{
+    clear: both;
+}
 .slogin-buttons span {
     background: url(../../media/socials_sprite.png) no-repeat;
     height: 50px;
