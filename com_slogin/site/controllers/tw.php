@@ -116,16 +116,7 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-
-
-            if($this->config->get('query_email', 0)){
-                $this->queryEmail($provider, $data['user_id'], '', $data['user_id'], $provider);
-            }
-            else{
-                $email = $data['user_id'] . '@' . $provider. '.com';
-            }
-
-            $this->storeOrLogin($provider, $data['user_id'], $data['email'], $data['user_id'], $provider);
+            $this->storeOrLogin($provider, $data['user_id'], $data['email'], $data['user_id'], $provider, true);
 		}
 
 	}

@@ -10,12 +10,27 @@
 
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
+//подключаем helper стандартного модуля авторизации, для ридеректа
+require_once JPATH_BASE.DS.'modules'.DS.'mod_login'.DS.'helper.php';
 
 $user = JFactory::getUser();
 $doc = JFactory::getDocument();
+$input = new JInput;
+$app = JFactory::getApplication();
 
-//подключаем helper стандартного модуля авторизации, для ридеректа
-require_once JPATH_BASE.DS.'modules'.DS.'mod_login'.DS.'helper.php';
+$option =  $input->Get('option', '', 'STRING');
+ //страница возврата после логина
+if($option != 'com_slogin'){
+    $itemid = $params->get('login', '');
+    if(!$itemid) {
+        $page = base64_encode(JURI::current());
+    }
+    else{
+        $page = modLoginHelper::getReturnURL($params, 'login');
+    }
+    $app->setUserState('com_slogin.return_url', $page);
+}
+
 $type	= modLoginHelper::getType();
 $return	= modLoginHelper::getReturnURL($params, $type);
 

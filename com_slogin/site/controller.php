@@ -140,14 +140,11 @@ class SLoginController extends JController
      * @param $provider                 идентификатор провайдера
      * @throws Exception
      */
-    protected function storeUser($username, $name, $email, $uid, $provider)
+    protected function storeUser($username, $name, $email, $uid, $provider, $popup=false)
     {
-        $app = JFactory::getApplication();
-
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($email);
         if($userId){
-            $session = JFactory::getSession();
             $app	= JFactory::getApplication();
             $data = array(
                'email' => $email,
@@ -156,9 +153,8 @@ class SLoginController extends JController
                'slogin_id' => $uid,
             );
             $app->setUserState('com_slogin.comparison_user.data', $data);
-            $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=comparison_user'));
-            $session->set('slogin_return', $redirect);
-            $this->displayRedirect();
+
+            $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', $popup);
         }
 
         $username = $this->CheckUniqueName($username);
@@ -196,11 +192,13 @@ class SLoginController extends JController
      * Метод для авторизцаии пользователя
      * @param int $id    ID пользователя в Joomla
      */
-    protected function loginUser($id, $firstLogin = false, $uid=null, $provider=null)
+    protected function loginUser($id, $firstLogin = false, $uid=null, $provider=null, $popup=false)
     {
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
         $session = JFactory::getSession();
+
+        $return = base64_decode($app->getUserState('com_slogin.return_url'));
 
         // If the user is blocked, redirect with an error
         if ($instance->get('block') == 1) {
@@ -233,9 +231,7 @@ class SLoginController extends JController
         $instance->setLastVisit();
         if($firstLogin){
             if($this->config->get('add_info_new_user', 0) == 1){
-                $return = base64_encode(JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
-                //устанавливаем страницу возврата в сессию
-                $session->set('slogin_return', $return);
+                $return = 'index.php?option=com_users&view=profile&layout=edit';
             }
             else if($this->config->get('add_info_new_user', 0) == 2){
                 $user = JFactory::getUser();
@@ -247,23 +243,30 @@ class SLoginController extends JController
                     'slogin_id' => $uid,
                 );
                 $app->setUserState('com_slogin.comparison_user.data', $data);
-                $return = base64_encode(JRoute::_('index.php?option=com_slogin&view=linking_user'));
-                //устанавливаем страницу возврата в сессию
-                $session->set('slogin_return', $return);
+                $return = 'index.php?option=com_slogin&view=linking_user';
             }
         }
 
-        $this->displayRedirect();
+        $this->displayRedirect($return, $popup);
     }
 
     /**
      * Метод для отображения специального редиректа, с закрытием окна
      */
-    protected function displayRedirect()
+    protected function displayRedirect($redirect='index.php', $popup=false)
     {
-        $view = $this->getView('Redirect', 'html');
-        $view->display();
-        exit;
+        if($popup){
+            $session = JFactory::getSession();
+            $redirect = base64_encode(JRoute::_($redirect));
+            $session->set('slogin_return', $redirect);
+            $view = $this->getView('Redirect', 'html');
+            $view->display();
+            exit;
+        }
+        else{
+            $app = JFactory::getApplication();
+            $app->redirect(JRoute::_($redirect));
+        }
     }
 
     /**
@@ -361,7 +364,6 @@ class SLoginController extends JController
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         $input = new JInput;
-        JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
 
         $app = JFactory::getApplication();
 
@@ -394,17 +396,23 @@ class SLoginController extends JController
         // Check if the log in succeeded.
         if (true === $app->login($credentials, $options)) {
             $user_object = new JUser;
+
             if($user_id != JFactory::getUser()->id){
                 $user_object->id = $user_id;
                 $user_object->delete();
-                $oldUser = $this->getSloginUserStringId($user_id, $slogin_id, $provider);
-                $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider, $oldUser);
             }
+
+            $oldUser = $this->getSloginUserStringId($user_id, $slogin_id, $provider);
+            $oldUser = ((int)$oldUser == 0) ? null : (int)$oldUser;
+            $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider, $oldUser);
+
             $app->setUserState('users.login.form.data', array());
+
             $app->redirect(JRoute::_($data['return'], false));
         } else {
             $data['remember'] = (int)$options['remember'];
             $app->setUserState('users.login.form.data', $data);
+
             $app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
         }
     }
@@ -441,7 +449,7 @@ class SLoginController extends JController
         }
     }
 
-    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider)
+    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
     {
 
         //проверяем существует ли пользователь с таким уидои и провайдером
@@ -453,7 +461,7 @@ class SLoginController extends JController
 
             //проверка пустого мыла
             if($this->config->get('query_email', 0)==1 && empty($email)){
-                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
+                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup);
             }
             else if(empty($email)){
                 $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
@@ -461,7 +469,7 @@ class SLoginController extends JController
 
             //если разрешено слияние - сливаем
             if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($slogin_id, $provider);
+                $this->fusion($slogin_id, $provider, $popup);
                 return;
             }
 
@@ -469,10 +477,10 @@ class SLoginController extends JController
             $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
 
             $name = $this->setUserName($first_name,  $last_name);
-            $this->storeUser($username, $name, $email, $slogin_id, $provider);
+            $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup);
         }
         else {   //или логинимся
-            $this->loginUser($user_id);
+            $this->loginUser($user_id, false, null, null, $popup);
         }
     }
 
@@ -480,11 +488,12 @@ class SLoginController extends JController
      * @param null $slogin_id - ид выдаваемый провайдером
      * @param null $provider  - провайдер
      */
-    protected function fusion($slogin_id= null, $provider= null)
+    protected function fusion($slogin_id= null, $provider= null, $popup=false)
     {
         //проверяем существует ли пользователь с таким именем
         $slogin_user_id = $this->GetUserId($slogin_id, $provider);
         $user_id = JFactory::getUser()->id;
+        $app	= JFactory::getApplication();
 
         if (!$slogin_user_id) {
             $this->storeSloginUser($user_id, $slogin_id, $provider);
@@ -492,10 +501,10 @@ class SLoginController extends JController
             $id = $this->GetSloginStringId($slogin_id, $slogin_user_id, $provider);
             $this->storeSloginUser($user_id, $slogin_id, $provider, $id);
         }
-        $session = JFactory::getSession();
-        $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=fusion'));
-        $session->set('slogin_return', $redirect);
-        $this->displayRedirect();
+
+
+        $this->displayRedirect('index.php?option=com_slogin&view=fusion', $popup);
+
     }
 
     private function transliterate($str){
@@ -542,7 +551,7 @@ class SLoginController extends JController
         }
     }
 
-    protected function queryEmail($first_name, $last_name, $email, $slogin_id, $provider)
+    protected function queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
     {
         $app	= JFactory::getApplication();
 
@@ -555,10 +564,6 @@ class SLoginController extends JController
         );
         $app->setUserState('com_slogin.provider.data', $data);
 
-        $redirect = base64_encode(JRoute::_('index.php?option=com_slogin&view=mail'));
-
-        $session = JFactory::getSession();
-        $session->set('slogin_return', $redirect);
-        $this->displayRedirect();
+        $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup);
     }
 }

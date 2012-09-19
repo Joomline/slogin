@@ -113,7 +113,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
 			$request = json_decode($this->open_http($url));
 
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true);
 	
 		} elseif ($err = $input->get('error')) {
 			die($err);

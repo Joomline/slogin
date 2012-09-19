@@ -109,7 +109,7 @@ class SLoginControllerVk extends SLoginController
 			$ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
 			$request = json_decode($this->open_http($ResponseUrl))->response[0];
 
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true);
 		}
 
 	}

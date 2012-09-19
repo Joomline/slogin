@@ -134,7 +134,7 @@ class SLoginControllerMail extends SLoginController
 
 			$request = $request[0];
 
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true);
 		}
 	
 	}	
