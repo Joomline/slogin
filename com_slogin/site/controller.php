@@ -124,19 +124,15 @@ class SLoginController extends SLoginControllerParemt
         return $name;
     }
 
-    private function getSloginUserStringId($user_id, $slogin_id, $provider){
+    private function deleteSloginUser($slogin_id, $provider){
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-
-            $query->select($db->quoteName('id'));
-            $query->from($db->quoteName('#__slogin_users'));
-            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
-            $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
-            $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
-            $db->setQuery($query, 0, 1);
-            $id = $db->loadResult();
-
-        return $id;
+        $query->delete();
+        $query->from($db->quoteName('#__slogin_users'));
+        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $db->setQuery($query);
+        $db->query();
     }
 
     /**
@@ -180,33 +176,30 @@ class SLoginController extends SLoginControllerParemt
 
         if (!$user_object->bind($user)) {
             $this->setError($user_object->getError());
-            return;
+            return false;
             //throw new Exception($user_object->getError());
         }
 
         if (!$user_object->save()) {
             $this->setError($user_object->getError());
-            return;
+            return false;
             //throw new Exception($user_object->getError());
         }
 
         $this->storeSloginUser($user_object->id, $uid, $provider);
 
-        $this->loginUser($user_object->id, true, $uid, $provider, $popup);
-
+        return $user_object->id;
     }
 
     /**
      * Метод для авторизцаии пользователя
      * @param int $id    ID пользователя в Joomla
      */
-    protected function loginUser($id, $firstLogin = false, $uid=null, $provider=null, $popup=false)
+    protected function loginUser($id)
     {
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
         $session = JFactory::getSession();
-
-        $return = base64_decode($app->getUserState('com_slogin.return_url'));
 
         // If the user is blocked, redirect with an error
         if ($instance->get('block') == 1) {
@@ -237,25 +230,6 @@ class SLoginController extends SLoginControllerParemt
 
         // Hit the user last visit field
         $instance->setLastVisit();
-        if($firstLogin){
-            if($this->config->get('add_info_new_user', 0) == 1){
-                $return = 'index.php?option=com_users&view=profile&layout=edit';
-            }
-            else if($this->config->get('add_info_new_user', 0) == 2){
-                $user = JFactory::getUser();
-                $app	= JFactory::getApplication();
-                $data = array(
-                    'email' => $user->get('email'),
-                    'id' => $user->get('id'),
-                    'provider' => $provider,
-                    'slogin_id' => $uid,
-                );
-                $app->setUserState('com_slogin.comparison_user.data', $data);
-                $return = 'index.php?option=com_slogin&view=linking_user';
-            }
-        }
-
-        $this->displayRedirect($return, $popup);
     }
 
     /**
@@ -366,6 +340,9 @@ class SLoginController extends SLoginControllerParemt
         return $userId;
     }
 
+    /**
+     * Привязка логина к существующему пользователю если совпал емайл
+     */
     public function join_email()
     {
         // Check for request forgeries.
@@ -403,16 +380,33 @@ class SLoginController extends SLoginControllerParemt
         // Perform the log in.
         // Check if the log in succeeded.
         if (true === $app->login($credentials, $options)) {
-            $user_object = new JUser;
 
-            if($user_id != JFactory::getUser()->id){
-                $user_object->id = $user_id;
-                $user_object->delete();
+            $joomlaUserId = JFactory::getUser()->id;
+
+            //удаляем ненужного пользователя
+            if($user_id != $joomlaUserId){
+
+                //запрашиваем есть-ли у пользователя другие провайдеры
+                $db = JFactory::getDbo();
+                $query = $db->getQuery(true);
+                $query->select('COUNT(*)');
+                $query->from($db->quoteName('#__slogin_users'));
+                $query->where($db->quoteName('user_id') . ' = ' . $db->quote($joomlaUserId));
+                $query->where($db->quoteName('provider') . ' != ' . $db->quote($provider));
+                $db->setQuery($query);
+                $count = (int)$db->loadResult();
+
+                //если других провайдеров нет, то удаляем пользователя
+                if($count == 0){
+                    $user_object = new JUser;
+                    $user_object->id = $user_id;
+                    $user_object->delete();
+                }
             }
-
-            $oldUser = $this->getSloginUserStringId($user_id, $slogin_id, $provider);
-            $oldUser = ((int)$oldUser == 0) ? null : (int)$oldUser;
-            $this->storeSloginUser(JFactory::getUser()->id, $slogin_id, $provider, $oldUser);
+            //удаляем старую строку пользователя
+            $this->deleteSloginUser($slogin_id, $provider);
+            //вносим данные в #__slogin_user
+            $this->storeSloginUser($joomlaUserId, $slogin_id, $provider);
 
             $app->setUserState('users.login.form.data', array());
 
@@ -425,10 +419,9 @@ class SLoginController extends SLoginControllerParemt
         }
     }
 
-    private function storeSloginUser($user_id, $slogin_id, $provider, $id=null){
+    private function storeSloginUser($user_id, $slogin_id, $provider){
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
         $SloginUser = &JTable::getInstance('slogin_users', 'SloginTable');
-        $SloginUser->id = $id;
         $SloginUser->user_id = $user_id;
         $SloginUser->slogin_id = $slogin_id;
         $SloginUser->provider = $provider;
@@ -460,10 +453,14 @@ class SLoginController extends SLoginControllerParemt
     protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
     {
         //проверяем существует ли пользователь с таким уидои и провайдером
-        $user_id = $this->GetUserId($slogin_id, $provider);
+        $sloginUserId = $this->GetUserId($slogin_id, $provider);
+
+        //Переадресация пользователя из модуля
+        $app = JFactory::getApplication();
+        $return = base64_decode($app->getUserState('com_slogin.return_url'));
 
         //если такого пользователя нет, то создаем
-        if (!$user_id) {
+        if (!$sloginUserId) {
             $app = JFactory::getApplication();
 
             //проверка пустого мыла
@@ -483,12 +480,40 @@ class SLoginController extends SLoginControllerParemt
             //логин пользователя
             $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
 
+            //имя пользователя
             $name = $this->setUserName($first_name,  $last_name);
-            $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup);
+
+            //записываем пользователя в таблицу джумлы и компонента
+            $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup);
+
+            if($joomlaUserId > 0){
+                //логинимся если ид пользователя верный
+                $this->loginUser($joomlaUserId);
+
+                //если настроено показать после регистрации изменение профиля
+                if($this->config->get('add_info_new_user', 0) == 1){
+                    $return = 'index.php?option=com_users&view=profile&layout=edit';
+                }
+                //если настроено после регистрации привязать пользователя к существующему
+                else if($this->config->get('add_info_new_user', 0) == 2){
+                    $user = JFactory::getUser();
+                    $app	= JFactory::getApplication();
+                    $data = array(
+                        'email' => $user->get('email'),
+                        'id' => $user->get('id'),
+                        'provider' => $provider,
+                        'slogin_id' => $slogin_id,
+                    );
+                    $app->setUserState('com_slogin.comparison_user.data', $data);
+                    $return = 'index.php?option=com_slogin&view=linking_user';
+                }
+            }
         }
         else {   //или логинимся
-            $this->loginUser($user_id, false, null, null, $popup);
+            $this->loginUser($sloginUserId);
         }
+
+        $this->displayRedirect($return, $popup);
     }
 
     /**  Слияние пользователей
@@ -497,16 +522,15 @@ class SLoginController extends SLoginControllerParemt
      */
     protected function fusion($slogin_id= null, $provider= null, $popup=false)
     {
-        //проверяем существует ли пользователь с таким именем
-        $slogin_user_id = $this->GetUserId($slogin_id, $provider);
+        //ид текущего пользователя
         $user_id = JFactory::getUser()->id;
 
-        if (!$slogin_user_id) {
-            $this->storeSloginUser($user_id, $slogin_id, $provider);
-        } else {
-            $id = $this->GetSloginStringId($slogin_id, $slogin_user_id, $provider);
-            $this->storeSloginUser($user_id, $slogin_id, $provider, $id);
-        }
+        //удаляем старые записи пользователя из #__slogin_users
+        $this->deleteSloginUser($slogin_id, $provider);
+
+        //добавляем новую запись пользователя в #__slogin_users
+        $this->storeSloginUser($user_id, $slogin_id, $provider);
+
         $this->displayRedirect('index.php?option=com_slogin&view=fusion', $popup);
     }
 
@@ -541,19 +565,6 @@ class SLoginController extends SLoginControllerParemt
     protected function localCheckDebug($provider){
         if($this->config->get('local_debug', 0) == 1){
             $slogin_id =  '12345678910';
-            //проверяем существует ли пользователь с таким уидои и провайдером
-            $user_id = $this->GetUserId($slogin_id, $provider);
-            if(!$user_id){
-                if($this->config->get('query_email', 0)){
-                    $this->queryEmail('Вася', 'Пупкин', '', $slogin_id, $provider, true);
-                }
-
-                $app	= JFactory::getApplication();
-                if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                    $this->fusion($slogin_id, $provider, true);
-                    return;
-                }
-            }
             $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', $slogin_id, $provider, true);
         }
     }
