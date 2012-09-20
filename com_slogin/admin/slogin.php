@@ -13,9 +13,11 @@ defined('_JEXEC') or die('(@)|(@)');
 
 // Подключаем библеотеку контроллера Joomla
 jimport('joomla.application.component.controller');
+//костыль для поддержки 2 и  3 джумлы
+$className = (class_exists('JControllerLegacy')) ? 'JControllerLegacy' : 'JController';
 // Получаем экземпляр класса основного контроллера компонента
-$controller = JController::getInstance('SLogin');
+$controller = call_user_func(array($className, 'getInstance'), 'SLogin');
 // Обрабатываем запрос (task)
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 // Переадресуем, если установлено контроллером
 $controller->redirect();

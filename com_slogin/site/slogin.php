@@ -11,14 +11,18 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 
+//костыль для поддержки 2 и  3 джумлы
+$className = (class_exists('JControllerLegacy')) ? 'JControllerLegacy' : 'JController';
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
 // Get an instance of the controller prefixed by SLogin
-$controller = JController::getInstance('SLogin');
+//$controller = JController::getInstance('SLogin');
+$controller = call_user_func(array($className, 'getInstance'), 'SLogin');
 
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

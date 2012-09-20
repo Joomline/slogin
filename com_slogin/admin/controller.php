@@ -11,13 +11,21 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 
+//костыль для поддержки 2 и  3 джумлы
+if(class_exists('JControllerLegacy')){
+    class SLoginControllerParemt extends JControllerLegacy{}
+}
+else{
+    class SLoginControllerParemt extends JController{}
+}
+
 /**
  * SLogin Main Controller
  *
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginController extends JController
+class SLoginController extends SLoginControllerParemt
 {
 	/**
 	 * Typical view method for MVC based architecture

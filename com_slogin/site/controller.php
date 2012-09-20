@@ -14,15 +14,23 @@ defined('_JEXEC') or die('(@)|(@)');
 // import Joomla controller library
 jimport('joomla.application.component.controller');
 
-
 jimport('joomla.environment.http');
+
+//костыль для поддержки 2 и  3 джумлы
+if(class_exists('JControllerLegacy')){
+    class SLoginControllerParemt extends JControllerLegacy{}
+}
+else{
+    class SLoginControllerParemt extends JController{}
+}
+
 /**
  * SLogin Controller
  *
  * @package        Joomla.Site
  * @subpackage    com_slogin
  */
-class SLoginController extends JController
+class SLoginController extends SLoginControllerParemt
 {
     protected $config;
 
@@ -184,7 +192,7 @@ class SLoginController extends JController
 
         $this->storeSloginUser($user_object->id, $uid, $provider);
 
-        $this->loginUser($user_object->id, true, $uid, $provider);
+        $this->loginUser($user_object->id, true, $uid, $provider, $popup);
 
     }
 
@@ -451,7 +459,6 @@ class SLoginController extends JController
 
     protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
     {
-
         //проверяем существует ли пользователь с таким уидои и провайдером
         $user_id = $this->GetUserId($slogin_id, $provider);
 
@@ -493,7 +500,6 @@ class SLoginController extends JController
         //проверяем существует ли пользователь с таким именем
         $slogin_user_id = $this->GetUserId($slogin_id, $provider);
         $user_id = JFactory::getUser()->id;
-        $app	= JFactory::getApplication();
 
         if (!$slogin_user_id) {
             $this->storeSloginUser($user_id, $slogin_id, $provider);
@@ -501,10 +507,7 @@ class SLoginController extends JController
             $id = $this->GetSloginStringId($slogin_id, $slogin_user_id, $provider);
             $this->storeSloginUser($user_id, $slogin_id, $provider, $id);
         }
-
-
         $this->displayRedirect('index.php?option=com_slogin&view=fusion', $popup);
-
     }
 
     private function transliterate($str){
@@ -537,17 +540,21 @@ class SLoginController extends JController
 
     protected function localCheckDebug($provider){
         if($this->config->get('local_debug', 0) == 1){
+            $slogin_id =  '12345678910';
+            //проверяем существует ли пользователь с таким уидои и провайдером
+            $user_id = $this->GetUserId($slogin_id, $provider);
+            if(!$user_id){
+                if($this->config->get('query_email', 0)){
+                    $this->queryEmail('Вася', 'Пупкин', '', $slogin_id, $provider, true);
+                }
 
-            if($this->config->get('query_email', 0)){
-                $this->queryEmail('Вася', 'Пупкин', '', '12345678910', $provider);
+                $app	= JFactory::getApplication();
+                if($app->getUserState('com_slogin.action.data') == 'fusion'){
+                    $this->fusion($slogin_id, $provider, true);
+                    return;
+                }
             }
-
-            $app	= JFactory::getApplication();
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion('12345678910', $provider);
-                return;
-            }
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', '12345678910', $provider);
+            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', $slogin_id, $provider, true);
         }
     }
 

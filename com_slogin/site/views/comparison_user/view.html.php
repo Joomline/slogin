@@ -14,10 +14,18 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
+//костыль для поддержки 2 и  3 джумлы
+if(class_exists('JViewLegacy')){
+    class SloginViewComparisonParemt extends JViewLegacy{}
+}
+else{
+    class SloginViewComparisonParemt extends JView{}
+}
+
 /**
  * HTML View class for the HelloWorld Component
  */
-class SloginViewComparison_user extends JView
+class SloginViewComparison_user extends SloginViewComparisonParemt
 {
 	// Overwriting JView display method
 	function display($tpl = null) 

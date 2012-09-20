@@ -13,13 +13,21 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
+//костыль для поддержки 2 и  3 джумлы
+if(class_exists('JViewLegacy')){
+    class SLoginViewSettingsParemt extends JViewLegacy{}
+}
+else{
+    class SLoginViewSettingsParemt extends JView{}
+}
+
 /**
  * View class for a list of SLogins
  *
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginViewSettings extends JView
+class SLoginViewSettings extends SLoginViewSettingsParemt
 {
 	protected $component;
 	protected $module;
