@@ -14,11 +14,13 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 //костыль для поддержки 2 и  3 джумлы
-if(class_exists('JViewLegacy')){
-    class SLoginViewSettingsParemt extends JViewLegacy{}
-}
-else{
-    class SLoginViewSettingsParemt extends JView{}
+if(!class_exists('SLoginViewSettingsParent')){
+    if(class_exists('JViewLegacy')){
+        class SLoginViewSettingsParent extends JViewLegacy{}
+    }
+    else{
+        class SLoginViewSettingsParent extends JView{}
+    }
 }
 
 /**
@@ -27,7 +29,7 @@ else{
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginViewSettings extends SLoginViewSettingsParemt
+class SLoginViewSettings extends SLoginViewSettingsParent
 {
 	protected $component;
 	protected $module;

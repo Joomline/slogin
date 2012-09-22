@@ -17,11 +17,13 @@ jimport('joomla.application.component.controller');
 jimport('joomla.environment.http');
 
 //костыль для поддержки 2 и  3 джумлы
-if(class_exists('JControllerLegacy')){
-    class SLoginControllerParemt extends JControllerLegacy{}
-}
-else{
-    class SLoginControllerParemt extends JController{}
+if(!class_exists('SLoginControllerParent')){
+    if(class_exists('JControllerLegacy')){
+        class SLoginControllerParent extends JControllerLegacy{}
+    }
+    else{
+        class SLoginControllerParent extends JController{}
+    }
 }
 
 /**
@@ -30,7 +32,7 @@ else{
  * @package        Joomla.Site
  * @subpackage    com_slogin
  */
-class SLoginController extends SLoginControllerParemt
+class SLoginController extends SLoginControllerParent
 {
     protected $config;
 
@@ -452,6 +454,11 @@ class SLoginController extends SLoginControllerParemt
 
     protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
     {
+        //проверка на пустую запись ида пользователя
+        if(empty($slogin_id)){
+            echo '<p>Provider return empty user code.</p>';
+            die;
+        }
         //проверяем существует ли пользователь с таким уидои и провайдером
         $sloginUserId = $this->GetUserId($slogin_id, $provider);
 

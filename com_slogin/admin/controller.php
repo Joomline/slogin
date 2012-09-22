@@ -12,11 +12,13 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 //костыль для поддержки 2 и  3 джумлы
-if(class_exists('JControllerLegacy')){
-    class SLoginControllerParemt extends JControllerLegacy{}
-}
-else{
-    class SLoginControllerParemt extends JController{}
+if(!class_exists('SLoginControllerParent')){
+    if(class_exists('JControllerLegacy')){
+        class SLoginControllerParent extends JControllerLegacy{}
+    }
+    else{
+        class SLoginControllerParent extends JController{}
+    }
 }
 
 /**
@@ -25,7 +27,7 @@ else{
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginController extends SLoginControllerParemt
+class SLoginController extends SLoginControllerParent
 {
 	/**
 	 * Typical view method for MVC based architecture

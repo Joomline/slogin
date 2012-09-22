@@ -15,17 +15,19 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 //костыль для поддержки 2 и  3 джумлы
-if(class_exists('JViewLegacy')){
-    class SloginViewFusionParemt extends JViewLegacy{}
-}
-else{
-    class SloginViewFusionParemt extends JView{}
+if(!class_exists('SloginViewFusionParent')){
+    if(class_exists('JViewLegacy')){
+        class SloginViewFusionParent extends JViewLegacy{}
+    }
+    else{
+        class SloginViewFusionParent extends JView{}
+    }
 }
 
 /**
  * HTML View class for the HelloWorld Component
  */
-class SloginViewFusion extends SloginViewFusionParemt
+class SloginViewFusion extends SloginViewFusionParent
 {
 	// Overwriting JView display method
 	function display($tpl = null) 

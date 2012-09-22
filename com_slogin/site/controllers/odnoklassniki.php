@@ -56,7 +56,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
 		$params = implode('&', $params);
 	
 		$url = 'http://www.odnoklassniki.ru/oauth/authorize?'.$params;
-	
+
 		header('Location:' . $url);
 	}
 
@@ -86,10 +86,17 @@ class SLoginControllerOdnoklassniki extends SLoginController
 	
 			);
 			$params = implode('&', $params);
-			
+
 			$url = 'http://api.odnoklassniki.ru/oauth/token.do';
 			$request = json_decode($this->open_http($url, true, $params));
-			
+
+            if (!empty($request->error)) {
+                echo '<h3>token.do</h3>';
+                echo '<p>'.$request->error.'</p>';
+                echo '<p>'.$request->error_description.'</p>';
+                die();
+            }
+
 			/*
 			Объект $request содержит следующие поля:
 			uid - уникальный номер пользователя
@@ -113,30 +120,18 @@ class SLoginControllerOdnoklassniki extends SLoginController
 			$url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
 			$request = json_decode($this->open_http($url));
 
+            if (!empty($request->error_code)) {
+                echo '<h3>fb.do</h3>';
+                echo '<p>'.$request->error_data.'</p>';
+                echo '<p>'.$request->error_msg.'</p>';
+                die();
+            }
+
             $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true);
 	
 		} elseif ($err = $input->get('error')) {
 			die($err);
 		}
 	
-	}	
-	
-	/**
-	 * Получение прпаметров для запроса. Формирование сигнатуры
-	 * @param array $request_params		Обязательные параметры для запроса
-	 * @return string	Параметры для запроса
-	 */
-	protected function get_server_params(array $request_params) {
-		$params = '';
-        ksort($request_params);
-		foreach ($request_params as $key => $value) {
-			$params .= "$key=$value&";
-		}
-		
-		$sig_params = str_replace('&', '', $params);
-		$signature = md5($sig_params . $this->client_secret);
-		$params = $params .'sig=' . $signature;
-		
-		return  $params;
 	}
 }
