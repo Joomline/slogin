@@ -146,7 +146,7 @@ class SLoginController extends SLoginControllerParent
      * @param $provider                 идентификатор провайдера
      * @throws Exception
      */
-    protected function storeUser($username, $name, $email, $uid, $provider, $popup=false)
+    protected function storeUser($username, $name, $email, $slogin_id, $provider, $popup=false)
     {
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($email);
@@ -156,22 +156,21 @@ class SLoginController extends SLoginControllerParent
                'email' => $email,
                'id' => $userId,
                'provider' => $provider,
-               'slogin_id' => $uid,
+               'slogin_id' => $slogin_id,
             );
             $app->setUserState('com_slogin.comparison_user.data', $data);
 
             $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', $popup);
         }
-
-        $username = $this->CheckUniqueName($username);
-        $user['username'] = $username;
-        $user['name'] = $name;
-        $user['email'] = $email;
-        $user['registerDate'] = JFactory::getDate()->toSQL();
-
         //установка групп для нового пользователя
         $user_config = JComponentHelper::getParams('com_users');
         $defaultUserGroup = $user_config->get('new_usertype', 2);
+
+        $user['username'] = $this->CheckUniqueName($username);
+        $user['name'] = $name;
+        $user['email'] = $email;
+        $user['registerDate'] = JFactory::getDate()->toSQL();
+        $user['usertype'] = 'deprecated';
         $user['groups'] = array($defaultUserGroup);
 
         $user_object = new JUser;
@@ -188,7 +187,7 @@ class SLoginController extends SLoginControllerParent
             //throw new Exception($user_object->getError());
         }
 
-        $this->storeSloginUser($user_object->id, $uid, $provider);
+        $this->storeSloginUser($user_object->id, $slogin_id, $provider);
 
         return $user_object->id;
     }
@@ -202,22 +201,28 @@ class SLoginController extends SLoginControllerParent
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
         $session = JFactory::getSession();
+        $db = JFactory::getDBO();
+
+        // If _getUser returned an error, then pass it back.
+        if ($instance instanceof Exception) {
+            return false;
+        }
 
         // If the user is blocked, redirect with an error
         if ($instance->get('block') == 1) {
             $this->setError(JText::_('JERROR_NOLOGIN_BLOCKED'));
+            return false;
         }
 
         // Mark the user as logged in
         $instance->set('guest', 0);
 
+        $instance->set('usertype', 'deprecated');
+
         // Register the needed session variables
         $session->set('user', $instance);
 
-        $db = JFactory::getDBO();
-
         // Check to see the the session already exists.
-
         $app->checkSession();
 
         // Update the user related fields for the Joomla sessions table.
@@ -572,7 +577,7 @@ class SLoginController extends SLoginControllerParent
     protected function localCheckDebug($provider){
         if($this->config->get('local_debug', 0) == 1){
             $slogin_id =  '12345678910';
-            $this->storeOrLogin('Вася', 'Пупкин', 'qwe@qwe.qw', $slogin_id, $provider, true);
+            $this->storeOrLogin('Вася', 'Пупкин', '', $slogin_id, $provider, true);
         }
     }
 

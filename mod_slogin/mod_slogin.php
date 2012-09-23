@@ -39,8 +39,8 @@ $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 $layout = $params->get('layout', 'default');
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
-$doc->addScript('modules/mod_slogin/media/slogin.js');
-$doc->addStyleSheet('/modules/mod_slogin/tmpl/'.$layout.'/slogin.css');
+$doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js');
+$doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/'.$layout.'/slogin.css');
 
 require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 
