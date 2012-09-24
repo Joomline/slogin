@@ -189,6 +189,11 @@ class SLoginController extends SLoginControllerParent
 
         $this->storeSloginUser($user_object->id, $slogin_id, $provider);
 
+        //вставка нового пользователя в таблицы других компонентов
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
+        $dispatcher->trigger('onAfterStoreUser',array($user_object));
+
         return $user_object->id;
     }
 
@@ -237,6 +242,10 @@ class SLoginController extends SLoginControllerParent
 
         // Hit the user last visit field
         $instance->setLastVisit();
+
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
+        $dispatcher->trigger('onAfterLoginUser',array($instance));
     }
 
     /**
