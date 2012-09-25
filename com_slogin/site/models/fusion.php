@@ -47,12 +47,13 @@ class SloginModelFusion extends JModelForm
     public function getFusionProviders()
 	{
         $userId = JFactory::getUser()->id;
-        $this->_db->setQuery(
-            $this->_db->getQuery(true)
-            ->select('provider')
-            ->from('#__slogin_users')
-            ->where('user_id=' . (int)$userId)
-        );
+
+        $query =  $this->_db->getQuery(true);
+        $query->select($this->_db->quoteName('provider'));
+        $query->from($this->_db->quoteName('#__slogin_users'));
+        $query->where($this->_db->quoteName('user_id') . ' = ' . (int)$userId);
+        $this->_db->setQuery($query);
+
 		$providers = $this->_db->loadColumn();
         return $providers;
 	}

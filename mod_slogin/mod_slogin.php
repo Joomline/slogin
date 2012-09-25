@@ -21,13 +21,7 @@ $app = JFactory::getApplication();
 $option =  $input->Get('option', '', 'STRING');
  //страница возврата после логина
 if($option != 'com_slogin'){
-    $itemid = $params->get('login', '');
-    if(!$itemid) {
-        $page = base64_encode(JURI::current());
-    }
-    else{
-        $page = modLoginHelper::getReturnURL($params, 'login');
-    }
+    $page = modLoginHelper::getReturnURL($params, 'login');
     $app->setUserState('com_slogin.return_url', $page);
 }
 

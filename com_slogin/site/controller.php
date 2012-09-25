@@ -276,7 +276,6 @@ class SLoginController extends SLoginControllerParent
         $session = JFactory::getSession();
         $error = $session->set('slogin_errors', $error);
         $this->displayRedirect();
-
         return false;
     }
 
@@ -473,16 +472,23 @@ class SLoginController extends SLoginControllerParent
             echo '<p>Provider return empty user code.</p>';
             die;
         }
+
+        $app = JFactory::getApplication();
+
+        //если разрешено слияние - сливаем
+        if($app->getUserState('com_slogin.action.data') == 'fusion'){
+            $this->fusion($slogin_id, $provider, $popup);
+        }
+
         //проверяем существует ли пользователь с таким уидои и провайдером
         $sloginUserId = $this->GetUserId($slogin_id, $provider);
 
         //Переадресация пользователя из модуля
-        $app = JFactory::getApplication();
+
         $return = base64_decode($app->getUserState('com_slogin.return_url'));
 
         //если такого пользователя нет, то создаем
         if (!$sloginUserId) {
-            $app = JFactory::getApplication();
 
             //проверка пустого мыла
             if($this->config->get('query_email', 0)==1 && empty($email)){
@@ -490,12 +496,6 @@ class SLoginController extends SLoginControllerParent
             }
             else if(empty($email)){
                 $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
-            }
-
-            //если разрешено слияние - сливаем
-            if($app->getUserState('com_slogin.action.data') == 'fusion'){
-                $this->fusion($slogin_id, $provider, $popup);
-                return;
             }
 
             //логин пользователя
@@ -533,7 +533,6 @@ class SLoginController extends SLoginControllerParent
         else {   //или логинимся
             $this->loginUser($sloginUserId);
         }
-
         $this->displayRedirect($return, $popup);
     }
 
@@ -543,8 +542,15 @@ class SLoginController extends SLoginControllerParent
      */
     protected function fusion($slogin_id= null, $provider= null, $popup=false)
     {
+        $app = JFactory::getApplication();
+        $app->setUserState('com_slogin.action.data', '');
+
         //ид текущего пользователя
         $user_id = JFactory::getUser()->id;
+
+        if((int)$user_id == 0 || !$slogin_id || !$provider){
+            return;
+        }
 
         //удаляем старые записи пользователя из #__slogin_users
         $this->deleteSloginUser($slogin_id, $provider);
