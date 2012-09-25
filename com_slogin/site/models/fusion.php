@@ -44,7 +44,7 @@ class SloginModelFusion extends JModelForm
 		return $form;
 	}
 
-    public function getProviders()
+    public function getFusionProviders()
 	{
         $userId = JFactory::getUser()->id;
         $this->_db->setQuery(
@@ -54,6 +54,29 @@ class SloginModelFusion extends JModelForm
             ->where('user_id=' . (int)$userId)
         );
 		$providers = $this->_db->loadColumn();
+        return $providers;
+	}
+
+    public function getProviders()
+	{
+        $config = JComponentHelper::getParams('com_slogin');
+        $providers = array();
+
+        $tmp = array(
+            'vk' => 'vkontakte',
+            'google' => 'google',
+            'fb' => 'facebook',
+            'tw' => 'twitter',
+            'mail' => 'mail',
+            'odnoklassniki' => 'odnoklassniki',
+        );
+
+        foreach($tmp as $k=>$v){
+           if($config->get($k.'_client_id', '') != '')
+           {
+               $providers[$k] = $v;
+           }
+        }
         return $providers;
 	}
 

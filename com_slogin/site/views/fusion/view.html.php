@@ -39,17 +39,10 @@ class SloginViewFusion extends SloginViewFusionParent
 
         $this->form		    = $this->get('Form');
 
-        $this->providers = array(
-            'vk' => 'vkontakte',
-            'google' => 'google',
-            'fb' => 'facebook',
-            'tw' => 'twitter',
-            'mail' => 'mail',
-            'odnoklassniki' => 'odnoklassniki',
-        );
+        $this->providers = $this->get('Providers');
 
         $this->action = ($this->user->get('id') == 0) ? '' : 'fusion';
-        $this->fusionProviders = $this->get('Providers');
+        $this->fusionProviders = $this->get('FusionProviders');
 
         $this->return = urlencode(JRoute::_('index.php?option=com_slogin&view=fusion'));
 
