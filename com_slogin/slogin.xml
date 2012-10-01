@@ -31,6 +31,8 @@
             <language tag="ru-RU">ru-RU/ru-RU.com_slogin.ini</language>
             <language tag="en-GB">en-GB/en-GB.com_slogin.sys.ini</language>
             <language tag="en-GB">en-GB/en-GB.com_slogin.ini</language>
+			<language tag="uk-UA">uk-UA/uk-UA.com_slogin.sys.ini</language>
+            <language tag="uk-UA">uk-UA/uk-UA.com_slogin.ini</language>
         </languages>
 
         <files folder="admin">
@@ -55,6 +57,7 @@
     <languages folder="languages/site">
         <language tag="ru-RU">ru-RU/ru-RU.com_slogin.ini</language>
         <language tag="en-GB">en-GB/en-GB.com_slogin.ini</language>
+        <language tag="uk-UA">uk-UA/uk-UA.com_slogin.ini</language>
     </languages>
 
     <files folder="site">

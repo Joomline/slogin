@@ -21,6 +21,8 @@
 		<language tag="ru-RU">ru-RU/ru-RU.mod_slogin.sys.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_slogin.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_slogin.sys.ini</language>
+		<language tag="uk-UA">uk-UA/uk-UA.mod_slogin.ini</language>
+		<language tag="uk-UA">uk-UA/uk-UA.mod_slogin.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
