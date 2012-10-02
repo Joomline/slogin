@@ -11,7 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 //подключаем helper стандартного модуля авторизации, для ридеректа
-require_once JPATH_BASE.DS.'modules'.DS.'mod_login'.DS.'helper.php';
+require_once JPATH_BASE.'/modules/mod_login/helper.php';
 
 $user = JFactory::getUser();
 $doc = JFactory::getDocument();

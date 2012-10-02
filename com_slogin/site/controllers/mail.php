@@ -11,7 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 
-require_once JPATH_COMPONENT_SITE.DS.'controller.php';
+require_once JPATH_COMPONENT_SITE.'/controller.php';
 
 class SLoginControllerMail extends SLoginController
 {

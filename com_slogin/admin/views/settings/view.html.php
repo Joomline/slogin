@@ -40,8 +40,8 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	public function display($tpl = null)
 	{
 		
-		$this->component = JApplicationHelper::parseXMLInstallFile(JPATH_COMPONENT.DS.'slogin.xml');
-		$this->module = JApplicationHelper::parseXMLInstallFile(JPATH_SITE.DS.'modules'.DS.'mod_slogin'.DS.'mod_slogin.xml');
+		$this->component = JApplicationHelper::parseXMLInstallFile(JPATH_COMPONENT.'/slogin.xml');
+		$this->module = JApplicationHelper::parseXMLInstallFile(JPATH_SITE.'/modules/mod_slogin/mod_slogin.xml');
 
 		$this->addToolbar();
 		parent::display($tpl);
