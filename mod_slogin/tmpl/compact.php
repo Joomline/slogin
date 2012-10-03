@@ -51,13 +51,13 @@ defined('_JEXEC') or die('(@)|(@)');
     <a href="index.php?option=com_slogin&amp;task=odnoklassniki.auth&amp;return=<?php echo $return; ?>"><span class="odnoklassniki">&nbsp;</span></a>
     <?php endif; ?>
 </div>
+<div class="slogin-clear"></div>
 <?php if ($params->get('pretext')): ?>
     <div class="pretext">
         <p><?php echo $params->get('pretext'); ?></p>
     </div>
     <?php endif; ?>
 <?php if ($params->get('show_login_form')): ?>
-    <div class="slogin-clear"></div>
     <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" >
         <fieldset class="userdata">
             <p id="form-login-username">
