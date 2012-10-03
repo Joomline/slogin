@@ -11,7 +11,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_integrationСombuilder extends JPlugin
+class plgSlogin_integrationCombuilder extends JPlugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -54,11 +54,31 @@ class plgSlogin_integrationСombuilder extends JPlugin
 
     private function createUser($user)
     {
+        $name = explode(' ', $user->get('name'));
+        $name[1] = (!empty($name[1])) ? $name[1] : '';
+
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->insert('#__comprofiler');
-        $query->columns(array($db->quoteName('id'), $db->quoteName('user_id')));
-        $query->values($db->quote($user->id). ', '. $db->quote($user->id));
+        $query->columns(array(
+            $db->quoteName('id'),
+            $db->quoteName('user_id'),
+            $db->quoteName('firstname'),
+            $db->quoteName('lastname'),
+            $db->quoteName('approved'),
+            $db->quoteName('confirmed'),
+            $db->quoteName('banned')
+            )
+        );
+        $query->values(
+            $db->quote($user->id). ', '
+          . $db->quote($user->id). ', '
+          . $db->quote($name[0]). ', '
+          . $db->quote($name[1]). ', '
+          . $db->quote(1). ', '
+          . $db->quote(1). ', '
+          . $db->quote(0)
+        );
         $db->setQuery($query);
         $db->query();
 
