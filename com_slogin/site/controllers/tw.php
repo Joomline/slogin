@@ -111,14 +111,14 @@ class SLoginControllerTw extends SLoginController
 			parse_str($request, $data);
 
 			//получение данных о пользователе
-// 			$url = 'https://api.twitter.com/1/users/show.json?screen_name='.$data['screen_name'];
-// 			$info = json_decode($this->open_http($url));
+ 			$url = 'https://api.twitter.com/1/users/show.json?screen_name='.$data['screen_name'];
+ 			$info = json_decode($this->open_http($url));
 
 			//удаляем данные из сессии, уже не нужны
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-            $this->storeOrLogin($provider, $data['user_id'], $data['email'], $data['user_id'], $provider, true);
+            $this->storeOrLogin($info->name, $info->screen_name, '', $data['user_id'], $provider, true);
 		}
 
 	}

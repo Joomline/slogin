@@ -80,3 +80,124 @@ stdClass Object
 [updated_time] => 2012-09-18T15:44:54+0000
 )
 
+Odniclassniki
+
+object(stdClass)#171 (12) {
+["uid"]=>
+string(12) "516764415961"
+["birthday"]=>
+string(10) "1970-07-05"
+["age"]=>
+int(42)
+["first_name"]=>
+string(8) "Вася"
+["last_name"]=>
+string(14) "Пупкин11"
+["name"]=>
+string(23) "Вася Пупкин11"
+["locale"]=>
+string(2) "ru"
+["gender"]=>
+string(4) "male"
+["has_email"]=>
+bool(true)
+["online"]=>
+string(3) "web"
+["pic_1"]=>
+string(47) "http://i501.odnoklassniki.ru/res/stub_50x50.gif"
+["pic_2"]=>
+string(49) "http://usd14.odnoklassniki.ru/res/stub_128x96.gif"
+}
+
+twitter $data
+
+array(4) {
+["oauth_token"]=>
+string(50) "831353905-6nJJf5GlooNDEMUCtdpg6vs2gi9yxQODfQ7OH8j1"
+["oauth_token_secret"]=>
+string(40) "f9gwKIpzN3BtDQoO6MlMu81zqrc82lm56iNtx7eo"
+["user_id"]=>
+string(9) "831353905"
+["screen_name"]=>
+string(10) "ArkadiySed"
+}
+
+twitter $info
+
+object(stdClass)#172 (37) {
+["id"]=>
+        int(831353905)
+["id_str"]=>
+        string(9) "831353905"
+["name"]=>
+        string(14) "Аркадий"
+["screen_name"]=>
+        string(10) "ArkadiySed"
+["location"]=>
+        string(0) ""
+["url"]=>
+        NULL
+["description"]=>
+        string(0) ""
+["protected"]=>
+        bool(false)
+["followers_count"]=>
+        int(0)
+["friends_count"]=>
+        int(1)
+["listed_count"]=>
+        int(0)
+["created_at"]=>
+        string(30) "Tue Sep 18 16:03:11 +0000 2012"
+["favourites_count"]=>
+        int(0)
+["utc_offset"]=>
+        NULL
+["time_zone"]=>
+        NULL
+["geo_enabled"]=>
+        bool(false)
+["verified"]=>
+        bool(false)
+["statuses_count"]=>
+        int(0)
+["lang"]=>
+        string(2) "ru"
+["contributors_enabled"]=>
+        bool(false)
+["is_translator"]=>
+        bool(false)
+["profile_background_color"]=>
+        string(6) "C0DEED"
+["profile_background_image_url"]=>
+        string(47) "http://a0.twimg.com/images/themes/theme1/bg.png"
+["profile_background_image_url_https"]=>
+        string(49) "https://si0.twimg.com/images/themes/theme1/bg.png"
+["profile_background_tile"]=>
+        bool(false)
+["profile_image_url"]=>
+        string(78) "http://a0.twimg.com/sticky/default_profile_images/default_profile_4_normal.png"
+["profile_image_url_https"]=>
+        string(80) "https://si0.twimg.com/sticky/default_profile_images/default_profile_4_normal.png"
+["profile_link_color"]=>
+        string(6) "0084B4"
+["profile_sidebar_border_color"]=>
+        string(6) "C0DEED"
+["profile_sidebar_fill_color"]=>
+        string(6) "DDEEF6"
+["profile_text_color"]=>
+        string(6) "333333"
+["profile_use_background_image"]=>
+        bool(true)
+["default_profile"]=>
+        bool(true)
+["default_profile_image"]=>
+        bool(true)
+["following"]=>
+        NULL
+["follow_request_sent"]=>
+        NULL
+["notifications"]=>
+        NULL
+}
+
