@@ -36,6 +36,8 @@ class SLoginControllerTw extends SLoginController
         $input = $app->input;
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+
         $redirect = JURI::base().'?option=com_slogin&task=tw.check';
         $this->localAuthDebug($redirect);
 

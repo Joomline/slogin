@@ -148,10 +148,12 @@ class SLoginController extends SLoginControllerParent
      */
     protected function storeUser($username, $name, $email, $slogin_id, $provider, $popup=false)
     {
+        $app	= JFactory::getApplication();
+
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($email);
-        if($userId){
-            $app	= JFactory::getApplication();
+        //если в настройках установлено подтверждать права на почту и почта есть в базе пользователей
+        if($userId && $this->config->get('collate_users', 0)){
             $data = array(
                'email' => $email,
                'id' => $userId,
@@ -162,6 +164,22 @@ class SLoginController extends SLoginControllerParent
 
             $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', $popup);
         }
+        elseif($userId){
+            $name = explode(' ', $name);
+            if(!isset($name[1])) $name[1] = '';
+
+            $data = array(
+                'email' => $email,
+                'first_name' => $name[0],
+                'last_name' => $name[1],
+                'provider' => $provider,
+                'slogin_id' => $slogin_id,
+            );
+            $app->setUserState('com_slogin.provider.data', $data);
+
+            $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, JText::_('COM_SLOGIN_MAIL_NOT_FREE'), 'error');
+        }
+
         //установка групп для нового пользователя
         $user_config = JComponentHelper::getParams('com_users');
         $defaultUserGroup = $user_config->get('new_usertype', 2);
@@ -208,6 +226,10 @@ class SLoginController extends SLoginControllerParent
         $session = JFactory::getSession();
         $db = JFactory::getDBO();
 
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
+        $dispatcher->trigger('onBeforeLoginUser',array($instance));
+
         // If _getUser returned an error, then pass it back.
         if ($instance instanceof Exception) {
             return false;
@@ -243,15 +265,14 @@ class SLoginController extends SLoginControllerParent
         // Hit the user last visit field
         $instance->setLastVisit();
 
-        JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
         $dispatcher->trigger('onAfterLoginUser',array($instance));
+
     }
 
     /**
      * Метод для отображения специального редиректа, с закрытием окна
      */
-    protected function displayRedirect($redirect='index.php', $popup=false)
+    protected function displayRedirect($redirect='index.php', $popup=false, $msg = '', $msgType = 'message')
     {
         if($popup){
             $session = JFactory::getSession();
@@ -263,7 +284,7 @@ class SLoginController extends SLoginControllerParent
         }
         else{
             $app = JFactory::getApplication();
-            $app->redirect(JRoute::_($redirect));
+            $app->redirect(JRoute::_($redirect), $msg, $msgType);
         }
     }
 
@@ -304,24 +325,19 @@ class SLoginController extends SLoginControllerParent
     // проверить, не зарегистрирован ли уже пользователь с таким email
     public function CheckEmail($email)
     {
-        //если в настройках установлено подтверждать права на почту
-        if ($this->config->get('collate_users', 0)) {
-            // Initialise some variables
-            $db = JFactory::getDbo();
-            $query = $db->getQuery(true);
-            $query->select($db->quoteName('id'));
-            $query->from($db->quoteName('#__users'));
-            $query->where($db->quoteName('email') . ' = ' . $db->quote($email));
-            $db->setQuery($query, 0, 1);
-            $userId = $db->loadResult();
+        // Initialise some variables
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select($db->quoteName('id'));
+        $query->from($db->quoteName('#__users'));
+        $query->where($db->quoteName('email') . ' = ' . $db->quote($email));
+        $db->setQuery($query, 0, 1);
+        $userId = $db->loadResult();
 
-            if (!$userId) {
-                return false;
-            } else {
-                return $userId;
-            }
-        } else {
+        if (!$userId) {
             return false;
+        } else {
+            return $userId;
         }
     }
 
@@ -480,11 +496,10 @@ class SLoginController extends SLoginControllerParent
             $this->fusion($slogin_id, $provider, $popup);
         }
 
-        //проверяем существует ли пользователь с таким уидои и провайдером
+        //проверяем существует ли пользователь с таким уидом и провайдером
         $sloginUserId = $this->GetUserId($slogin_id, $provider);
 
         //Переадресация пользователя из модуля
-
         $return = base64_decode($app->getUserState('com_slogin.return_url'));
 
         //если такого пользователя нет, то создаем

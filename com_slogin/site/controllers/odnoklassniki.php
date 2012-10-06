@@ -41,6 +41,8 @@ class SLoginControllerOdnoklassniki extends SLoginController
         $input = $app->input;
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+
         parent::auth();
 		
 		$redirect = JURI::base().'?option=com_slogin&task=odnoklassniki.check';

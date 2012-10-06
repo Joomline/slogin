@@ -38,6 +38,8 @@ class SLoginControllerMail extends SLoginController
         $input = $app->input;
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+
         $redirect = JURI::base().'?option=com_slogin&task=mail.check';
 
         $this->localAuthDebug($redirect);

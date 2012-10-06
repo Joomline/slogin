@@ -16,14 +16,6 @@ require_once JPATH_BASE.'/modules/mod_login/helper.php';
 $user = JFactory::getUser();
 $doc = JFactory::getDocument();
 $input = new JInput;
-$app = JFactory::getApplication();
-
-$option =  $input->Get('option', '', 'STRING');
- //страница возврата после логина
-if($option != 'com_slogin'){
-    $page = modLoginHelper::getReturnURL($params, 'login');
-    $app->setUserState('com_slogin.return_url', $page);
-}
 
 $type	= modLoginHelper::getType();
 $return	= modLoginHelper::getReturnURL($params, $type);
