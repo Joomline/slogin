@@ -129,7 +129,7 @@ class SLoginControllerOdnoklassniki extends SLoginController
                 die();
             }
 
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->uid, $provider, true, $request);
 	
 		} elseif ($err = $input->get('error')) {
 			die($err);

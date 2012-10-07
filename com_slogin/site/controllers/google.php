@@ -111,7 +111,7 @@ class SLoginControllerGoogle extends SLoginController
 			$url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$request->access_token;
 			$request = json_decode($this->open_http($url));
 
-            $this->storeOrLogin($request->given_name, $request->family_name, $request->email, $request->id, $provider, true);
+            $this->storeOrLogin($request->given_name, $request->family_name, $request->email, $request->id, $provider, true, $request);
 		}
 	
 	}	

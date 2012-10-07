@@ -118,7 +118,7 @@ class SLoginControllerTw extends SLoginController
 			$session->clear('oauth_token');
 			$session->clear('oauth_signature');
 
-            $this->storeOrLogin($info->name, $info->screen_name, '', $data['user_id'], $provider, true);
+            $this->storeOrLogin($info->name, $info->screen_name, '', $data['user_id'], $provider, true, $info);
 		}
 
 	}

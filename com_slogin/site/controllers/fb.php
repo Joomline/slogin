@@ -90,7 +90,7 @@ class SLoginControllerFb extends SLoginController
 			$ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
 			$request = json_decode($this->open_http($ResponseUrl));
 
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $provider, true);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $provider, true, $request);
 		}
 
 	}

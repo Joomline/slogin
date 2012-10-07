@@ -146,7 +146,7 @@ class SLoginController extends SLoginControllerParent
      * @param $provider                 идентификатор провайдера
      * @throws Exception
      */
-    protected function storeUser($username, $name, $email, $slogin_id, $provider, $popup=false)
+    protected function storeUser($username, $name, $email, $slogin_id, $provider, $popup=false, $info=array())
     {
         $app	= JFactory::getApplication();
 
@@ -210,7 +210,7 @@ class SLoginController extends SLoginControllerParent
         //вставка нового пользователя в таблицы других компонентов
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterStoreUser',array($user_object));
+        $dispatcher->trigger('onAfterStoreUser',array($user_object, $provider, $info));
 
         return $user_object->id;
     }
@@ -219,7 +219,7 @@ class SLoginController extends SLoginControllerParent
      * Метод для авторизцаии пользователя
      * @param int $id    ID пользователя в Joomla
      */
-    protected function loginUser($id)
+    protected function loginUser($id, $provider, $info=array())
     {
         $instance = JUser::getInstance($id);
         $app = JFactory::getApplication();
@@ -228,7 +228,7 @@ class SLoginController extends SLoginControllerParent
 
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeLoginUser',array($instance));
+        $dispatcher->trigger('onBeforeLoginUser',array($instance, $provider, $info));
 
         // If _getUser returned an error, then pass it back.
         if ($instance instanceof Exception) {
@@ -265,7 +265,7 @@ class SLoginController extends SLoginControllerParent
         // Hit the user last visit field
         $instance->setLastVisit();
 
-        $dispatcher->trigger('onAfterLoginUser',array($instance));
+        $dispatcher->trigger('onAfterLoginUser',array($instance, $provider, $info));
 
     }
 
@@ -481,7 +481,7 @@ class SLoginController extends SLoginControllerParent
         }
     }
 
-    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
+    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false, $info = array())
     {
         //проверка на пустую запись ида пользователя
         if(empty($slogin_id)){
@@ -520,11 +520,11 @@ class SLoginController extends SLoginControllerParent
             $name = $this->setUserName($first_name,  $last_name);
 
             //записываем пользователя в таблицу джумлы и компонента
-            $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup);
+            $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup, $info);
 
             if($joomlaUserId > 0){
                 //логинимся если ид пользователя верный
-                $this->loginUser($joomlaUserId);
+                $this->loginUser($joomlaUserId, $provider, $info);
 
                 //если настроено показать после регистрации изменение профиля
                 if($this->config->get('add_info_new_user', 0) == 1){
@@ -546,7 +546,7 @@ class SLoginController extends SLoginControllerParent
             }
         }
         else {   //или логинимся
-            $this->loginUser($sloginUserId);
+            $this->loginUser($sloginUserId, $provider, $info);
         }
         $this->displayRedirect($return, $popup);
     }
