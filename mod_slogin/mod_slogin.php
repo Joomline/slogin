@@ -28,5 +28,13 @@ $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js');
 $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/'.$layout.'/slogin.css');
 
+$dispatcher	= JDispatcher::getInstance();
+
+JPluginHelper::importPlugin('slogin_auth');
+
+$links = array();
+
+$dispatcher->trigger('onLinkCreate', array(&$links));
+
 require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 

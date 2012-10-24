@@ -50,6 +50,11 @@ defined('_JEXEC') or die('(@)|(@)');
     <?php if ($params->get('odnoklassniki')): ?>
     <a href="index.php?option=com_slogin&amp;task=odnoklassniki.auth&amp;return=<?php echo $return; ?>"><span class="odnoklassniki">&nbsp;</span></a>
     <?php endif; ?>
+    <?php if (count($links)): ?>
+        <?php foreach($links as $link): ?>
+            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>" class="<?php echo $link['class'];?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </div>
 <div class="slogin-clear"></div>
 <?php if ($params->get('pretext')): ?>

@@ -1,5 +1,5 @@
 
-mail
+facebook
 
 Array
     (
@@ -201,3 +201,13 @@ object(stdClass)#172 (37) {
         NULL
 }
 
+Yandex
+object(stdClass)#522 (7) {
+["birthday"]=> string(10) "1969-12-26"
+["display_name"]=> string(9) "barier-cs"
+["id"]=> string(7) "6339057"
+["sex"]=> string(4) "male"
+["emails"]=> array(1)
+{ [0]=> string(19) "barier-cs@yandex.ru" }
+["default_email"]=> string(19) "barier-cs@yandex.ru"
+["real_name"]=> string(37) "Седельников Аркадий" }
