@@ -7,7 +7,7 @@
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail>kolyamba831@inbox.ru</authorEmail>
 	<authorUrl>http://joomline.ru</authorUrl>
-	<version>1.3.1</version>
+	<version>1.3.2</version>
 	<description>MOD_SLOGIN_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_slogin">mod_slogin.php</filename>
@@ -74,6 +74,14 @@
 					type="spacer"
 					filter="unset"
 					hr="true" />
+
+                <field
+                        name="load_after"
+                        type="checkbox"
+                        filter="int"
+                        value="1"
+                        label="MOD_SLOGIN_LOAD_AFTER"
+                        description="MOD_SLOGIN_LOAD_AFTER_DESC" />
 
                 <field
                         name="show_login_form"

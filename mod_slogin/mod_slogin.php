@@ -21,7 +21,7 @@ $type	= modLoginHelper::getType();
 $return	= modLoginHelper::getReturnURL($params, $type);
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
-
+$loadAfter = $params->get('load_after', 0);
 $layout = $params->get('layout', 'default');
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
@@ -36,5 +36,23 @@ $links = array();
 
 $dispatcher->trigger('onLinkCreate', array(&$links));
 
+if($loadAfter == 1){
+    ob_start();
 require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
+    $content = ob_get_clean();
+    ?>
+    <div id="mod_slogin"></div>
+    <script type="text/javascript">
+        var sloginContent = '<?php echo $content?>';
+        function sloginLoad() {
+            document.getElementById('mod_slogin').innerHTML = sloginContent;
+        }
+        sloginLoad();
+    </script>
+    <?php
+}
+else{
+    require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
+}
+
 
