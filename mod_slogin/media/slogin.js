@@ -68,7 +68,7 @@ SLogin.getPopUpSize = function(el)
 			size = 'width=900,height=550';
 			break;
 		default:
-			size = 'width=450,height=380';
+			size = 'width=900,height=550';
 			break;
 	}
 		

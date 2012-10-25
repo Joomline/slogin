@@ -77,11 +77,8 @@ class plgSlogin_authYandex extends JPlugin
     {
         $document = JFactory::getDocument();
         $document->addStyleDeclaration('
-           .slogin-buttons span.yandex {
-                background: url(/plugins/slogin_auth/yandex/assets/yandex.png) no-repeat;
-                height: 50px;
-                width: 50px;
-                display: block;
+           .slogin-buttons .yandex {
+                background-position: 0 -426px;
             }
         ');
        $i = count($links);
