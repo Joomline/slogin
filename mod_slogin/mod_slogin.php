@@ -34,7 +34,7 @@ JPluginHelper::importPlugin('slogin_auth');
 
 $links = array();
 
-$dispatcher->trigger('onLinkCreate', array(&$links));
+$dispatcher->trigger('onCreateLink', array(&$links));
 
 if($loadAfter == 1){
     ob_start();

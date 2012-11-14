@@ -39,7 +39,7 @@ class SLoginControllerPlugins extends SLoginController
 
         $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
 
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin=yandex';
+        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin='.$plugin;
 
         $this->localAuthDebug($redirect);
 
@@ -49,12 +49,11 @@ class SLoginControllerPlugins extends SLoginController
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $url = '';
-
-            $dispatcher->trigger('onAuth', array(&$url));
+            $url = $dispatcher->trigger('onAuth');
+            $url = $url[0];
         }
         else{
-            echo 'Plufin ' . $plugin . ' not published or not installed.';
+            echo 'Plugin ' . $plugin . ' not published or not installed.';
             exit;
         }
 
@@ -71,9 +70,7 @@ class SLoginControllerPlugins extends SLoginController
 
         $plugin = $input->getString('plugin', '');
 
-        $provider = $plugin;
-
-        $this->localCheckDebug($provider);
+        $this->localCheckDebug($plugin);
 
         if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
@@ -81,12 +78,11 @@ class SLoginControllerPlugins extends SLoginController
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $request = '';
-
-            $dispatcher->trigger('onCheck', array(&$request));
+            $request = $dispatcher->trigger('onCheck');
+            $request = $request[0];
         }
         else{
-            echo 'Plufin ' . $plugin . ' not published or not installed.';
+            echo 'Plugin ' . $plugin . ' not published or not installed.';
             exit;
         }
 

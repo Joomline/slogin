@@ -13,13 +13,12 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authYandex extends JPlugin
 {
-
-	public function onAuth($url)
+	public function onAuth()
 	{
-        $url = 'https://oauth.yandex.ru/authorize?response_type=code&display=popup&client_id='.$this->params->get('id');
+        return 'https://oauth.yandex.ru/authorize?response_type=code&display=popup&client_id='.$this->params->get('id');
 	}
 
-	public function onCheck($returnRequest)
+	public function onCheck()
 	{
         require_once JPATH_COMPONENT_SITE.'/controller.php';
 
@@ -28,7 +27,10 @@ class plgSlogin_authYandex extends JPlugin
         $input = JFactory::getApplication()->input;
 
         $request = null;
+
         $code = $input->get('code', null, 'STRING');
+
+        $returnRequest = new SloginRequest();
 
         if ($code) {
             // get access_token from API
@@ -62,7 +64,7 @@ class plgSlogin_authYandex extends JPlugin
             $request = json_decode($controller->open_http($url));
 
             $name = explode(' ', $request->real_name);
-            $returnRequest = new stdClass();
+
             $returnRequest->first_name = (isset($name[1])) ? $name[1] : '';
             $returnRequest->last_name = (isset($name[0])) ? $name[0] : '';
             $returnRequest->email = $request->default_email;
@@ -71,9 +73,12 @@ class plgSlogin_authYandex extends JPlugin
             $returnRequest->sex = $request->sex;
             $returnRequest->display_name = $request->display_name;
             $returnRequest->birthday = $request->birthday;
+
         }
+        return $returnRequest;
 	}
-    public function onLinkCreate($links)
+
+    public function onCreateLink($links)
     {
         $document = JFactory::getDocument();
         $document->addStyleDeclaration('

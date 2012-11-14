@@ -628,3 +628,15 @@ class SLoginController extends SLoginControllerParent
         $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup);
     }
 }
+
+class SloginRequest {
+    public $first_name = '';
+    public $last_name = '';
+    public $email = '';
+    public $id = 0;
+    public $real_name = '';
+    public $sex = '';
+    public $display_name = '';
+    public $birthday = '';
+    public $avatar = '';
+}

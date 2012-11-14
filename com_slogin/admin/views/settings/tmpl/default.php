@@ -59,7 +59,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 
 
-    <h2>Для америкосов</h2>
+    <h2>For all the world</h2>
     <p>If you use our free products, you can support us and help create and further develop free extensions, making a donation.</p>
     <h3>PayPal</h3>
     <table class="adminlist">
