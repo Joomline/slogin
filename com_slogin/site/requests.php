@@ -1,9 +1,42 @@
 
 facebook
 
-Array
-    (
-    [0] => stdClass Object
+stdClass Object
+(
+[id] => 100004327660291
+[name] => Arkady  Sedelnikov
+[first_name] => Arkady
+[last_name] => Sedelnikov
+[link] => http://www.facebook.com/profile.php?id=100004327660291
+[gender] => male
+[email] => a.sedelnikov@gmail.com
+[timezone] => 7
+[locale] => ru_RU
+[updated_time] => 2012-09-18T15:44:54+0000
+)
+
+
+google
+
+stdClass Object
+(
+[id] => 112217272973802620922
+[email] => a.sedelnikov@gmail.com
+[verified_email] => 1
+[name] => Аркадий Седельников
+[given_name] => Аркадий
+[family_name] => Седельников
+[link] => https://plus.google.com/112217272973802620922
+[picture] => https://lh3.googleusercontent.com/-YRHR-cWwCjM/AAAAAAAAAAI/AAAAAAAAABc/LTCH8IJk5nM/photo.jpg
+[gender] => male
+[birthday] => 0000-12-26
+[locale] => ru
+)
+
+
+mail
+
+stdClass Object
 (
     [pic_50] => http://avt.appsmail.ru/mail/arkadiy.sedelnikov/_avatar50
             [friends_count] => 0
@@ -33,81 +66,36 @@ Array
             [pic_40] => http://avt.appsmail.ru/mail/arkadiy.sedelnikov/_avatar40
         )
 
-)
-
-vk
-
-stdClass Object
-(
-[uid] => 176675943
-[first_name] => Аркадий
-[last_name] => Сед
-[nickname] =>
-[mobile_phone] =>
-[home_phone] =>
-)
-
-google
-
-stdClass Object
-(
-[id] => 112217272973802620922
-[email] => a.sedelnikov@gmail.com
-[verified_email] => 1
-[name] => Аркадий Седельников
-[given_name] => Аркадий
-[family_name] => Седельников
-[link] => https://plus.google.com/112217272973802620922
-[picture] => https://lh3.googleusercontent.com/-YRHR-cWwCjM/AAAAAAAAAAI/AAAAAAAAABc/LTCH8IJk5nM/photo.jpg
-[gender] => male
-[birthday] => 0000-12-26
-[locale] => ru
-)
-
-facebook
-
-stdClass Object
-(
-[id] => 100004327660291
-[name] => Arkady  Sedelnikov
-[first_name] => Arkady
-[last_name] => Sedelnikov
-[link] => http://www.facebook.com/profile.php?id=100004327660291
-[gender] => male
-[email] => a.sedelnikov@gmail.com
-[timezone] => 7
-[locale] => ru_RU
-[updated_time] => 2012-09-18T15:44:54+0000
-)
 
 Odniclassniki
 
 object(stdClass)#171 (12) {
 ["uid"]=>
-string(12) "516764415961"
+    string(12) "516764415961"
 ["birthday"]=>
-string(10) "1970-07-05"
+    string(10) "1970-07-05"
 ["age"]=>
-int(42)
+    int(42)
 ["first_name"]=>
-string(8) "Вася"
+    string(8) "Вася"
 ["last_name"]=>
-string(14) "Пупкин11"
+    string(14) "Пупкин11"
 ["name"]=>
-string(23) "Вася Пупкин11"
+    string(23) "Вася Пупкин11"
 ["locale"]=>
-string(2) "ru"
+    string(2) "ru"
 ["gender"]=>
-string(4) "male"
+    string(4) "male"
 ["has_email"]=>
-bool(true)
+    bool(true)
 ["online"]=>
-string(3) "web"
+    string(3) "web"
 ["pic_1"]=>
-string(47) "http://i501.odnoklassniki.ru/res/stub_50x50.gif"
+    string(47) "http://i501.odnoklassniki.ru/res/stub_50x50.gif"
 ["pic_2"]=>
-string(49) "http://usd14.odnoklassniki.ru/res/stub_128x96.gif"
+    string(49) "http://usd14.odnoklassniki.ru/res/stub_128x96.gif"
 }
+
 
 twitter $data
 
@@ -200,6 +188,19 @@ object(stdClass)#172 (37) {
 ["notifications"]=>
         NULL
 }
+
+
+vk
+
+stdClass Object
+(
+[uid] => 176675943
+[first_name] => Аркадий
+[last_name] => Сед
+[nickname] =>
+[mobile_phone] =>
+[home_phone] =>
+)
 
 Yandex
 object(stdClass)#522 (7) {
