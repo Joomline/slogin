@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="1.6">
+    <name>com_slogin</name>
+    <author>SmokerMan, Arkadiy, Joomline</author>
+	<packagename>slogin</packagename>
+    <creationDate>06.10.2012</creationDate>
+    <copyright>© 2012. All rights reserved.</copyright>
+    <license>GNU/GPL v.3 or later.</license>
+	<packager>JoomLine</packager>
+	<packagerurl>http://joomline.ru</packagerurl>
+    <version>1.3.2</version>
+    <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
+<files>
+        <file type="component" method="upgrade" client="site">com_slogin.zip</file>
+        <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
+        <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
+		<file type="plugin" method="upgrade" client="site">plg_SL_yandex.zip</file>	
+</files>
+</extension>
