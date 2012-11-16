@@ -81,6 +81,7 @@ class plgSlogin_authFacebook extends JPlugin
             $returnRequest->real_name   = $request->first_name.' '.$request->last_name;
             $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->name;
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
     }

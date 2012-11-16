@@ -36,7 +36,7 @@ defined('_JEXEC') or die('(@)|(@)');
 <div id="slogin-buttons" class="slogin-buttons <?php echo $moduleclass_sfx?>">
     <?php if (count($plugins)): ?>
         <?php foreach($plugins as $link): ?>
-            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>""><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>

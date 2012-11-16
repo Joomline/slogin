@@ -35,7 +35,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
     <?php if (count($plugins)): ?>
     <?php foreach($plugins as $link): ?>
-            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>""><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 

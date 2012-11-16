@@ -94,6 +94,7 @@ class plgSlogin_authVkontakte extends JPlugin
             $returnRequest->id          = $request->uid;
             $returnRequest->real_name   = $request->first_name.' '.$request->last_name;
             $returnRequest->display_name = $request->nickname;
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
     }

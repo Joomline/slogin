@@ -95,6 +95,7 @@ class plgSlogin_authGoogle extends JPlugin
             $returnRequest->real_name   = $request->given_name.' '.$request->family_name;
             $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->name;
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
     }

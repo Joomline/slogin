@@ -123,6 +123,7 @@ class plgSlogin_authMail extends JPlugin
             $returnRequest->real_name   = $request->first_name.' '.$request->last_name;
             $returnRequest->sex         = $request->sex;
             $returnRequest->display_name = $request->nick;
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
     }

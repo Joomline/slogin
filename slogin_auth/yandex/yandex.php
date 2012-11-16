@@ -73,7 +73,7 @@ class plgSlogin_authYandex extends JPlugin
             $returnRequest->sex = $request->sex;
             $returnRequest->display_name = $request->display_name;
             $returnRequest->birthday = $request->birthday;
-
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
 	}

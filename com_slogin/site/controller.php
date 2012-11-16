@@ -60,7 +60,7 @@ class SLoginController extends SLoginControllerParent
 
         $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
 
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin='.$plugin;
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin='.$plugin;
 
         $this->localAuthDebug($redirect);
 
@@ -110,7 +110,7 @@ class SLoginController extends SLoginControllerParent
 
         if (isset($request->first_name))
         {
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, true, $request);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, true, $request->all_request);
         }
     }
 
@@ -695,4 +695,5 @@ class SloginRequest {
     public $display_name = '';
     public $birthday = '';
     public $avatar = '';
+    public $all_request = null;
 }

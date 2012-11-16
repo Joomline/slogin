@@ -99,11 +99,10 @@ class plgSlogin_authTwitter extends JPlugin
 
             $returnRequest->first_name  = $request->name;
             $returnRequest->last_name   = $request->screen_name;
-//            $returnRequest->email       = $request->email;
             $returnRequest->id          = $request->id;
             $returnRequest->real_name   = $request->name.' '.$request->screen_name;
-//            $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->screen_name;
+            $returnRequest->all_request  = $request;
         }
         return $returnRequest;
     }
