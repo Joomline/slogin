@@ -15,7 +15,7 @@ class plgSlogin_authMail extends JPlugin
 {
     public function onAuth($url)
     {
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin=mail';
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=mail';
 
         $params = array(
             'response_type=code',
@@ -45,10 +45,9 @@ class plgSlogin_authMail extends JPlugin
 
         if ($code) {
 
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=plugins.check&plugin=mail');
+            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=mail');
 
             // get access_token from mail  API
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=mail.check');
             $params = array(
                 'client_id=' . $this->params->get('id'),
                 'client_secret=' . $this->params->get('password'),
@@ -110,12 +109,12 @@ class plgSlogin_authMail extends JPlugin
             $url = 'http://www.appsmail.ru/platform/api?'.$params;
             $request = json_decode($controller->open_http($url));
 
-            $request = $request[0];
-
             if(!empty($request->error)){
-                echo 'Error - '. $request->error;
+                echo 'Error - '. $request->error->error_msg;
                 exit;
             }
+
+            $request = $request[0];
 
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
@@ -131,7 +130,7 @@ class plgSlogin_authMail extends JPlugin
     public function onCreateLink($links)
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=plugins.auth&plugin=mail';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=mail';
         $links[$i]['class'] = 'mail';
     }
 
@@ -143,7 +142,7 @@ class plgSlogin_authMail extends JPlugin
         }
 
         $sig_params = str_replace('&', '', $params);
-        $signature = md5($sig_params . $this->client_secret);
+        $signature = md5($sig_params . $this->params->get('password'));
         $params = $params .'sig=' . $signature;
 
         return  $params;

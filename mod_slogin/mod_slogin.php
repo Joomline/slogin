@@ -32,13 +32,12 @@ $dispatcher	= JDispatcher::getInstance();
 
 JPluginHelper::importPlugin('slogin_auth');
 
-$links = array();
-
-$dispatcher->trigger('onCreateLink', array(&$links));
+$plugins = array();
+$dispatcher->trigger('onCreateLink', array(&$plugins));
 
 if($loadAfter == 1){
     ob_start();
-require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
+    require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
     $content = ob_get_clean();
     ?>
     <div id="mod_slogin"></div>

@@ -45,16 +45,16 @@ class SloginViewFusion extends SloginViewFusionParent
 
         $fusionProviders = $this->get('FusionProviders');
 
-        foreach($providers as $k=>$v){
-            if(!in_array($k, $fusionProviders)){
-               $this->providers[$k] = $v;
+        foreach($providers as $v){
+            if(!in_array($v['class'], $fusionProviders)){
+               $this->providers[] = $v;
             }
         }
 
         $this->action = ($this->user->get('id') == 0) ? '' : 'fusion';
 
         $document = JFactory::getDocument();
-        $document->addStyleSheet( JURI::root().'modules/mod_slogin/media/slogin.css');
+        $document->addStyleSheet( JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css');
 		// Display the view
 		parent::display($tpl);
 	}

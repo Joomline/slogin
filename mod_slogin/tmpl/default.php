@@ -32,24 +32,13 @@ defined('_JEXEC') or die('(@)|(@)');
 	</div>
 <?php endif; ?>
 <div id="slogin-buttons" class="slogin-buttons <?php echo $moduleclass_sfx?>">
-	<?php if ($params->get('vkontakte')): ?>
-		<a href="index.php?option=com_slogin&amp;task=vk.auth&amp;return=<?php echo $return; ?>"><span class="vkontakte">&nbsp;</span></a>
-	<?php endif; ?>
-	<?php if ($params->get('google')): ?>
-		<a href="index.php?option=com_slogin&amp;task=google.auth&amp;return=<?php echo $return; ?>"><span class="google">&nbsp;</span></a>
-	<?php endif; ?>
-	<?php if ($params->get('facebook')): ?>
-		<a href="index.php?option=com_slogin&amp;task=fb.auth&amp;return=<?php echo $return; ?>"><span class="facebook">&nbsp;</span></a>
-	<?php endif; ?>
-	<?php if ($params->get('twitter')): ?>
-		<a href="index.php?option=com_slogin&amp;task=tw.auth&amp;return=<?php echo $return; ?>"><span class="twitter">&nbsp;</span></a>
-	<?php endif; ?>
-	<?php if ($params->get('mail')): ?>
-		<a href="index.php?option=com_slogin&amp;task=mail.auth&amp;return=<?php echo $return; ?>"><span class="mail">&nbsp;</span></a>
-	<?php endif; ?>
-	<?php if ($params->get('odnoklassniki')): ?>
-		<a href="index.php?option=com_slogin&amp;task=odnoklassniki.auth&amp;return=<?php echo $return; ?>"><span class="odnoklassniki">&nbsp;</span></a>
-	<?php endif; ?>
+
+    <?php if (count($plugins)): ?>
+    <?php foreach($plugins as $link): ?>
+            <a href="<?php echo $link['link'];?>&amp;return=<?php echo $return; ?>""><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
 </div>
 <div class="slogin-clear"></div>
 <?php if ($params->get('pretext')): ?>

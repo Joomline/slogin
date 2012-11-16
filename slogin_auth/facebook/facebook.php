@@ -15,7 +15,7 @@ class plgSlogin_authFacebook extends JPlugin
 {
     public function onAuth($url)
     {
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin=facebook';
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=facebook';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
@@ -44,7 +44,7 @@ class plgSlogin_authFacebook extends JPlugin
 
         if ($code) {
 
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=plugins.check&plugin=facebook');
+            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=facebook');
             //подключение к API
             $params = array(
                 'client_id=' . $this->params->get('id'),
@@ -93,7 +93,7 @@ class plgSlogin_authFacebook extends JPlugin
 //            }
 //        ');
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=plugins.auth&plugin=facebook';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook';
         $links[$i]['class'] = 'facebook';
     }
 }

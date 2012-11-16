@@ -15,7 +15,7 @@ class plgSlogin_authGoogle extends JPlugin
 {
     public function onAuth($url)
     {
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin=google';
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=google';
 
         $scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 
@@ -49,7 +49,7 @@ class plgSlogin_authGoogle extends JPlugin
         if ($code) {
 
             // get access_token for google API
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=plugins.check&plugin=google');
+            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=google');
             $scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 
             $params = array(
@@ -101,7 +101,7 @@ class plgSlogin_authGoogle extends JPlugin
     public function onCreateLink($links)
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=plugins.auth&plugin=google';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google';
         $links[$i]['class'] = 'google';
     }
 }

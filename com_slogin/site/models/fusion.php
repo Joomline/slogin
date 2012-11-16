@@ -60,25 +60,11 @@ class SloginModelFusion extends JModelForm
 
     public function getProviders()
 	{
-        $config = JComponentHelper::getParams('com_slogin');
-        $providers = array();
-
-        $tmp = array(
-            'vk' => 'vkontakte',
-            'google' => 'google',
-            'fb' => 'facebook',
-            'tw' => 'twitter',
-            'mail' => 'mail',
-            'odnoklassniki' => 'odnoklassniki',
-        );
-
-        foreach($tmp as $k=>$v){
-           if($config->get($k.'_client_id', '') != '')
-           {
-               $providers[$k] = $v;
-           }
-        }
-        return $providers;
+        $dispatcher	= JDispatcher::getInstance();
+        JPluginHelper::importPlugin('slogin_auth');
+        $plugins = array();
+        $dispatcher->trigger('onCreateLink', array(&$plugins));
+        return $plugins;
 	}
 
 	/**

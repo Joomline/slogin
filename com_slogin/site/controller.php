@@ -46,16 +46,72 @@ class SLoginController extends SLoginControllerParent
     }
 
     /**
-     * Устанавливаем редиректа в сессию
+     * Аутентификация пользователя
      */
-    protected function auth()
+    public function auth()
+    {
+        $app	= JFactory::getApplication();
+
+        $input = $app->input;
+
+        $plugin = $input->getString('plugin', '');
+
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
+
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+
+        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin='.$plugin;
+
+        $this->localAuthDebug($redirect);
+
+        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        {
+            $dispatcher	= JDispatcher::getInstance();
+
+            JPluginHelper::importPlugin('slogin_auth', $plugin);
+
+            $url = $dispatcher->trigger('onAuth');
+            $url = $url[0];
+        }
+        else{
+            echo 'Plugin ' . $plugin . ' not published or not installed.';
+            exit;
+        }
+
+        header('Location:' . $url);
+    }
+
+    /**
+     * Проверка аутентификации на сайте донора
+     * Создание новой учетной записи на сайте или утентификация, если такой пользователь уже есть
+     */
+    public function check()
     {
         $input = JFactory::getApplication()->input;
-        $return = $input->get('return', null, 'BASE64');
 
-        $session = JFactory::getSession();
-        //устанавливаем страницу возврата в сессию
-        $session->set('slogin_return', $return);
+        $plugin = $input->getString('plugin', '');
+
+        $this->localCheckDebug($plugin);
+
+        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        {
+            $dispatcher	= JDispatcher::getInstance();
+
+            JPluginHelper::importPlugin('slogin_auth', $plugin);
+
+            $request = $dispatcher->trigger('onCheck');
+            $request = $request[0];
+        }
+        else{
+            echo 'Plugin ' . $plugin . ' not published or not installed.';
+            exit;
+        }
+
+
+        if (isset($request->first_name))
+        {
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, true, $request);
+        }
     }
 
     /**

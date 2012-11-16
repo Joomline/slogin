@@ -15,7 +15,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
 {
     public function onAuth($url)
     {
-        $redirect = JURI::base().'?option=com_slogin&task=plugins.check&plugin=odnoklassniki';
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=odnoklassniki';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
@@ -46,7 +46,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
 
         if ($code) {
 
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=plugins.check&plugin=odnoklassniki');
+            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=odnoklassniki');
 
             $params = array(
                 'client_id=' . $this->params->get('id'),
@@ -124,7 +124,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
     public function onCreateLink($links)
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=plugins.auth&plugin=odnoklassniki';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=odnoklassniki';
         $links[$i]['class'] = 'odnoklassniki';
     }
 }

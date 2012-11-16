@@ -52,10 +52,10 @@ JHtml::_('behavior.keepalive');
 
 
     <div id="slogin-buttons" class="slogin-buttons">
-        <?php foreach($this->providers as $provider => $class) : ?>
-            <a href="<?php echo JRoute::_('index.php?option=com_slogin&task='.$provider.'.auth&action='.$this->action); ?>">
-                <span class="<?php echo $class; ?>">&nbsp;</span>
-            </a>
+        <?php foreach($this->providers as $provider) : ?>
+        <a href="<?php echo JRoute::_($provider['link'].'&action='.$this->action);?>">
+            <span class="<?php echo $provider['class'];?>">&nbsp;</span>
+        </a>
         <?php endforeach; ?>
     </div>
 </div>
