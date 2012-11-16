@@ -118,7 +118,7 @@ class plgSlogin_authTwitter extends JPlugin
 //        ');
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter';
-        $links[$i]['class'] = 'twitter';
+        $links[$i]['class'] = 'twitterslogin';
     }
 }
 

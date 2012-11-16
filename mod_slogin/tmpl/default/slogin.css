@@ -25,23 +25,23 @@ div.slogin-clear{
     background:#f4f3f2;
 }
 
-.slogin-buttons .google {
+.slogin-buttons .googleslogin {
     background-position: 0 0px;
 }
 
-.slogin-buttons .odnoklassniki {
+.slogin-buttons .odnoklassnikislogin {
     background-position: 0 -40px;
 }
-.slogin-buttons .vkontakte {
+.slogin-buttons .vkontakteslogin {
     background-position: 0 -80px;
 }
-.slogin-buttons .facebook {
+.slogin-buttons .facebookslogin {
     background-position: 0 -120px;
 }
-.slogin-buttons .mail {
+.slogin-buttons .mailslogin {
     background-position: 0 -160px;
 }
-.slogin-buttons .twitter {
+.slogin-buttons .twitterslogin {
     background-position: 0 -200px;
 }
 

@@ -102,6 +102,6 @@ class plgSlogin_authGoogle extends JPlugin
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google';
-        $links[$i]['class'] = 'google';
+        $links[$i]['class'] = 'googleslogin';
     }
 }
