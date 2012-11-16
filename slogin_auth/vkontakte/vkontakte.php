@@ -103,6 +103,6 @@ class plgSlogin_authVkontakte extends JPlugin
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte';
-        $links[$i]['class'] = 'vkontakte';
+        $links[$i]['class'] = 'vkontakteslogin';
     }
 }
