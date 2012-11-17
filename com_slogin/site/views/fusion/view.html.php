@@ -41,13 +41,17 @@ class SloginViewFusion extends SloginViewFusionParent
 
         $providers = $this->get('Providers');
 
-        $this->providers = array();
+        $this->attachedProviders = array();
+        $this->unattachedProviders = array();
 
         $fusionProviders = $this->get('FusionProviders');
 
         foreach($providers as $v){
             if(!in_array($v['plugin_name'], $fusionProviders)){
-               $this->providers[] = $v;
+               $this->attachedProviders[] = $v;
+            }
+            else{
+                $this->unattachedProviders[] = $v;
             }
         }
 

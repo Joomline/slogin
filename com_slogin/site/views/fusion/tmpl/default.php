@@ -50,12 +50,22 @@ JHtml::_('behavior.keepalive');
     </div>
     <?php endif; ?>
 
-
+    <h2><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h2>
     <div id="slogin-buttons" class="slogin-buttons">
-        <?php foreach($this->providers as $provider) : ?>
+        <?php foreach($this->attachedProviders as $provider) : ?>
         <a href="<?php echo JRoute::_($provider['link']);?>">
             <span class="<?php echo $provider['class'];?>">&nbsp;</span>
         </a>
         <?php endforeach; ?>
     </div>
+    <div class="slogin-clear"></div>
+    <h2><?php echo JText::_('COM_SLOGIN_DETACH_PROVIDERS')?></h2>
+    <div id="slogin-buttons" class="slogin-buttons">
+        <?php foreach($this->unattachedProviders as $provider) : ?>
+        <a href="<?php echo JRoute::_('index.php?option=com_slogin&task=detach_provider&plugin='.$provider['plugin_name']);?>">
+            <span class="<?php echo $provider['class'];?>">&nbsp;</span>
+        </a>
+        <?php endforeach; ?>
+    </div>
+    <div class="slogin-clear"></div>
 </div>

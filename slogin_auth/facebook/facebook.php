@@ -87,12 +87,6 @@ class plgSlogin_authFacebook extends JPlugin
     }
     public function onCreateLink($links, $add = '')
     {
-//        $document = JFactory::getDocument();
-//        $document->addStyleDeclaration('
-//           .slogin-buttons .yandex {
-//                background-position: 0 -426px;
-//            }
-//        ');
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;
         $links[$i]['class'] = 'facebookslogin';

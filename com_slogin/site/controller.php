@@ -633,6 +633,29 @@ class SLoginController extends SLoginControllerParent
         $this->displayRedirect('index.php?option=com_slogin&view=fusion', $popup);
     }
 
+    public function detach_provider()
+    {
+        $input = new JInput;
+        $provider = $input->Get('plugin', '', 'STRING');
+        //ид текущего пользователя
+        $user_id = JFactory::getUser()->id;
+
+        if((int)$user_id == 0 ){
+            $this->displayRedirect('index.php?option=com_slogin&view=fusion');
+        }
+
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->delete();
+        $query->from($db->quoteName('#__slogin_users'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $db->setQuery($query);
+        $db->query();
+
+        $this->displayRedirect('index.php?option=com_slogin&view=fusion');
+    }
+
     private function transliterate($str){
 
         $trans = array("а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d","е"=>"e",
