@@ -44,3 +44,7 @@ div.slogin-clear{
 .slogin-buttons .twitterslogin {
     background-position: -51px -376px;
 }
+
+.slogin-buttons .yandexslogin {
+    background-position: 0 -426px;
+}

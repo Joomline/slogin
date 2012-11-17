@@ -80,12 +80,12 @@ class plgSlogin_authYandex extends JPlugin
 
     public function onCreateLink($links, $add = '')
     {
-        $document = JFactory::getDocument();
-        $document->addStyleDeclaration('
-           .slogin-buttons .yandexslogin {
-                background-position: 0 -426px;
-            }
-        ');
+//        $document = JFactory::getDocument();
+//        $document->addStyleDeclaration('
+//           .slogin-buttons .yandexslogin {
+//                background-position: 0 -426px;
+//            }
+//        ');
        $i = count($links);
        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yandex' . $add;
        $links[$i]['class'] = 'yandexslogin';
