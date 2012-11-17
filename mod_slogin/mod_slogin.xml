@@ -88,23 +88,6 @@
 			
 			<fieldset
 				name="advanced">
-                <field
-                        name="js_framework"
-                        type="list"
-                        label="MOD_SLOGIN_JS_FRAMEWORK"
-                        description="MOD_SLOGIN_JS_FRAMEWORK_DESC">
-                    <option value="js">JavaScript</option>
-                    <option value="jq">jQuery</option>
-                    <option value="moo">Mootools</option>
-                </field>
-                <field
-                        name="load_framework"
-                        type="list"
-                        label="MOD_SLOGIN_JS_FRAMEWORK_LOAD"
-                        description="MOD_SLOGIN_JS_FRAMEWORK_LOAD_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-                </field>
 				<field
 					name="layout"
 					type="modulelayout"

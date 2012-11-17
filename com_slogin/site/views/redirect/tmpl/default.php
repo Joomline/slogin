@@ -21,11 +21,7 @@ $url = JURI::base().'index.php?option=com_slogin&amp;task=sredirect';
 if (window.opener) {
 	window.close();
 	window.opener.location = '<?php echo $url; ?>'
-}
-else if(top.window){
-    top.window.location = '<?php echo $url; ?>'
-}
-else {
+} else {
 	window.location = '<?php echo $url; ?>'
 }
 
