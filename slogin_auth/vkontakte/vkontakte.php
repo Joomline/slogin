@@ -99,10 +99,11 @@ class plgSlogin_authVkontakte extends JPlugin
         return $returnRequest;
     }
 
-    public function onCreateLink($links)
+    public function onCreateLink($links, $add = '')
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte' . $add;
         $links[$i]['class'] = 'vkontakteslogin';
+        $links[$i]['plugin_name'] = 'vkontakte';
     }
 }

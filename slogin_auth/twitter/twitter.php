@@ -107,7 +107,7 @@ class plgSlogin_authTwitter extends JPlugin
         return $returnRequest;
     }
 
-    public function onCreateLink($links)
+    public function onCreateLink($links, $add = '')
     {
 //        $document = JFactory::getDocument();
 //        $document->addStyleDeclaration('
@@ -116,8 +116,9 @@ class plgSlogin_authTwitter extends JPlugin
 //            }
 //        ');
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter' . $add;
         $links[$i]['class'] = 'twitterslogin';
+        $links[$i]['plugin_name'] = 'twitter';
     }
 }
 

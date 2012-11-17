@@ -128,11 +128,12 @@ class plgSlogin_authMail extends JPlugin
         return $returnRequest;
     }
 
-    public function onCreateLink($links)
+    public function onCreateLink($links, $add = '')
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=mail';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=mail' . $add;
         $links[$i]['class'] = 'mailslogin';
+        $links[$i]['plugin_name'] = 'mail';
     }
 
     protected function get_server_params(array $request_params) {

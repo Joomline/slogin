@@ -46,12 +46,10 @@ class SloginViewFusion extends SloginViewFusionParent
         $fusionProviders = $this->get('FusionProviders');
 
         foreach($providers as $v){
-            if(!in_array($v['class'], $fusionProviders)){
+            if(!in_array($v['plugin_name'], $fusionProviders)){
                $this->providers[] = $v;
             }
         }
-
-        $this->action = ($this->user->get('id') == 0) ? '' : 'fusion';
 
         $document = JFactory::getDocument();
         $document->addStyleSheet( JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css');

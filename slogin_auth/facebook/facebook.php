@@ -85,7 +85,7 @@ class plgSlogin_authFacebook extends JPlugin
         }
         return $returnRequest;
     }
-    public function onCreateLink($links)
+    public function onCreateLink($links, $add = '')
     {
 //        $document = JFactory::getDocument();
 //        $document->addStyleDeclaration('
@@ -94,7 +94,8 @@ class plgSlogin_authFacebook extends JPlugin
 //            }
 //        ');
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;
         $links[$i]['class'] = 'facebookslogin';
+        $links[$i]['plugin_name'] = 'facebook';
     }
 }

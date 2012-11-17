@@ -99,10 +99,11 @@ class plgSlogin_authGoogle extends JPlugin
         }
         return $returnRequest;
     }
-    public function onCreateLink($links)
+    public function onCreateLink($links, $add = '')
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google' . $add;
         $links[$i]['class'] = 'googleslogin';
+        $links[$i]['plugin_name'] = 'google';
     }
 }

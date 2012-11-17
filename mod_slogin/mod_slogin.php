@@ -18,7 +18,7 @@ $doc = JFactory::getDocument();
 $input = new JInput;
 
 $type	= modLoginHelper::getType();
-$return	= modLoginHelper::getReturnURL($params, $type);
+$return	= '&return=' . modLoginHelper::getReturnURL($params, $type);
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 $loadAfter = $params->get('load_after', 0);
@@ -33,7 +33,8 @@ $dispatcher	= JDispatcher::getInstance();
 JPluginHelper::importPlugin('slogin_auth');
 
 $plugins = array();
-$dispatcher->trigger('onCreateLink', array(&$plugins));
+
+$dispatcher->trigger('onCreateLink', array(&$plugins, $return));
 
 if($loadAfter == 1){
     ob_start();

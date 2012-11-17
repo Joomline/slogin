@@ -98,6 +98,11 @@ function SLoginBuildRoute(& $query)
 		unset($query['return']);
 	}
 
+    if (isset($query['action'])) {
+        $segments[] = $query['action'];
+        unset($query['action']);
+    }
+
 	return $segments;
 }
 
@@ -159,9 +164,12 @@ function SLoginParseRoute($segments)
 						$vars['task'] = 'auth';
 						$vars['plugin'] = $segments[1];
 
-						if (isset($segments[2])) {
-							$vars['return'] = $segments[2];
-						}
+                        if($segments[2] == 'fusion'){
+                            $vars['action'] = $segments[2];
+                        }
+                        else{
+                            $vars['return'] = $segments[2];
+                        }
 					}
 				}
 				break;
