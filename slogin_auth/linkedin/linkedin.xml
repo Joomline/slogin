@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="slogin_auth">
+	<name>Social Login LinkedIn auth</name>
+	<author>Arkadiy, Joomline</author>
+	<creationDate>21.09.2012</creationDate>
+	<copyright>(C) 2012. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail></authorEmail>
+	<authorUrl>http://joomline.ru</authorUrl>
+	<version>1.0</version>
+	<description>LinkedIn auth</description>
+	<files>
+		<filename plugin="linkedin">linkedin.php</filename>
+		<filename>index.html</filename>
+		<folder>assets</folder>
+		<folder>element</folder>
+	</files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="plugins/slogin_auth/linkedin/element">
+                <field name="api_key" type="text" default=""
+                       description="API Key"
+                       label="API Key"
+                        />
+                <field name="secret_key" type="text" default=""
+                       description="Secret Key"
+                       label="Secret Key"
+                        />
+                <field name="oauth_token" type="text" default=""
+                       description="OAuth User Token"
+                       label="OAuth User Token"
+                        />
+                <field name="oauth_secret" type="text" default=""
+                       description="OAuth User Secret"
+                       label="OAuth User Secret"
+                        />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

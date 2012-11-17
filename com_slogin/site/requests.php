@@ -212,3 +212,17 @@ object(stdClass)#522 (7) {
 { [0]=> string(19) "barier-cs@yandex.ru" }
 ["default_email"]=> string(19) "barier-cs@yandex.ru"
 ["real_name"]=> string(37) "Седельников Аркадий" }
+
+LinkedIn
+(stdClass)#523 (5) {
+["firstName"]=>
+    string(14) "Аркадий"
+["headline"]=>
+    string(2) "--"
+["id"]=>
+    string(10) "i7v3atbQcL"
+["lastName"]=>
+    string(22) "Седельников"
+["pictureUrl"]=>
+    string(107) "http://m3.licdn.com/mpr/mprx/0_zR-8K5l6p94t8B1YUgAxKFzMrqDrGlCYBM60KFPQftJhjzvOMjGuObFeOJSfTn_tq4rYx8DZPH6K"
+}
