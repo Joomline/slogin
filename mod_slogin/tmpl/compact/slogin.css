@@ -26,25 +26,29 @@ div.slogin-clear{
 }
 
 .slogin-buttons .googleslogin {
-    background-position: 0 -272px;
+    background-position: 0 -473px;
 }
 
 .slogin-buttons .odnoklassnikislogin {
-    background-position: -51px -272px;
+    background-position: -51px -473px;
 }
 .slogin-buttons .vkontakteslogin {
-    background-position: 0 -324px;
+    background-position: 0 -525px;
 }
 .slogin-buttons .facebookslogin {
-    background-position: -51px -324px;
+    background-position: -51px -525px;
 }
 .slogin-buttons .mailslogin {
-    background-position: 0 -376px;
+    background-position: 0 -577px;
 }
 .slogin-buttons .twitterslogin {
-    background-position: -51px -376px;
+    background-position: -51px -577px;
 }
 
 .slogin-buttons .yandexslogin {
-    background-position: 0 -426px;
+    background-position: 0px -629px;
+}
+
+.slogin-buttons .linkedinslogin {
+    background-position: -51px -629px;
 }
