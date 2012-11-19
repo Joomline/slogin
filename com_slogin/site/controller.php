@@ -334,7 +334,7 @@ class SLoginController extends SLoginControllerParent
         if($popup){
             $session = JFactory::getSession();
             $redirect = base64_encode(JRoute::_($redirect));
-            $session->set('slogin_return', $redirect);
+            $session->set('slogin_return', JRoute::_($redirect));
             $view = $this->getView('Redirect', 'html');
             $view->display();
             exit;
@@ -365,7 +365,8 @@ class SLoginController extends SLoginControllerParent
     {
         $session = JFactory::getSession();
         $app = JFactory::getApplication();
-        $redirect = base64_decode($session->get('slogin_return', ''));
+
+        $redirect = JRoute::_(base64_decode($session->get('slogin_return', '')));
         $session->clear('slogin_return');
         if ($error = $session->get('slogin_errors', null)) {
             $session->clear('slogin_errors');
@@ -431,7 +432,7 @@ class SLoginController extends SLoginControllerParent
     /**
      * Привязка логина к существующему пользователю если совпал емайл
      */
-    public function join_email()
+    public function join_mail()
     {
         // Check for request forgeries.
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -680,7 +681,7 @@ class SLoginController extends SLoginControllerParent
     protected function localAuthDebug($redirect){
         if($this->config->get('local_debug', 0) == 1){
             $app = JFactory::getApplication();
-            $app->redirect($redirect);
+            $app->redirect(JRoute::_($redirect));
         }
     }
 
