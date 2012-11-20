@@ -68,5 +68,6 @@
         <filename>index.html</filename>
         <filename>metadata.xml</filename>
         <filename>slogin.php</filename>
+        <filename>router.php</filename>
     </files>
 </extension>

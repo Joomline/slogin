@@ -1,7 +1,8 @@
 <?php
 
-// task=check&plugin=google -> /auth/google/check
-// task=auth&plugin=google -> /auth/google
+// task=check&plugin=google -> /provider/google/check
+// task=auth&plugin=google -> /provider/google/auth
+// task=detach_provider&plugin=google -> /provider/google/detach
 // task=auth&plugin=google&return=12345 -> /auth/google/12345
 
 // task=join_email -> /mail/join
@@ -42,7 +43,7 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'check':
-				$segments[] = 'auth';
+				$segments[] = 'provider';
 
 				if (isset($query['plugin'])) {
 					$segments[] = $query['plugin'];
@@ -53,13 +54,34 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'auth':
-				$segments[] = 'auth';
+				$segments[] = 'provider';
 
 				if (isset($query['plugin'])) {
 					$segments[] = $query['plugin'];
 					unset($query['plugin']);
 				}
+				$segments[] = 'auth';
+
+				if (isset($query['return'])) {
+					$segments[] = $query['return'];
+					unset($query['return']);
+				}
+
 				break;
+
+			case 'detach_provider':
+				$segments[] = 'provider';
+
+				if (isset($query['plugin'])) {
+					$segments[] = $query['plugin'];
+					unset($query['plugin']);
+				} else {
+					$segments[] = 'unknown';
+				}
+
+				$segments[] = 'detach';
+				break;
+
 
 			default:
 				$segments[] = $query['task'];
@@ -81,6 +103,7 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'fusion':
+				$segments[] = 'user';
 				$segments[] = 'fusion';
 				break;
 
@@ -92,16 +115,6 @@ function SLoginBuildRoute(& $query)
 
 		unset($query['view']);
 	}
-
-	if (isset($query['return'])) {
-		$segments[] = $query['return'];
-		unset($query['return']);
-	}
-
-    if (isset($query['action'])) {
-        $segments[] = $query['action'];
-        unset($query['action']);
-    }
 
 	return $segments;
 }
@@ -129,6 +142,10 @@ function SLoginParseRoute($segments)
 					case 'comparison':
 						$vars['view'] = 'comparison_user';
 						break;
+
+					case 'fusion':
+						$vars['view'] = 'fusion';
+						break;
 				}
 
 				break;
@@ -148,28 +165,23 @@ function SLoginParseRoute($segments)
 						break;
 				}
 				break;
-
-			case 'check':
-				if (isset($segments[1])) {
-					$vars['plugin'] = $segments[1];
-				}
-				break;
-
-			case 'auth':
+			
+			case 'provider':
 				if (isset($segments[2])) {
-					if ($segments[2] == 'check') {
-						$vars['task'] = 'check';
-						$vars['plugin'] = $segments[1];
-					} else {
-						$vars['task'] = 'auth';
-						$vars['plugin'] = $segments[1];
+					$vars['plugin'] = $segments[1];
 
-                        if($segments[2] == 'fusion'){
-                            $vars['action'] = $segments[2];
-                        }
-                        else{
-                            $vars['return'] = $segments[2];
-                        }
+					switch($segments[2]) {
+						case 'detach':
+							$vars['task'] = 'detach_provider';
+							break;
+					
+						default:
+							$vars['task'] = $segments[2];
+							break;
+					}
+
+					if (isset($segments[3])) {
+						$vars['return'] = $segments[3];
 					}
 				}
 				break;

@@ -22,7 +22,7 @@ JHtml::_('behavior.keepalive');
         <?php echo JText::sprintf('COM_SLOGIN_LINKING_DESC', $this->email); ?>
     </div>
 
-    <form action="<?php echo JRoute::_('index.php?option=com_slogin&task=join_email'); ?>" method="post">
+    <form action="<?php echo JRoute::_('index.php?option=com_slogin&task=join_mail'); ?>" method="post">
         <fieldset>
             <div class="login-fields">
                 <label id="username-lbl" for="username" class=" required">
