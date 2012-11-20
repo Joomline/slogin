@@ -11,7 +11,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT_SITE.'/controller.php';
+require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
 class plgSlogin_authTwitter extends JPlugin
 {

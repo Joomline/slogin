@@ -32,7 +32,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
 
     public function onCheck()
     {
-        require_once JPATH_COMPONENT_SITE.'/controller.php';
+        require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
         $controller = new SLoginController();
 
