@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="slogin_auth">
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
 	<name>Social Login Odnoklassniki auth</name>
 	<author>Arkadiy, Joomline</author>
 	<creationDate>21.09.2012</creationDate>
