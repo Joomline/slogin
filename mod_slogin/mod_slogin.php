@@ -18,11 +18,17 @@ $doc = JFactory::getDocument();
 $input = new JInput;
 
 $type	= modLoginHelper::getType();
-$return	= '&return=' . modLoginHelper::getReturnURL($params, $type);
+
+$return	= modLoginHelper::getReturnURL($params, $type);
+
+$callbackUrl = '&return=' . $return;
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
 $loadAfter = $params->get('load_after', 0);
+
 $layout = $params->get('layout', 'default');
+
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
 $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js');
@@ -35,7 +41,7 @@ JPluginHelper::importPlugin('slogin_auth');
 
 $plugins = array();
 
-$dispatcher->trigger('onCreateLink', array(&$plugins, $return));
+$dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
 
 if($loadAfter == 1){
     ob_start();
