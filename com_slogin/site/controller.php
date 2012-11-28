@@ -522,20 +522,21 @@ class SLoginController extends SLoginControllerParent
     {
         // Check for request forgeries.
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
+        $app = JFactory::getApplication();
         $input = new JInput;
         $first_name =   $input->Get('first_name',   '', 'STRING');
         $last_name =    $input->Get('last_name',    '', 'STRING');
         $email =        $input->Get('email',        '', 'STRING');
         $slogin_id =    $input->Get('slogin_id',    '', 'STRING');
         $provider =     $input->Get('provider',     '', 'STRING');
+        $info =         $app->getUserState('com_slogin.provider.info');
 
         //маленькая валидация
         if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
              $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
         }
         else{
-             $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider);
+             $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, false, $info);
         }
     }
 
@@ -548,6 +549,8 @@ class SLoginController extends SLoginControllerParent
         }
 
         $app = JFactory::getApplication();
+
+        $app->setUserState('com_slogin.provider.info', $info);
 
         //если разрешено слияние - сливаем
         if($app->getUserState('com_slogin.action.data') == 'fusion'){
