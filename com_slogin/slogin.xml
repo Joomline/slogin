@@ -70,4 +70,7 @@
         <filename>slogin.php</filename>
         <filename>router.php</filename>
     </files>
+<updateservers>
+<server type="extension" priority="1" name="Сайт обновлений компонента  SLogin">http://joomline.ru/update/slogin/slogin.xml</server>
+</updateservers>
 </extension>
