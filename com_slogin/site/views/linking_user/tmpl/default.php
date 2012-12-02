@@ -40,9 +40,21 @@ JHtml::_('behavior.keepalive');
                        class="validate-password required" size="25">
             </div>
             <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
-            <a class="button" href="<?php echo $this->params->get('login_redirect_url', $this->form->getValue('return')) ?>"><?php echo JText::_('COM_SLOGIN_CHANCEL'); ?></a>
+
+            <input type="button" class="button"
+                   onclick="document.location.href='<?php echo JRoute::_($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>'"
+                   value="<?php echo JText::_('COM_SLOGIN_CREATE_NEW_USER'); ?>"/>
+
+            <input type="button" class="button"
+                   onclick="document.location.href='<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>'"
+                   value="<?php echo JText::_('COM_SLOGIN_LOST_PASS_LOGIN'); ?>"/>
+
+            <input type="button" class="button"
+                   onclick="document.slogin_logout_form.submit();"
+                   value="<?php echo JText::_('COM_SLOGIN_NO_LOGIN'); ?>"/>
+
             <input type="hidden" name="return"
-                   value="<?php echo base64_encode($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>"/>
+                   value="<?php echo $this->after_reg_redirect; ?>"/>
             <input type="hidden" name="user_id" value="<?php echo $this->id; ?>"/>
             <input type="hidden" name="provider" value="<?php echo $this->provider; ?>"/>
             <input type="hidden" name="slogin_id" value="<?php echo $this->slogin_id; ?>"/>
@@ -50,3 +62,11 @@ JHtml::_('behavior.keepalive');
         </fieldset>
     </form>
 </div>
+
+<form action="<?php echo JRoute::_('index.php'); ?>"
+      method="post" id="slogin_logout_form" name="slogin_logout_form">
+    <input type="hidden" name="option" value="com_users">
+    <input type="hidden" name="task" value="user.logout">
+    <input type="hidden" name="return" value="<?php echo $this->failure_redirect; ?>">
+    <?php echo JHtml::_('form.token'); ?>
+</form>

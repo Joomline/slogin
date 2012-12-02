@@ -524,6 +524,7 @@ class SLoginController extends SLoginControllerParent
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         $app = JFactory::getApplication();
         $input = new JInput;
+
         $first_name =   $input->Get('first_name',   '', 'STRING');
         $last_name =    $input->Get('last_name',    '', 'STRING');
         $email =        $input->Get('email',        '', 'STRING');
@@ -586,6 +587,11 @@ class SLoginController extends SLoginControllerParent
             if($joomlaUserId > 0){
                 //логинимся если ид пользователя верный
                 $this->loginUser($joomlaUserId, $provider, $info);
+
+                if($this->config->get('add_info_new_user', 0) == 0){
+                    $model = parent::getModel('Linking_user', 'Slogin');
+                    $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
+                }
 
                 //если настроено показать после регистрации изменение профиля
                 if($this->config->get('add_info_new_user', 0) == 1){

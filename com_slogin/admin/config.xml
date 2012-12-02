@@ -2,7 +2,6 @@
 <config>
 	<fieldset name="settings" 
 			label="COM_SLOGIN_FIELDSET_CONFIG_LABEL"
-			description="COM_SLOGIN_FIELDSET_CONFIG_DESC"
 			addfieldpath="administrator/components/com_slogin/models/fields"
 			>
 		<field
@@ -61,6 +60,31 @@
 				<option value="0">JNO</option>
 		</field>
 	</fieldset>
+
+    <fieldset name="redirects"
+              label="COM_SLOGIN_FIELDSET_REDIRECTS_LABEL"
+              description="COM_SLOGIN_FIELDSET_REDIRECTS_DESC"
+            >
+        <field
+                name="after_reg_redirect"
+                type="menuitem"
+                disable="separator"
+                label="COM_SLOGIN_AFTER_REGISTER_REDIRECT_LABEL"
+                description="COM_SLOGIN_AFTER_REGISTER_REDIRECT_DESC" >
+            <option
+                    value="">JDEFAULT</option>
+        </field>
+        <field
+                name="failure_redirect"
+                type="menuitem"
+                disable="separator"
+                label="COM_SLOGIN_FAILURE_REDIRECT_LABEL"
+                description="COM_SLOGIN_FAILURE_REDIRECT_DESC" >
+            <option
+                    value="">JDEFAULT</option>
+        </field>
+    </fieldset>
+
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"

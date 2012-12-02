@@ -34,6 +34,7 @@ class SloginViewLinking_user extends SloginViewLinkingParent
 	{
         $input = new JInput;
         $app	= JFactory::getApplication();
+        $model = $this->getModel();
 
         $data = $app->getUserState('com_slogin.comparison_user.data');
         $app->setUserState('com_slogin.comparison_user.data', array());
@@ -41,12 +42,17 @@ class SloginViewLinking_user extends SloginViewLinkingParent
         $this->params       = JComponentHelper::getParams('com_users');
         $this->user		    = JFactory::getUser();
 
+        $this->sloginParams       = JComponentHelper::getParams('com_slogin');
+
         $this->form		    = $this->get('Form');
 
         $this->email        = $data['email'];
         $this->id           = $data['id'];
         $this->provider     = $data['provider'];
         $this->slogin_id    = $data['slogin_id'];
+
+        $this->failure_redirect = $model->getReturnURL($this->sloginParams, 'failure_redirect');
+        $this->after_reg_redirect = $model->getReturnURL($this->sloginParams, 'after_reg_redirect');
 
 		// Display the view
 		parent::display($tpl);
