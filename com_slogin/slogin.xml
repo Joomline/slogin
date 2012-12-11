@@ -33,6 +33,8 @@
             <language tag="en-GB">en-GB/en-GB.com_slogin.ini</language>
 			<language tag="uk-UA">uk-UA/uk-UA.com_slogin.sys.ini</language>
             <language tag="uk-UA">uk-UA/uk-UA.com_slogin.ini</language>
+			<language tag="es-ES">es-ES/es-ES.com_slogin.sys.ini</language>
+            <language tag="es-ES">es-ES/es-ES.com_slogin.ini</language>
         </languages>
 
         <files folder="admin">
