@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authGoogle extends JPlugin
 {
-    public function onAuth($url)
+    public function onAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=google';
 

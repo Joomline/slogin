@@ -16,7 +16,7 @@ include_once JPATH_ROOT.DS."plugins/slogin_auth/linkedin/assets/oauth/linkedin.p
 
 class plgSlogin_authLinkedin extends JPlugin
 {
-    public function onAuth($url)
+    public function onAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
 
