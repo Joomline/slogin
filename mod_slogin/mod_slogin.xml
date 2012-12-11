@@ -7,7 +7,7 @@
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail>kolyamba831@inbox.ru</authorEmail>
 	<authorUrl>http://joomline.ru</authorUrl>
-	<version>1.4.0</version>
+	<version>1.4.1</version>
 	<description>MOD_SLOGIN_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_slogin">mod_slogin.php</filename>
@@ -23,6 +23,8 @@
 		<language tag="en-GB">en-GB/en-GB.mod_slogin.sys.ini</language>
 		<language tag="uk-UA">uk-UA/uk-UA.mod_slogin.ini</language>
 		<language tag="uk-UA">uk-UA/uk-UA.mod_slogin.sys.ini</language>
+		<language tag="es-ES">es-ES/es-ES.mod_slogin.ini</language>
+		<language tag="es-ES">es-ES/es-ES.mod_slogin.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
@@ -107,7 +109,25 @@
 					<option
 						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
-			</fieldset>			
+				<field
+					name="load_css"
+					type="list"
+					default="0"
+					label="MOD_SLOGIN_FIELD_LOAD_CSS_LABEL"
+					description="MOD_SLOGIN_FIELD_LOAD_CSS_DESC">
+					<option value="0">JYES</option>
+					<option value="1">JNO</option>
+				</field>
+				<field
+					name="load_js"
+					type="list"
+					default="0"
+					label="MOD_SLOGIN_FIELD_LOAD_JS_LABEL"
+					description="MOD_SLOGIN_FIELD_LOAD_JS_DESC">
+					<option value="0">JYES</option>
+					<option value="1">JNO</option>
+				</field>
+			</fieldset>
 		</fields>	
 	</config>
 </extension>
