@@ -2,10 +2,10 @@
 /**
  * Social Login
  *
- * @version 	1.0
- * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012. All rights reserved.
- * @license 	GNU/GPL v.3 or later.
+ * @version     1.0
+ * @author        SmokerMan, Arkadiy, Joomline
+ * @copyright    © 2012. All rights reserved.
+ * @license     GNU/GPL v.3 or later.
  */
 
 // No direct access to this file
@@ -39,20 +39,27 @@ JHtml::_('behavior.keepalive');
                 <input type="password" name="password" id="password" value=""
                        class="validate-password required" size="25">
             </div>
-            <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
+            <div class="slogin-buttons-linking">
 
-            <input type="button" class="button"
-                   onclick="document.location.href='<?php echo JRoute::_($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>'"
-                   value="<?php echo JText::_('COM_SLOGIN_CREATE_NEW_USER'); ?>"/>
-
-            <input type="button" class="button"
-                   onclick="document.location.href='<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>'"
-                   value="<?php echo JText::_('COM_SLOGIN_LOST_PASS_LOGIN'); ?>"/>
-
-            <input type="button" class="button"
-                   onclick="document.slogin_logout_form.submit();"
-                   value="<?php echo JText::_('COM_SLOGIN_NO_LOGIN'); ?>"/>
-
+                <div>
+                    <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
+                </div>
+                <div>
+                    <input type="button" class="button"
+                           onclick="document.location.href='<?php echo JRoute::_($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>'"
+                           value="<?php echo JText::_('COM_SLOGIN_CREATE_NEW_USER'); ?>"/>
+                </div>
+                <div>
+                    <input type="button" class="button"
+                           onclick="document.location.href='<?php echo JRoute::_('index.php?option=com_slogin&task=recallpass'); ?>'"
+                           value="<?php echo JText::_('COM_SLOGIN_LOST_PASS_LOGIN'); ?>"/>
+                </div>
+                <div>
+                    <input type="button" class="button"
+                           onclick="document.slogin_logout_form.submit();"
+                           value="<?php echo JText::_('COM_SLOGIN_NO_LOGIN'); ?>"/>
+                </div>
+            </div>
             <input type="hidden" name="return"
                    value="<?php echo $this->after_reg_redirect; ?>"/>
             <input type="hidden" name="user_id" value="<?php echo $this->id; ?>"/>

@@ -36,7 +36,6 @@ class SloginViewComparison_user extends SloginViewComparisonParent
         $app	= JFactory::getApplication();
 
         $data = $app->getUserState('com_slogin.comparison_user.data');
-        $app->setUserState('com_slogin.comparison_user.data', array());
 
         $this->params       = JComponentHelper::getParams('com_users');
         $this->user		    = JFactory::getUser();

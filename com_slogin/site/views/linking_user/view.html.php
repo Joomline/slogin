@@ -32,12 +32,13 @@ class SloginViewLinking_user extends SloginViewLinkingParent
 	// Overwriting JView display method
 	function display($tpl = null) 
 	{
-        $input = new JInput;
+        $document = JFactory::getDocument();
+        $document->addStyleSheet( JURI::root().'components/com_slogin/views/linking_user/tmpl/linking.css');
+
         $app	= JFactory::getApplication();
         $model = $this->getModel();
 
         $data = $app->getUserState('com_slogin.comparison_user.data');
-        $app->setUserState('com_slogin.comparison_user.data', array());
 
         $this->params       = JComponentHelper::getParams('com_users');
         $this->user		    = JFactory::getUser();

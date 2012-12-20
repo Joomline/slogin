@@ -149,6 +149,11 @@ class SloginModelLinking_user extends JModelForm
         }
         if (!$url)
         {
+            $app = JFactory::getApplication();
+            $url = base64_decode($app->getUserState('com_slogin.return_url'));
+        }
+        if (!$url)
+        {
             // stay on the same page
             $uri = clone JFactory::getURI();
             $vars = $router->parse($uri);
