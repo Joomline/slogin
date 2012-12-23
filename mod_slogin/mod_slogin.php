@@ -46,11 +46,11 @@ $dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
 if($loadAfter == 1){
     ob_start();
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
-    $content = ob_get_clean();
+    $modCcontent = ob_get_clean();
     ?>
     <div id="mod_slogin"></div>
     <script type="text/javascript">
-        var sloginContent = '<?php echo $content?>';
+        var sloginContent = '<?php echo $modCcontent; ?>';
         function sloginLoad() {
             document.getElementById('mod_slogin').innerHTML = sloginContent;
         }

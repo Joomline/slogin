@@ -185,6 +185,9 @@ function SLoginParseRoute($segments)
 					}
 				}
 				break;
+            default:
+                $vars['task'] = $segments[0];
+                break;
 		}
 	}
 

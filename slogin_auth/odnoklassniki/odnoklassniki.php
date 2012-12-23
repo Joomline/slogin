@@ -122,7 +122,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
         return $returnRequest;
     }
 
-    public function onCreateLink($links, $add = '')
+    public function onCreateLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=odnoklassniki' . $add;

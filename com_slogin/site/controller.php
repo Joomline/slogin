@@ -427,6 +427,8 @@ class SLoginController extends SLoginControllerParent
         $input = new JInput;
 
         $app = JFactory::getApplication();
+        $appRedirect = $app->getUserState('com_slogin.return_url');
+        $UserState = $app->getUserState('com_slogin.comparison_user.data');
 
         $msg = '';
         $user_id = $input->Get('user_id', 0, 'INT');
@@ -435,19 +437,14 @@ class SLoginController extends SLoginControllerParent
 
         // Populate the data array:
         $data = array();
-        $data['return'] = base64_decode($input->Get('return', '', 'BASE64'));
+        $return = base64_decode($appRedirect);
         $data['username'] = $input->Get('username', '', 'username');
         $data['password'] = $input->Get('password', '', JREQUEST_ALLOWRAW);
-
-        // Set the return URL if empty.
-        if (empty($data['return'])) {
-            $data['return'] = 'index.php?option=com_users&view=profile';
-        }
 
         // Get the log in options.
         $options = array();
         $options['remember'] = $input->Get('remember', false);
-        $options['return'] = $data['return'];
+        $options['return'] = $return;
 
         // Get the log in credentials.
         $credentials = array();
@@ -457,6 +454,9 @@ class SLoginController extends SLoginControllerParent
         // Perform the log in.
         // Check if the log in succeeded.
         if (true === $app->login($credentials, $options)) {
+
+            $app->setUserState('com_slogin.return_url', $appRedirect);
+            $app->setUserState('com_slogin.comparison_user.data', $UserState);
 
             $joomlaUserId = JFactory::getUser()->id;
 
@@ -489,13 +489,10 @@ class SLoginController extends SLoginControllerParent
                 $msg = JText::_('ERROR_JOIN_MAIL');
             }
 
-            //$app->setUserState('users.login.form.data', array());
-
-            $app->redirect(JRoute::_($data['return'], false), $msg);
+            $app->redirect(JRoute::_($return, false), $msg);
         } else {
-            $data['remember'] = (int)$options['remember'];
-            $app->setUserState('users.login.form.data', $data);
-
+            $app->setUserState('com_slogin.return_url', $appRedirect);
+            $app->setUserState('com_slogin.comparison_user.data', $UserState);
             $app->redirect(JRoute::_('index.php?option=com_slogin&view=linking_user', false));
         }
     }
@@ -566,8 +563,8 @@ class SLoginController extends SLoginControllerParent
         $sloginUserId = $this->GetUserId($slogin_id, $provider);
 
         //Переадресация пользователя из модуля
-        $return = base64_decode($app->getUserState('com_slogin.return_url'));
-
+        $appReturn = $app->getUserState('com_slogin.return_url');
+        $return = base64_decode($appReturn);
         //если такого пользователя нет, то создаем
         if (!$sloginUserId) {
 
@@ -638,7 +635,7 @@ class SLoginController extends SLoginControllerParent
                 //логинимся если ид пользователя верный
                 $this->loginUser($joomlaUserId, $provider, $info);
 
-                $app->setUserState('com_slogin.return_url', base64_encode($return));
+                $app->setUserState('com_slogin.return_url', $appReturn);
             }
         }
         else {   //или логинимся

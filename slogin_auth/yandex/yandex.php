@@ -78,7 +78,7 @@ class plgSlogin_authYandex extends JPlugin
         return $returnRequest;
 	}
 
-    public function onCreateLink($links, $add = '')
+    public function onCreateLink(&$links, $add = '')
     {
 //        $document = JFactory::getDocument();
 //        $document->addStyleDeclaration('
