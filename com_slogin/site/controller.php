@@ -78,6 +78,8 @@ class SLoginController extends SLoginControllerParent
             exit;
         }
 
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Expires: " . date("r"));
         header('Location:' . $url);
     }
 
@@ -133,7 +135,11 @@ class SLoginController extends SLoginControllerParent
         curl_setopt($ch, CURLOPT_POST, $method);
         if ($method == true && isset($params)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-            curl_setopt($ch,  CURLOPT_HTTPHEADER, array('Content-Length: '.strlen($params)));
+            curl_setopt($ch,  CURLOPT_HTTPHEADER, array(
+                'Content-Length: '.strlen($params),
+                'Cache-Control: no-store, no-cache, must-revalidate',
+                "Expires: " . date("r")
+            ));
         }
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
