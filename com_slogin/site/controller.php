@@ -608,6 +608,8 @@ class SLoginController extends SLoginControllerParent
 
             //логин пользователя
             $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+            //убираем служебные символы
+            $username = preg_replace('/(\W)/i', '', $username);
 
             //имя пользователя
             $name = $this->setUserName($first_name,  $last_name);
