@@ -13,6 +13,15 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 ?>
+<script type="text/javascript">
+    Joomla.submitbutton = function(task) {
+        if (task == 'repair' || task == 'clean') {
+            if (confirm("Are you sure?")){
+                Joomla.submitform(task, document.getElementById('adminForm'));
+            }
+        }
+    }
+</script>
 
 <div><?php echo JText::_('COM_SLOGIN_XML_DESCRIPTION'); ?></div>
 <ul>
@@ -98,3 +107,14 @@ defined('_JEXEC') or die('(@)|(@)');
     </table>
     <p>We ask that you specify in the payment, contact for feedback.</p>
 </div>
+
+<form
+        action="<?php echo JRoute::_('index.php?option=com_slogin'); ?>"
+        method="post"
+        name="adminForm"
+        id="adminForm"
+        >
+        <input type="hidden" name="task" value="" />
+        <input type="hidden" name="boxchecked" value="0" />
+        <?php echo JHtml::_('form.token'); ?>
+</form>

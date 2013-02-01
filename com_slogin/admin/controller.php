@@ -45,5 +45,54 @@ class SLoginController extends SLoginControllerParent
 		$this->default_view = 'settings';
 		parent::display($cachable, $urlparams);
 	}
-	
+
+    public function clean()
+    {
+        // Check for request forgeries.
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $db = JFactory::getDbo();
+        $query = 'TRUNCATE TABLE  `#__slogin_users`';
+        $db->setQuery($query);
+        if (!$db->query()) {
+            $msg = $db->getErrorMsg();
+            $msgType = 'error';
+        }
+        else{
+            $msg = 'Table cleared';
+            $msgType = 'message';
+        }
+        $app = JFactory::getApplication();
+        $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
+    }
+    public function repair()
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('s.user_id');
+        $query->from('#__slogin_users as s');
+        $query->leftJoin('#__users as u ON u.id = s.user_id');
+        $query->where('u.id IS NULL');
+        $db->setQuery($query);
+        $uids = $db->loadColumn();
+        if(is_array($uids) && count($uids)>0){
+            $query = $db->getQuery(true);
+            $query->delete('#__slogin_users');
+            $query->where('user_id IN ('.implode(', ', $uids).')');
+            $db->setQuery($query);
+            if (!$db->query()) {
+                $msg = $db->getErrorMsg();
+                $msgType = 'error';
+            }
+            else{
+                $msg = 'Table repaired';
+                $msgType = 'message';
+            }
+        }else{
+            $msg = 'Bad rows is not detected';
+            $msgType = 'message';
+        }
+        $app = JFactory::getApplication();
+        $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
+	}
 }

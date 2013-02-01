@@ -66,8 +66,10 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 		
 		//config
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_slogin');
+            JToolBarHelper::custom('repair', 'remove', 'remove', 'Repair Table', false);
+            JToolBarHelper::custom('clean', 'delete', 'delete', 'Clean Table', false);
+            JToolBarHelper::divider();
+            JToolBarHelper::preferences('com_slogin');
 		}
-
 	}
 }
