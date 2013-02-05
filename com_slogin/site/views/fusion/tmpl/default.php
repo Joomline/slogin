@@ -48,7 +48,8 @@ JHtml::_('behavior.keepalive');
             </fieldset>
         </form>
     </div>
-    <?php endif; ?>
+
+    <?php else : ?>
 
     <h2><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h2>
     <div id="slogin-buttons" class="slogin-buttons">
@@ -68,4 +69,6 @@ JHtml::_('behavior.keepalive');
         <?php endforeach; ?>
     </div>
     <div class="slogin-clear"></div>
+
+    <?php endif; ?>
 </div>
