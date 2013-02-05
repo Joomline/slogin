@@ -664,7 +664,26 @@ class SLoginController extends SLoginControllerParent
         //добавляем новую запись пользователя в #__slogin_users
         $store = $this->storeSloginUser($user_id, $slogin_id, $provider);
 
-        $this->displayRedirect('index.php?option=com_slogin&view=fusion', $popup);
+        $itemId = $this->getItemId('index.php?option=com_slogin&view=fusion');
+        $link = 'index.php?option=com_slogin&view=fusion';
+        $link = (!$itemId) ? $link : $link.'&Itemid='.$itemId;
+        $this->displayRedirect($link, $popup);
+    }
+
+    private function getItemId($link){
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('`id`');
+        $query->from($db->quoteName('#__menu'));
+        $query->where($db->quoteName('link') . ' = ' . $db->quote($link));
+
+        $db->setQuery($query);
+        $id = $db->loadResult();
+        if(!$id){
+            $input = new JInput();
+            $id = $input->getInt('Itemid', 0);
+        }
+        return $id;
     }
 
     public function detach_provider()
@@ -674,8 +693,12 @@ class SLoginController extends SLoginControllerParent
         //ид текущего пользователя
         $user_id = JFactory::getUser()->id;
 
+        $itemId = $this->getItemId('index.php?option=com_slogin&view=fusion');
+        $link = 'index.php?option=com_slogin&view=fusion';
+        $link = (!$itemId) ? $link : $link.'&Itemid='.$itemId;
+
         if((int)$user_id == 0 ){
-            $this->displayRedirect('index.php?option=com_slogin&view=fusion');
+            $this->displayRedirect($link);
         }
 
         $db = JFactory::getDbo();
@@ -687,7 +710,7 @@ class SLoginController extends SLoginControllerParent
         $db->setQuery($query);
         $db->query();
 
-        $this->displayRedirect('index.php?option=com_slogin&view=fusion');
+        $this->displayRedirect($link);
     }
 
     private function transliterate($str){
