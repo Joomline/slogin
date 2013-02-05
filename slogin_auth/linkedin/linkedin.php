@@ -11,7 +11,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
-include_once JPATH_ROOT.DS."plugins/slogin_auth/linkedin/assets/oauth/linkedin.php";
+include_once JPATH_ROOT."/plugins/slogin_auth/linkedin/assets/oauth/linkedin.php";
+include_once JPATH_ROOT."/components/com_slogin/controller.php";
 
 
 class plgSlogin_authLinkedin extends JPlugin
@@ -42,6 +43,19 @@ class plgSlogin_authLinkedin extends JPlugin
 
         $app = JFactory::getApplication();
         $input = $app->input;
+
+        $oauth_problem = $input->getString('oauth_problem', '');
+        if($oauth_problem == 'user_refused'){
+            $config = JComponentHelper::getParams('com_slogin');
+
+            JModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = JModel::getInstance('Linking_user', 'SloginModel');
+
+            $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
+
+            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller->displayRedirect($redirect, true);
+        }
 
         # First step is to initialize with your consumer key and secret. We'll use an out-of-band oauth_callback
         $linkedin = new LinkedIn($this->params->get('api_key'), $this->params->get('secret_key'), $redirect);

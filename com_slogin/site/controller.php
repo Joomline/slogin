@@ -322,7 +322,7 @@ class SLoginController extends SLoginControllerParent
     /**
      * Метод для отображения специального редиректа, с закрытием окна
      */
-    protected function displayRedirect($redirect='index.php', $popup=false, $msg = '', $msgType = 'message')
+    public function displayRedirect($redirect='index.php', $popup=false, $msg = '', $msgType = 'message')
     {
         if($popup){
             $session = JFactory::getSession();
