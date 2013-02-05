@@ -26,18 +26,6 @@
 				<option value="0">JNO</option>
 		</field>
 
-        <field
-                name="add_info_new_user"
-                type="radio"
-                label="COM_SLOGIN_AFTER_REG"
-                description="COM_SLOGIN_ADD_INFO_DESC"
-                default="0"
-                >
-            <option value="0">COM_SLOGIN_ADD_NOTIN</option>
-            <option value="1">COM_SLOGIN_ADD_INFO</option>
-            <option value="2">COM_SLOGIN_LINKING</option>
-        </field>
-
 		<field
 			name="query_email"
 			type="radio"

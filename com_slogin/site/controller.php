@@ -627,18 +627,8 @@ class SLoginController extends SLoginControllerParent
                 );
                 $app->setUserState('com_slogin.comparison_user.data', $data);
 
-                switch($this->config->get('add_info_new_user', 0)){
-                    case 0://если установлено ничкего не делать после регистрации
-                        $model = parent::getModel('Linking_user', 'Slogin');
-                        $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
-                        break;
-                    case 1://если установлено Заполнить регистрационные данные после регитсрации
-                        $return = 'index.php?option=com_users&view=profile&layout=edit';
-                        break;
-                    case 2://если установлена привязка пользователей после регитсрации
-                        $return = 'index.php?option=com_slogin&view=linking_user';
-                        break;
-                }
+                $model = parent::getModel('Linking_user', 'Slogin');
+                $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
 
                 //логинимся если ид пользователя верный
                 $this->loginUser($joomlaUserId, $provider, $info);
