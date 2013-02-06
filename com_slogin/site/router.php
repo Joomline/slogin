@@ -19,7 +19,11 @@
 
 function SLoginBuildRoute(& $query)
 {
-	$segments = array();
+    // Declare static variables.
+    static $items;
+    static $itemId;
+
+    $segments = array();
 
 	if (isset($query['task'])) {
 		switch($query['task']) {
@@ -91,6 +95,22 @@ function SLoginBuildRoute(& $query)
 	}
 
 	if (isset($query['view'])) {
+
+        if (empty($items)) {
+            // Get all relevant menu items.
+            $app	= JFactory::getApplication();
+            $menu	= $app->getMenu();
+            $items	= $menu->getItems('component', 'com_slogin');
+
+            // Build an array of serialized query strings to menu item id mappings.
+            for ($i = 0, $n = count($items); $i < $n; $i++) {
+                // Check to see if we have found the reset menu item.
+                if (!empty($items[$i]->query['view']) && ($items[$i]->query['view'] == $query['view'])) {
+                    $itemId = $items[$i]->id;
+                    break;
+                }
+            }
+        }
 		switch($query['view']) {
 			case 'comparison_user':
 				$segments[] = 'user';
@@ -103,8 +123,14 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'fusion':
-				$segments[] = 'user';
-				$segments[] = 'fusion';
+                if($itemId){
+                    unset ($query['view']);
+                    $query['Itemid'] = $itemId;
+                }
+                else{
+                    $segments[] = 'user';
+                    $segments[] = 'fusion';
+                }
 				break;
 
 			case 'mail':

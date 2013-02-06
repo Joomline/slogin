@@ -607,7 +607,7 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $username = $this->transliterate(preg_replace('/(\W)/i', '', $first_name).'-'.preg_replace('/(\W)/i', '', $last_name).'-'.$provider);
+            $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
 
             //имя пользователя
             $name = $this->setUserName($first_name,  $last_name);
@@ -663,26 +663,9 @@ class SLoginController extends SLoginControllerParent
         //добавляем новую запись пользователя в #__slogin_users
         $store = $this->storeSloginUser($user_id, $slogin_id, $provider);
 
-        $itemId = $this->getItemId('index.php?option=com_slogin&view=fusion');
         $link = 'index.php?option=com_slogin&view=fusion';
-        $link = (!$itemId) ? $link : $link.'&Itemid='.$itemId;
+
         $this->displayRedirect($link, $popup);
-    }
-
-    private function getItemId($link){
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query->select('`id`');
-        $query->from($db->quoteName('#__menu'));
-        $query->where($db->quoteName('link') . ' = ' . $db->quote($link));
-
-        $db->setQuery($query);
-        $id = $db->loadResult();
-        if(!$id){
-            $input = new JInput();
-            $id = $input->getInt('Itemid', 0);
-        }
-        return $id;
     }
 
     public function detach_provider()
@@ -692,9 +675,7 @@ class SLoginController extends SLoginControllerParent
         //ид текущего пользователя
         $user_id = JFactory::getUser()->id;
 
-        $itemId = $this->getItemId('index.php?option=com_slogin&view=fusion');
         $link = 'index.php?option=com_slogin&view=fusion';
-        $link = (!$itemId) ? $link : $link.'&Itemid='.$itemId;
 
         if((int)$user_id == 0 ){
             $this->displayRedirect($link);
@@ -723,7 +704,7 @@ class SLoginController extends SLoginControllerParent
             "Е"=>"E", "Ё"=>"Yo","Ж"=>"J","З"=>"Z","И"=>"I","Й"=>"I","К"=>"K", "Л"=>"L",
             "М"=>"M","Н"=>"N","О"=>"O","П"=>"P", "Р"=>"R","С"=>"S","Т"=>"T","У"=>"Y",
             "Ф"=>"F", "Х"=>"H","Ц"=>"C","Ч"=>"Ch","Ш"=>"Sh","Щ"=>"Sh", "Ы"=>"I","Э"=>"E",
-            "Ю"=>"U","Я"=>"Ya","Ї"=>"I","І"=>"I");
+            "Ю"=>"U","Я"=>"Ya","Ї"=>"I","І"=>"I","_"=>"-");
 
         $res=str_replace(" ","-",strtr($str,$trans));
 
