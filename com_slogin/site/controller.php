@@ -607,9 +607,7 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
-            //убираем служебные символы
-            $username = preg_replace('/(\W)/i', '', $username);
+            $username = $this->transliterate(preg_replace('/(\W)/i', '', $first_name).'-'.preg_replace('/(\W)/i', '', $last_name).'-'.$provider);
 
             //имя пользователя
             $name = $this->setUserName($first_name,  $last_name);
@@ -627,7 +625,8 @@ class SLoginController extends SLoginControllerParent
                 );
                 $app->setUserState('com_slogin.comparison_user.data', $data);
 
-                $model = parent::getModel('Linking_user', 'Slogin');
+                $model = parent::getModel('Linking_user', 'SloginModel');
+
                 $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
 
                 //логинимся если ид пользователя верный
