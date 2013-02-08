@@ -98,6 +98,42 @@ var SLogin = SLogin || {
             return true;
         }
         return false;
+    },
+
+    loadModuleAjax:function () {
+        SLogin.getUrl('/index.php?option=com_slogin&task=load_module_ajax&return='+sloginReturnUri);
+
+    },
+
+    printProviders:function (resp) {
+        document.getElementById('mod_slogin').innerHTML = resp;
+        SLogin.initialize();
+    },
+
+    getXmlHttp:function () {
+        try {
+            return new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (ee) {
+            }
+        }
+        if (typeof XMLHttpRequest != 'undefined') {
+            return new XMLHttpRequest();
+        }
+    },
+
+    getUrl:function (url) {
+        var xmlhttp = SLogin.getXmlHttp();
+        xmlhttp.open("GET", url);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                var resp = xmlhttp.responseText;
+                SLogin.printProviders(resp);
+            }
+        }
+        xmlhttp.send(null);
     }
 
 };

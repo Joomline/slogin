@@ -10,20 +10,11 @@
 
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
+
 //подключаем helper стандартного модуля авторизации, для ридеректа
 require_once JPATH_BASE.'/modules/mod_login/helper.php';
 
-$user = JFactory::getUser();
 $doc = JFactory::getDocument();
-$input = new JInput;
-
-$type	= modLoginHelper::getType();
-
-$return	= modLoginHelper::getReturnURL($params, $type);
-
-$callbackUrl = '&return=' . $return;
-
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
 $loadAfter = $params->get('load_after', 0);
 
@@ -35,30 +26,39 @@ if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_
 
 if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/'.$layout.'/slogin.css'); }
 
-$dispatcher	= JDispatcher::getInstance();
+$type	= modLoginHelper::getType();
 
-JPluginHelper::importPlugin('slogin_auth');
+$return	= modLoginHelper::getReturnURL($params, $type);
 
-$plugins = array();
-
-$dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
-
-if($loadAfter == 1){
-    ob_start();
-    require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
-    $modCcontent = ob_get_clean();
+if($loadAfter == 1 && $type != 'logout'){
     ?>
-    <div id="mod_slogin"></div>
+    <div id="mod_slogin">
+        <img src="/modules/mod_slogin/media/ajax-loader.gif"/>
+    </div>
     <script type="text/javascript">
-        var sloginContent = '<?php echo $modCcontent; ?>';
-        function sloginLoad() {
-            document.getElementById('mod_slogin').innerHTML = sloginContent;
-        }
-        sloginLoad();
+        var sloginReturnUri = '<?php echo base64_encode($return);?>';
+        SLogin.addListener(window, 'load', function () {
+            SLogin.loadModuleAjax();
+        });
     </script>
     <?php
 }
 else{
+    $user = JFactory::getUser();
+    $input = new JInput;
+
+    $callbackUrl = '&return=' . $return;
+
+    $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+    $dispatcher	= JDispatcher::getInstance();
+
+    JPluginHelper::importPlugin('slogin_auth');
+
+    $plugins = array();
+
+    $dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
+
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 }
 

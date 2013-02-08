@@ -773,6 +773,32 @@ class SLoginController extends SLoginControllerParent
         $id = $db->loadResult();
         return $id;
     }
+
+    public function load_module_ajax(){
+
+        //подключаем helper стандартного модуля авторизации, для ридеректа
+        require_once JPATH_BASE.'/modules/mod_login/helper.php';
+
+        $user = JFactory::getUser();
+        $doc = JFactory::getDocument();
+        $input = new JInput;
+
+        $params = new JRegistry;
+        $params->loadString(JModuleHelper::getModule('mod_slogin')->params);
+
+        $type	= modLoginHelper::getType();
+        $return	= base64_decode($input->getBase64('return', ''));
+        $callbackUrl = '&return=' . $return;
+        $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+        $plugins = array();
+        JPluginHelper::importPlugin('slogin_auth');
+        $dispatcher	= JDispatcher::getInstance();
+        $dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
+
+        require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
+        die;
+    }
 }
 
 class SloginRequest {
