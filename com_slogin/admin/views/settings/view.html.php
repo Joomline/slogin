@@ -39,7 +39,11 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	 */
 	public function display($tpl = null)
 	{
-		
+        $this->loadHelper('slogin');
+
+        // Load the submenu.
+        SLoginHelper::addSubmenu(JRequest::getCmd('view', 'settings'));
+
 		$this->component = JApplicationHelper::parseXMLInstallFile(JPATH_COMPONENT.'/slogin.xml');
 		$this->module = JApplicationHelper::parseXMLInstallFile(JPATH_SITE.'/modules/mod_slogin/mod_slogin.xml');
 
@@ -66,8 +70,8 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 		
 		//config
 		if ($canDo->get('core.admin')) {
-            JToolBarHelper::custom('repair', 'remove', 'remove', 'Repair Table', false);
-            JToolBarHelper::custom('clean', 'delete', 'delete', 'Clean Table', false);
+            JToolBarHelper::custom('repair', 'remove', 'remove', JText::_('COM_SLOGIN_REPAIR_TABLE'), false);
+            JToolBarHelper::custom('clean', 'delete', 'delete', JText::_('COM_SLOGIN_CLEAN_TABLE'), false);
             JToolBarHelper::divider();
             JToolBarHelper::preferences('com_slogin');
 		}

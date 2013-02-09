@@ -19,7 +19,20 @@ defined('_JEXEC') or die('(@)|(@)');
  */
 class SLoginHelper
 {
+    public static function addSubmenu($vName)
+    {
+        JSubMenuHelper::addEntry(
+            JText::_('COM_SLOGIN_MAIN'),
+            'index.php?option=com_slogin&view=settings',
+            $vName == 'settings'
+        );
 
+        JSubMenuHelper::addEntry(
+            JText::_('COM_SLOGIN_USERS'),
+            'index.php?option=com_slogin&view=users',
+            $vName == 'users'
+        );
+    }
 	
 	public static function getActions()
 	{

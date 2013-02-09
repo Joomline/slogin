@@ -95,4 +95,66 @@ class SLoginController extends SLoginControllerParent
         $app = JFactory::getApplication();
         $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
 	}
+
+    public function remove_slogin_users(){
+        $input = new JInput();
+        $app = JFactory::getApplication();
+        $ids = $input->get('cid', array(), 'ARRAY');
+        $model = $this->getModel('User', 'SloginModel');
+        $table = $model->getTable();
+        $errors = array();
+        if(count($ids) > 0){
+            foreach($ids as $id){
+                if (!$table->delete((int)$id)) {
+                    $errors[] = $table->getError();
+                }
+            }
+        }
+        $msg = '';
+        $msgType = JText::_('COM_SLOGIN_USERS_DELETED');
+        if(count($errors)){
+            $msg = implode('<br/>', $errors);
+            $msgType = 'error';
+        }
+        $app->redirect('index.php?option=com_slogin&view=users', $msg, $msgType);
+    }
+
+    public function remove_joomla_users(){
+        $input = new JInput();
+        $app = JFactory::getApplication();
+        $ids = $input->get('cid', array(), 'ARRAY');
+        $model = $this->getModel('User', 'SloginModel');
+        $table = $model->getTable();
+        $errors = array();
+        $db = JFactory::getDbo();
+        $user = new JUser();
+        if(count($ids) > 0){
+            foreach($ids as $id){
+                $query = $db->getQuery(true);
+                $query->select('user_id');
+                $query->from('#__slogin_users');
+                $query->where('id = '.(int)$id);
+                $db->setQuery((string)$query, 0, 1);
+                $userId = $db->loadResult();
+
+                if (!$table->delete((int)$id)) {
+                    $errors[] = $table->getError();
+                }
+                else{
+                    $user->id = $userId;
+                    $user->delete();
+                    if (!$table->deleteUserRows($userId)){
+                        $errors[] = $table->getError();
+                    }
+                }
+            }
+        }
+        $msg = JText::_('COM_SLOGIN_USERS_DELETED');
+        $msgType = 'msg';
+        if(count($errors)){
+            $msg = implode('<br/>', $errors);
+            $msgType = 'error';
+        }
+        $app->redirect('index.php?option=com_slogin&view=users', $msg, $msgType);
+    }
 }

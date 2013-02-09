@@ -16,7 +16,7 @@ defined('_JEXEC') or die('(@)|(@)');
 <script type="text/javascript">
     Joomla.submitbutton = function(task) {
         if (task == 'repair' || task == 'clean') {
-            if (confirm("Are you sure?")){
+            if (confirm("<?php echo JText::_('COM_SLOGIN_CONFIRM'); ?>")){
                 Joomla.submitform(task, document.getElementById('adminForm'));
             }
         }
