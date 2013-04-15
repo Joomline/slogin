@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authGoogle extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=google';
 
@@ -34,7 +34,7 @@ class plgSlogin_authGoogle extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -65,7 +65,10 @@ class plgSlogin_authGoogle extends JPlugin
             $url = 'https://accounts.google.com/o/oauth2/token';
             $request = json_decode($controller->open_http($url, true, $params));
 
-
+            if(empty($request)){
+                echo 'Error - empty access tocken';
+                exit;
+            }
 
             //Get user info
             //
@@ -83,7 +86,11 @@ class plgSlogin_authGoogle extends JPlugin
             $url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$request->access_token;
             $request = json_decode($controller->open_http($url));
 
-            if(!empty($request->error)){
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+            else if(!empty($request->error)){
                 echo 'Error - '. $request->error;
                 exit;
             }
@@ -96,10 +103,14 @@ class plgSlogin_authGoogle extends JPlugin
             $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->name;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google' . $add;

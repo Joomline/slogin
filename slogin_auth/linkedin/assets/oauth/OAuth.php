@@ -56,7 +56,7 @@ class OAuthToken {
  * A class for implementing a Signature Method
  * See section 9 ("Signing Requests") in the spec
  */
-abstract class OAuthSignatureMethod {
+abstract class OAuthSignatureMethodSlogin {
   /**
    * Needs to return the name of the Signature Method (ie HMAC-SHA1)
    * @return string
@@ -96,7 +96,7 @@ abstract class OAuthSignatureMethod {
  * character (ASCII code 38) even if empty.
  *   - Chapter 9.2 ("HMAC-SHA1")
  */
-class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
+class OAuthSignatureMethod_HMAC_SHA1_Slogin extends OAuthSignatureMethodSlogin {
   function get_name() {
     return "HMAC-SHA1";
   }
@@ -122,7 +122,7 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
  * over a secure channel such as HTTPS. It does not use the Signature Base String.
  *   - Chapter 9.4 ("PLAINTEXT")
  */
-class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
+class OAuthSignatureMethod_PLAINTEXT_Slogin extends OAuthSignatureMethodSlogin {
   public function get_name() {
     return "PLAINTEXT";
   }
@@ -158,7 +158,7 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
  * specification.
  *   - Chapter 9.3 ("RSA-SHA1")
  */
-abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
+abstract class OAuthSignatureMethod_RSA_SHA1_Slogin extends OAuthSignatureMethodSlogin {
   public function get_name() {
     return "RSA-SHA1";
   }
@@ -217,7 +217,7 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
   }
 }
 
-class OAuthRequest {
+class OAuthRequestSlogin {
   private $parameters;
   private $http_method;
   private $http_url;
@@ -283,7 +283,7 @@ class OAuthRequest {
 
     }
 
-    return new OAuthRequest($http_method, $http_url, $parameters);
+    return new OAuthRequestSlogin($http_method, $http_url, $parameters);
   }
 
   /**
@@ -291,16 +291,16 @@ class OAuthRequest {
    */
   public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters=NULL) {
     @$parameters or $parameters = array();
-    $defaults = array("oauth_version" => OAuthRequest::$version,
-                      "oauth_nonce" => OAuthRequest::generate_nonce(),
-                      "oauth_timestamp" => OAuthRequest::generate_timestamp(),
+    $defaults = array("oauth_version" => OAuthRequestSlogin::$version,
+                      "oauth_nonce" => OAuthRequestSlogin::generate_nonce(),
+                      "oauth_timestamp" => OAuthRequestSlogin::generate_timestamp(),
                       "oauth_consumer_key" => $consumer->key);
     if ($token)
       $defaults['oauth_token'] = $token->key;
 
     $parameters = array_merge($defaults, $parameters);
 
-    return new OAuthRequest($http_method, $http_url, $parameters);
+    return new OAuthRequestSlogin($http_method, $http_url, $parameters);
   }
 
   public function set_parameter($name, $value, $allow_duplicates = true) {

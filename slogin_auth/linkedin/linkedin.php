@@ -17,7 +17,7 @@ include_once JPATH_ROOT."/components/com_slogin/controller.php";
 
 class plgSlogin_authLinkedin extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
 
@@ -30,6 +30,11 @@ class plgSlogin_authLinkedin extends JPlugin
         # Now we retrieve a request token. It will be set as $linkedin->request_token
         $linkedin->getRequestToken();
 
+        if(empty($linkedin->request_token)){
+            echo 'Error - empty access tocken';
+            exit;
+        }
+
         $app->setUserState('requestToken', serialize($linkedin->request_token));
 
         $url = $linkedin->generateAuthorizeUrl();
@@ -37,7 +42,7 @@ class plgSlogin_authLinkedin extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
 
@@ -84,7 +89,11 @@ class plgSlogin_authLinkedin extends JPlugin
         $request = $linkedin->getProfile("~:(id,first-name,last-name,headline,picture-url,email-address)?format=json");
         $request = json_decode($request);
 
-        if(!empty($request->errorCode)){
+        if(empty($request)){
+            echo 'Error - empty user data';
+            exit;
+        }
+        else if(!empty($request->errorCode)){
             echo 'Error - '.$request->message;
             exit;
         }
@@ -101,7 +110,7 @@ class plgSlogin_authLinkedin extends JPlugin
 
         return $returnRequest;
     }
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=linkedin' . $add;

@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authMail extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=mail';
 
@@ -29,7 +29,7 @@ class plgSlogin_authMail extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -74,6 +74,11 @@ class plgSlogin_authMail extends JPlugin
 
             $url = 'https://connect.mail.ru/oauth/token';
             $request = json_decode($controller->open_http($url, true, $params));
+
+            if(empty($request)){
+                echo 'Error - empty access tocken';
+                exit;
+            }
 
             /* Получение информации о пользователе
                    "uid": "15410773191172635989",
@@ -122,7 +127,11 @@ class plgSlogin_authMail extends JPlugin
             $url = 'http://www.appsmail.ru/platform/api?'.$params;
             $request = json_decode($controller->open_http($url));
 
-            if(!empty($request->error)){
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+            else if(!empty($request->error)){
                 echo 'Error - '. $request->error->error_msg;
                 exit;
             }
@@ -137,11 +146,15 @@ class plgSlogin_authMail extends JPlugin
             $returnRequest->sex         = $request->sex;
             $returnRequest->display_name = $request->nick;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=mail' . $add;

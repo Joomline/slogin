@@ -13,14 +13,14 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authFacebook extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=facebook';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
             'redirect_uri=' . urlencode($redirect),
-            'scope=email'
+            'scope=email,user_photos,user_about_me,user_hometown,user_photos'
         );
         $params = implode('&', $params);
 
@@ -28,7 +28,7 @@ class plgSlogin_authFacebook extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -69,11 +69,15 @@ class plgSlogin_authFacebook extends JPlugin
             $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
             $request = json_decode($controller->open_http($ResponseUrl));
 
-            if(!empty($request->error)){
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+            else if(!empty($request->error)){
                 echo 'Error - '. $request->error;
                 exit;
             }
-
+            //var_dump($request); die;
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
             $returnRequest->email       = $request->email;
@@ -82,10 +86,15 @@ class plgSlogin_authFacebook extends JPlugin
             $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->name;
             $returnRequest->all_request  = $request;
+
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;

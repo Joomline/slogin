@@ -33,6 +33,34 @@ stdClass Object
 [locale] => ru
 )
 
+LinkedIn
+
+object(stdClass)#524 (5) {
+    ["firstName"]=> string(14) "Аркадий"
+    ["headline"]=> string(2) "--"
+    ["id"]=> string(10) "i7v3atbQcL"
+    ["lastName"]=> string(22) "Седельников"
+    ["pictureUrl"]=> string(107) "http://m3.licdn.com/mpr/mprx/0_zR-8K5l6p94t8B1YUgAxKFzMrqDrGlCYBM60KFPQftJhjzvOMjGuObFeOJSfTn_tq4rYx8DZPH6K"
+}
+
+Live.com
+
+object(stdClass)#534 (9) {
+    ["id"]=> string(16) "d5f1256f7b5322c7"
+    ["name"]=> string(37) "Аркадий Седельников"
+    ["first_name"]=> string(14) "Аркадий"
+    ["last_name"]=> string(22) "Седельников"
+    ["link"]=> string(25) "https://profile.live.com/"
+    ["gender"]=> NULL
+    ["emails"]=> object(stdClass)#533 (4) {
+        ["preferred"]=> string(22) "a.sedelnikov@gmail.com"
+        ["account"]=> string(22) "a.sedelnikov@gmail.com"
+        ["personal"]=> NULL
+        ["business"]=> NULL
+    }
+["locale"]=> string(5) "ru_RU"
+["updated_time"]=> string(24) "2013-02-09T04:50:26+0000"
+}
 
 mail
 
@@ -200,6 +228,7 @@ stdClass Object
 [nickname] =>
 [mobile_phone] =>
 [home_phone] =>
+[photo_big]=>
 )
 
 Yandex

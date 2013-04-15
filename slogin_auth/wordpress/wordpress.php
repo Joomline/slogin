@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authWordpress extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=wordpress';
 
@@ -29,7 +29,7 @@ class plgSlogin_authWordpress extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -81,6 +81,10 @@ class plgSlogin_authWordpress extends JPlugin
             $secret = json_decode($auth);
             $access_key = $secret->access_token;
 
+            if(empty($secret)){
+                echo 'Error - empty access tocken';
+                exit;
+            }
             if(!empty($secret->error)){
                 echo 'Error - '. $secret->error_description;
                 exit;
@@ -93,6 +97,10 @@ class plgSlogin_authWordpress extends JPlugin
             curl_close($curl);
             $request = json_decode($request);
 
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
             if(!empty($request->error)){
                 echo 'Error - '. $request->error_description;
                 exit;
@@ -123,11 +131,15 @@ class plgSlogin_authWordpress extends JPlugin
             $returnRequest->first_name      = $request->display_name;
             $returnRequest->email           = $request->email;
             $returnRequest->all_request     = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=wordpress' . $add;

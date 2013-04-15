@@ -66,7 +66,7 @@ class SloginModelFusion extends JModelForm
         $action = (JFactory::getUser()->id == 0) ? '' : '&action=fusion';
 
         $plugins = array();
-        $dispatcher->trigger('onCreateLink', array(&$plugins, $action));
+        $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $action));
         return $plugins;
 	}
 

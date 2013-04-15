@@ -57,7 +57,7 @@ else{
 
     $plugins = array();
 
-    $dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
+    $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 }
