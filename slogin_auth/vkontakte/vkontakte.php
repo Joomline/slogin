@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authVkontakte extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=vkontakte';
 
@@ -30,7 +30,7 @@ class plgSlogin_authVkontakte extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -59,7 +59,7 @@ class plgSlogin_authVkontakte extends JPlugin
 
             $data = json_decode($controller->open_http($url));
 
-            if (empty($data->access_token) && $data->error) {
+            if (empty($data->access_token) || $data->error) {
                 $error = (!empty($data->error_description)) ? $data->error_description : $data->info;
                 die($error);
             }
@@ -81,10 +81,14 @@ class plgSlogin_authVkontakte extends JPlugin
 // 			предложный – abl.
 // 			По умолчанию nom.
 
-            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts';
+            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big';
             $request = json_decode($controller->open_http($ResponseUrl))->response[0];
 
-            if(!empty($request->error)){
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+            else if(!empty($request->error)){
                 echo 'Error - '. $request->error;
                 exit;
             }
@@ -95,11 +99,15 @@ class plgSlogin_authVkontakte extends JPlugin
             $returnRequest->real_name   = $request->first_name.' '.$request->last_name;
             $returnRequest->display_name = $request->nickname;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte' . $add;

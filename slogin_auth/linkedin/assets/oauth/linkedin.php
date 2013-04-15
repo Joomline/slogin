@@ -22,7 +22,7 @@ class LinkedIn {
 		}
 
 		$this->consumer = new OAuthConsumer($consumer_key, $consumer_secret, $this->oauth_callback);
-		$this->signature_method = new OAuthSignatureMethod_HMAC_SHA1();
+		$this->signature_method = new OAuthSignatureMethod_HMAC_SHA1_Slogin();
 		$this->request_token_path = $this->secure_base_url . "/uas/oauth/requestToken";
 		$this->access_token_path = $this->secure_base_url . "/uas/oauth/accessToken";
 		$this->authorize_path = $this->secure_base_url . "/uas/oauth/authorize";
@@ -31,7 +31,7 @@ class LinkedIn {
 	function getRequestToken()
 	{
 		$consumer = $this->consumer;
-		$request = OAuthRequest::from_consumer_and_token($consumer, NULL, "GET", $this->request_token_path);
+		$request = OAuthRequestSlogin::from_consumer_and_token($consumer, NULL, "GET", $this->request_token_path);
 		$request->set_parameter("oauth_callback", $this->oauth_callback);
 		$request->sign_request($this->signature_method, $consumer, NULL);
 		$headers = Array();
@@ -50,7 +50,7 @@ class LinkedIn {
 
 	function getAccessToken($oauth_verifier)
 	{
-		$request = OAuthRequest::from_consumer_and_token($this->consumer, $this->request_token, "GET", $this->access_token_path);
+		$request = OAuthRequestSlogin::from_consumer_and_token($this->consumer, $this->request_token, "GET", $this->access_token_path);
 		$request->set_parameter("oauth_verifier", $oauth_verifier);
 		$request->sign_request($this->signature_method, $this->consumer, $this->request_token);
 		$headers = Array();
@@ -63,7 +63,7 @@ class LinkedIn {
 	function getProfile($resource = "~")
 	{
 		$profile_url = $this->base_url . "/v1/people/" . $resource;
-		$request = OAuthRequest::from_consumer_and_token($this->consumer, $this->access_token, "GET", $profile_url);
+		$request = OAuthRequestSlogin::from_consumer_and_token($this->consumer, $this->access_token, "GET", $profile_url);
 		$request->sign_request($this->signature_method, $this->consumer, $this->access_token);
 		$auth_header = $request->to_header("https://api.linkedin.com"); # this is the realm
 		# This PHP library doesn't generate the header correctly when a realm is not specified.
@@ -84,7 +84,7 @@ class LinkedIn {
 		echo "Setting status...\n";
 		$xml = "<current-status>" . htmlspecialchars($status, ENT_NOQUOTES, "UTF-8") . "</current-status>";
 		echo $xml . "\n";
-		$request = OAuthRequest::from_consumer_and_token($this->consumer, $this->access_token, "PUT", $status_url);
+		$request = OAuthRequestSlogin::from_consumer_and_token($this->consumer, $this->access_token, "PUT", $status_url);
 		$request->sign_request($this->signature_method, $this->consumer, $this->access_token);
 		$auth_header = $request->to_header("https://api.linkedin.com");
 
@@ -101,7 +101,7 @@ class LinkedIn {
 
 		echo "Performing search for: " . $parameters . "<br />";
 		echo "Search URL: $search_url <br />";
-		$request = OAuthRequest::from_consumer_and_token($this->consumer, $this->access_token, "GET", $search_url);
+		$request = OAuthRequestSlogin::from_consumer_and_token($this->consumer, $this->access_token, "GET", $search_url);
 		$request->sign_request($this->signature_method, $this->consumer, $this->access_token);
 		$auth_header = $request->to_header("https://api.linkedin.com");
 		$response = $this->httpRequest($search_url, $auth_header, "GET");

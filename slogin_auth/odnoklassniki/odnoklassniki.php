@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authOdnoklassniki extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=odnoklassniki';
 
@@ -30,7 +30,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -62,7 +62,11 @@ class plgSlogin_authOdnoklassniki extends JPlugin
             $url = 'http://api.odnoklassniki.ru/oauth/token.do';
             $request = json_decode($controller->open_http($url, true, $params));
 
-            if (!empty($request->error)) {
+            if (empty($request)) {
+                echo 'Error - empty access tocken';
+                die();
+            }
+            else if (!empty($request->error)) {
                 echo '<h3>token.do</h3>';
                 echo '<p>'.$request->error.'</p>';
                 echo '<p>'.$request->error_description.'</p>';
@@ -98,7 +102,11 @@ class plgSlogin_authOdnoklassniki extends JPlugin
             $url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
             $request = json_decode($controller->open_http($url));
 
-            if (!empty($request->error_code)) {
+            if (empty($request)) {
+                echo 'Error - empty user data';
+                die();
+            }
+            else if (!empty($request->error_code)) {
                 echo '<h3>fb.do</h3>';
                 echo '<p>'.$request->error_data.'</p>';
                 echo '<p>'.$request->error_msg.'</p>';
@@ -118,11 +126,15 @@ class plgSlogin_authOdnoklassniki extends JPlugin
             $returnRequest->sex         = $request->gender;
             $returnRequest->display_name = $request->name;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=odnoklassniki' . $add;

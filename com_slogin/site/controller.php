@@ -70,7 +70,7 @@ class SLoginController extends SLoginControllerParent
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $url = $dispatcher->trigger('onAuth');
+            $url = $dispatcher->trigger('onSloginAuth');
             $url = $url[0];
         }
         else{
@@ -101,7 +101,7 @@ class SLoginController extends SLoginControllerParent
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $request = $dispatcher->trigger('onCheck');
+            $request = $dispatcher->trigger('onSloginCheck');
             $request = $request[0];
         }
         else{
@@ -260,7 +260,7 @@ class SLoginController extends SLoginControllerParent
         //вставка нового пользователя в таблицы других компонентов
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterStoreUser',array($user_object, $provider, $info));
+        $dispatcher->trigger('onAfterSloginStoreUser',array($user_object, $provider, $info));
 
         return $user_object->id;
     }
@@ -278,7 +278,7 @@ class SLoginController extends SLoginControllerParent
 
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeLoginUser',array($instance, $provider, $info));
+        $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
 
         // If _getUser returned an error, then pass it back.
         if ($instance instanceof Exception) {
@@ -315,7 +315,7 @@ class SLoginController extends SLoginControllerParent
         // Hit the user last visit field
         $instance->setLastVisit();
 
-        $dispatcher->trigger('onAfterLoginUser',array($instance, $provider, $info));
+        $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
 
     }
 
@@ -794,7 +794,7 @@ class SLoginController extends SLoginControllerParent
         $plugins = array();
         JPluginHelper::importPlugin('slogin_auth');
         $dispatcher	= JDispatcher::getInstance();
-        $dispatcher->trigger('onCreateLink', array(&$plugins, $callbackUrl));
+        $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
         require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
         die;

@@ -15,7 +15,7 @@ require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
 class plgSlogin_authTwitter extends JPlugin
 {
-    public function onAuth()
+    public function onSloginAuth()
     {
         $controller = new SLoginController();
 
@@ -45,7 +45,7 @@ class plgSlogin_authTwitter extends JPlugin
         return $url;
     }
 
-    public function onCheck()
+    public function onSloginCheck()
     {
         $controller = new SLoginController();
 
@@ -84,6 +84,11 @@ class plgSlogin_authTwitter extends JPlugin
 
             parse_str($request, $data);
 
+            if(empty($data['screen_name'])){
+                echo 'Error - empty access tocken';
+                exit;
+            }
+
             //получение данных о пользователе
             $url = 'https://api.twitter.com/1/users/show.json?screen_name='.$data['screen_name'];
             $request = json_decode($controller->open_http($url));
@@ -92,7 +97,11 @@ class plgSlogin_authTwitter extends JPlugin
             $session->clear('oauth_token');
             $session->clear('oauth_signature');
 
-            if(!empty($request->error)){
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+            else if(!empty($request->error)){
                 echo 'Error - '. $request->error;
                 exit;
             }
@@ -103,18 +112,16 @@ class plgSlogin_authTwitter extends JPlugin
             $returnRequest->real_name   = $request->name.' '.$request->screen_name;
             $returnRequest->display_name = $request->screen_name;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
-//        $document = JFactory::getDocument();
-//        $document->addStyleDeclaration('
-//           .slogin-buttons .yandex {
-//                background-position: 0 -426px;
-//            }
-//        ');
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter' . $add;
         $links[$i]['class'] = 'twitterslogin';

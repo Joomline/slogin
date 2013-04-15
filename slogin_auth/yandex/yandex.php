@@ -13,12 +13,12 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authYandex extends JPlugin
 {
-	public function onAuth()
+	public function onSloginAuth()
 	{
         return 'https://oauth.yandex.ru/authorize?response_type=code&display=popup&client_id='.$this->params->get('id');
 	}
 
-	public function onCheck()
+	public function onSloginCheck()
 	{
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
@@ -76,6 +76,11 @@ class plgSlogin_authYandex extends JPlugin
 
             $request = json_decode($controller->open_http($url));
 
+            if(empty($request)){
+                echo 'Error - empty user data';
+                exit;
+            }
+
             $name = explode(' ', $request->real_name);
 
             $returnRequest->first_name = (isset($name[1])) ? $name[1] : '';
@@ -87,18 +92,16 @@ class plgSlogin_authYandex extends JPlugin
             $returnRequest->display_name = $request->display_name;
             $returnRequest->birthday = $request->birthday;
             $returnRequest->all_request  = $request;
+            return $returnRequest;
         }
-        return $returnRequest;
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
 	}
 
-    public function onCreateLink(&$links, $add = '')
+    public function onCreateSloginLink(&$links, $add = '')
     {
-//        $document = JFactory::getDocument();
-//        $document->addStyleDeclaration('
-//           .slogin-buttons .yandexslogin {
-//                background-position: 0 -426px;
-//            }
-//        ');
        $i = count($links);
        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yandex' . $add;
        $links[$i]['class'] = 'yandexslogin';
