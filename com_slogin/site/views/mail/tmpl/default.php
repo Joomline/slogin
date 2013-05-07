@@ -31,14 +31,14 @@ JHTML::_('behavior.formvalidation');
                     <label id="name-lbl" for="name" class=" required">
                         <?php echo JText::_('COM_SLOGIN_NAME')?>
                     </label>
-                    <input type="text" name="name" id="name"
+                    <input type="text" name="name" id="name" class="validate-name required"
                            value="<?php echo $this->name; ?>" size="25"/>
                 </div>
                 <div class="login-fields">
                     <label id="username-lbl" for="username" class=" required">
                         <?php echo JText::_('COM_SLOGIN_USERNAME_LABEL')?>
                     </label>
-                    <input type="text" name="username" id="username"
+                    <input type="text" name="username" id="username" class="validate-username required"
                            value="<?php echo $this->username; ?>" size="25"/>
                 </div>
                 <div class="login-fields">
@@ -46,10 +46,10 @@ JHTML::_('behavior.formvalidation');
                         <?php echo JText::_('COM_SLOGIN_MAIL')?>
                     </label>
                     <input type="text" name="email" id="email"
-                           value="<?php echo $this->email; ?>" class="required" size="25">
+                           value="<?php echo $this->email; ?>" class="validate-email required" size="25">
                 </div>
 
-                <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_SUBMIT'); ?></button>
+                <input type="submit" class="button validate" value="<?php echo JText::_('COM_SLOGIN_SUBMIT'); ?>"/>
 
                 <?php echo JHtml::_('form.token'); ?>
             </fieldset>
