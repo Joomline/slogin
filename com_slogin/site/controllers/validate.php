@@ -38,10 +38,14 @@ class SLoginControllerValidate
     function validateEmail($email)
     {
         //by Femi Hasani [www.vision.to]
-        if(!preg_match ("/^[\w\.-]{1,}\@([\da-zA-Z-]{1,}\.){1,}[\da-zA-Z-]+$/", $email))
+        if(!preg_match ("/^[\w\.-]{1,}\@([\da-zA-Z-]{1,}\.){1,}[\da-zA-Z-]+$/", $email)){
             return false;
+        }
 
-        list($prefix, $domain) = split("@",$email);
+
+        list($prefix, $domain) = explode("@",$email);
+
+        $mxHosts = array();
 
         if(function_exists("getmxrr") && getmxrr($domain, $mxhosts))
         {
@@ -59,14 +63,13 @@ class SLoginControllerValidate
 
     function checkUniqueEmail($email)
     {
-        // Initialise some variables
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select($db->quoteName('COUNT(*)'));
+        $query->select('COUNT(*)');
         $query->from($db->quoteName('#__users'));
         $query->where($db->quoteName('email') . ' = ' . $db->quote($email));
         $db->setQuery($query, 0, 1);
-        return (bool)$db->loadResult();
+        return (bool)!$db->loadResult();
     }
 
     function validateName($name)
@@ -81,13 +84,12 @@ class SLoginControllerValidate
         if(!is_string($username) || strlen($username) < 2)
             return false;
 
-        // Initialise some variables
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select($db->quoteName('COUNT(*)'));
+        $query->select('COUNT(*)');
         $query->from($db->quoteName('#__users'));
         $query->where($db->quoteName('username') . ' = ' . $db->quote($username));
         $db->setQuery($query, 0, 1);
-        return (bool)$db->loadResult();
+        return (bool)!$db->loadResult();
     }
 }

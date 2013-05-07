@@ -24,6 +24,9 @@ if(!class_exists('SloginViewMailParent')){
     }
 }
 
+// import joomla controller library
+jimport('joomla.application.component.controller');
+
 /**
  * HTML View class for the HelloWorld Component
  */
@@ -35,13 +38,27 @@ class SloginViewMail extends SloginViewMailParent
         $app	= JFactory::getApplication();
 
         $data = $app->getUserState('com_slogin.provider.data');
-        $app->setUserState('com_slogin.provider.data', array());
+        $app = JFactory::getApplication();
 
-        $this->first_name = $data['first_name'];
-        $this->last_name = $data['last_name'];
+        $msg = $app->getUserState('com_slogin.msg', '');
+        $msgType = $app->getUserState('com_slogin.msgType', '');
+        $app->setUserState('com_slogin.msg', '');
+        $app->setUserState('com_slogin.msgType', '');
+
+        if(!empty($msg)){
+            $msgType = (!empty($msgType)) ? $msgType : 'message';
+            $app->enqueueMessage($msg, $msgType);
+        }
+
+        //костыль для поддержки 2 и  3 джумлы
+        $className = (class_exists('JControllerLegacy')) ? 'JControllerLegacy' : 'JController';
+
+        // Get an instance of the controller prefixed by SLogin
+        $controller = call_user_func(array($className, 'getInstance'), 'SLogin');
+
+        $this->name = $controller->setUserName($data['first_name'],  $data['last_name']);
+        $this->username = $controller->transliterate($data['first_name'].'-'.$data['last_name'].'-'.$data['provider']);
         $this->email = $data['email'];
-        $this->slogin_id = $data['slogin_id'];
-        $this->provider = $data['provider'];
 
         $this->action = JRoute::_('index.php?option=com_slogin&task=check_mail');
 

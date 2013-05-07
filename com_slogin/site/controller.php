@@ -35,6 +35,8 @@ if(!class_exists('SLoginControllerParent')){
 class SLoginController extends SLoginControllerParent
 {
     protected $config;
+    protected $name = null;
+    protected $username = null;
 
     public function __construct()
     {
@@ -158,7 +160,7 @@ class SLoginController extends SLoginControllerParent
      * @param string $last_name        Фамилия
      * @return string    Имя пользователя, в зовизимости от параметров компонента
      */
-    protected function setUserName($first_name, $last_name)
+    public function setUserName($first_name, $last_name)
     {
         if ($this->config->get('user_name', 1)) {
             $name = $first_name . ' ' . $last_name;
@@ -325,6 +327,9 @@ class SLoginController extends SLoginControllerParent
     public function displayRedirect($redirect='index.php', $popup=false, $msg = '', $msgType = 'message')
     {
         if($popup){
+            $app = JFactory::getApplication();
+            $app->setUserState('com_slogin.msg', $msg);
+            $app->setUserState('com_slogin.msgType', $msgType);
             $session = JFactory::getSession();
             $redirect = base64_encode(JRoute::_($redirect));
             $session->set('slogin_return', JRoute::_($redirect));
@@ -530,19 +535,42 @@ class SLoginController extends SLoginControllerParent
         $app = JFactory::getApplication();
         $input = new JInput;
 
-        $first_name =   $input->Get('first_name',   '', 'STRING');
-        $last_name =    $input->Get('last_name',    '', 'STRING');
-        $email =        $input->Get('email',        '', 'STRING');
-        $slogin_id =    $input->Get('slogin_id',    '', 'STRING');
-        $provider =     $input->Get('provider',     '', 'STRING');
+        $data =         $app->getUserState('com_slogin.provider.data');
         $info =         $app->getUserState('com_slogin.provider.info');
+        $first_name =   $data['first_name'];
+        $last_name =    $data['last_name'];
+        $slogin_id =    $data['slogin_id'];
+        $provider =     $data['provider'];
+        $email =        $input->getString('email', '');
+        $name =         $input->getString('name', '');
+        $username =     $input->getString('username', '');
 
-        //маленькая валидация
-        if(empty($email)|| filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-             $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider);
+        require_once JPATH_SITE.'/components/com_slogin/controllers/validate.php';
+
+        $validator = new SLoginControllerValidate();
+
+        //валидация
+        if(!$validator->validateEmail($email)){
+            $msg  = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
+            $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
+        }
+        else if(!$validator->checkUniqueEmail($email)){
+            $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
+            $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
+        }
+        else if(!$validator->validateName($name)){
+            $msg = JText::_('COM_SLOGIN_ERROR_VALIATE_NAME');
+            $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
+        }
+        else if(!$validator->validateUserName($username)){
+            $msg = JText::_('COM_SLOGIN_ERROR_VALIATE_USERNAME');
+            $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
         }
         else{
-             $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, false, $info);
+            $this->username = $username;
+            $this->name = $name;
+            $app->setUserState('com_slogin.reg_fields_edited', 1);
+            $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, false, $info);
         }
     }
 
@@ -553,6 +581,10 @@ class SLoginController extends SLoginControllerParent
             echo '<p>Provider return empty user code.</p>';
             die;
         }
+
+        require_once JPATH_SITE.'/components/com_slogin/controllers/validate.php';
+
+        $validator = new SLoginControllerValidate();
 
         $msg = $msgType = '';
 
@@ -572,12 +604,29 @@ class SLoginController extends SLoginControllerParent
         $appReturn = $app->getUserState('com_slogin.return_url');
         $return = base64_decode($appReturn);
         //если такого пользователя нет, то создаем
-        if (!$sloginUserId) {
+        if (!$sloginUserId){
+            //если разрешено редактирование данных пользователем
+            $reg_fields_edited = $app->getUserState('com_slogin.reg_fields_edited', 0);
+            if($this->config->get('enable_edit_reg_fields', 0) && !$reg_fields_edited){
+                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup);
+                $msg  = JText::_('COM_SLOGIN_EDIT_REG_FIELDS');
+                $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg);
+            }
 
             //проверка пустого мыла
-            if($this->config->get('query_email', 0)==1 && empty($email)){
+            if($this->config->get('query_email', 0)==1)
+            {
                 $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup);
-                $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup);
+                //маленькая валидация
+
+                if(!$validator->validateEmail($email)){
+                    $msg  = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
+                    $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
+                }
+                else if(!$validator->checkUniqueEmail($email)){
+                    $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
+                    $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
+                }
             }
             else if(empty($email)){
                 $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
@@ -607,10 +656,10 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $username = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+            $username = (!empty($this->username)) ? $this->username : $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
 
             //имя пользователя
-            $name = $this->setUserName($first_name,  $last_name);
+            $name = (!empty($this->name)) ? $this->name : $this->setUserName($first_name,  $last_name);
 
             //записываем пользователя в таблицу джумлы и компонента
             $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup, $info);
@@ -693,7 +742,7 @@ class SLoginController extends SLoginControllerParent
         $this->displayRedirect($link);
     }
 
-    private function transliterate($str){
+    public function transliterate($str){
 
         $trans = array("а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d","е"=>"e",
             "ё"=>"yo","ж"=>"j","з"=>"z","и"=>"i","й"=>"i","к"=>"k","л"=>"l",
