@@ -166,7 +166,7 @@ class SLoginController extends SLoginControllerParent
         if ($confName == 1) {
             $name = $first_name . ' ' . $last_name;
         } else if($confName == 2){
-            $name = $email;
+            $name = (!empty($email)) ? $email : $first_name . ' ' . $last_name;
         } else{
             $name = $first_name;
         }
