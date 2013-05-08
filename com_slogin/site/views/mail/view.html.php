@@ -56,12 +56,11 @@ class SloginViewMail extends SloginViewMailParent
         // Get an instance of the controller prefixed by SLogin
         $controller = call_user_func(array($className, 'getInstance'), 'SLogin');
 
-        $this->name = $controller->setUserName($data['first_name'],  $data['last_name']);
+        $this->name = $controller->setUserName($data['first_name'],  $data['last_name'], $data['email']);
         $this->username = $controller->transliterate($data['first_name'].'-'.$data['last_name'].'-'.$data['provider']);
         $this->email = $data['email'];
 
         $this->action = JRoute::_('index.php?option=com_slogin&task=check_mail');
-
 
 		// Display the view
 		parent::display($tpl);

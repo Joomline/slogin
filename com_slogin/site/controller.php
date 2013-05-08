@@ -160,14 +160,16 @@ class SLoginController extends SLoginControllerParent
      * @param string $last_name        Фамилия
      * @return string    Имя пользователя, в зовизимости от параметров компонента
      */
-    public function setUserName($first_name, $last_name)
+    public function setUserName($first_name, $last_name, $email)
     {
-        if ($this->config->get('user_name', 1)) {
+        $confName = $this->config->get('user_name', 1);
+        if ($confName == 1) {
             $name = $first_name . ' ' . $last_name;
-        } else {
+        } else if($confName == 2){
+            $name = $email;
+        } else{
             $name = $first_name;
         }
-
         return $name;
     }
 
@@ -659,7 +661,7 @@ class SLoginController extends SLoginControllerParent
             $username = (!empty($this->username)) ? $this->username : $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
 
             //имя пользователя
-            $name = (!empty($this->name)) ? $this->name : $this->setUserName($first_name,  $last_name);
+            $name = (!empty($this->name)) ? $this->name : $this->setUserName($first_name,  $last_name, $email);
 
             //записываем пользователя в таблицу джумлы и компонента
             $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup, $info);

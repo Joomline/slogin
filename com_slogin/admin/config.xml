@@ -13,6 +13,7 @@
 			>
 				<option value="1">COM_SLOGIN_FIRST_AND_LAST_NAME</option>
 				<option value="0">COM_SLOGIN_FIRST_NAME</option>
+				<option value="2">E-mail</option>
 		</field>
 
 		<field
