@@ -7,7 +7,7 @@
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>kolyamba831@inbox.ru</authorEmail>
     <authoreUrl>http://joomline.ru</authoreUrl>
-    <version>1.6.0</version>
+    <version>1.6</version>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 
     <install> <!-- Runs on install -->
@@ -74,7 +74,5 @@
         <filename>slogin.php</filename>
         <filename>router.php</filename>
     </files>
-<updateservers>
-<server type="extension" priority="1" name="Сайт обновлений компонента  SLogin">http://joomline.ru/update/slogin/slogin.xml</server>
-</updateservers>
+<updateservers><server type="extension" priority="1" name="Joomline">http://joomline.net/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=5&amp;dummy=extension.xml</server></updateservers>
 </extension>
