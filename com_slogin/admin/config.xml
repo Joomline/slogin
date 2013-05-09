@@ -15,6 +15,16 @@
 				<option value="0">COM_SLOGIN_FIRST_NAME</option>
 				<option value="2">E-mail</option>
 		</field>
+		<field
+			name="user_user_name"
+			type="list"
+			label="COM_SLOGIN_FIELD_USER_USER_NAME_LABEL"
+			description="COM_SLOGIN_FIELD_USER_USER_NAME_DESC"
+			default="1"
+			>
+				<option value="1">COM_SLOGIN_FIRST_LAST_NAME_PROVIDER</option>
+				<option value="0">E-mail</option>
+		</field>
 
 		<field
 			name="collate_users"

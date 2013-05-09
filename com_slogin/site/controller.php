@@ -173,6 +173,17 @@ class SLoginController extends SLoginControllerParent
         return $name;
     }
 
+    public function setUserUserName($first_name, $last_name, $provider, $email)
+    {
+        $confName = $this->config->get('user_user_name', 1);
+        if ($confName == 1) {
+            $name = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+        } else{
+            $name = $email;
+        }
+        return $name;
+    }
+
     private function CheckUniqueName($username){
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -658,7 +669,7 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $username = (!empty($this->username)) ? $this->username : $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+            $username = (!empty($this->username)) ? $this->username : $this->setUserUserName($first_name,  $last_name, $provider, $email);
 
             //имя пользователя
             $name = (!empty($this->name)) ? $this->name : $this->setUserName($first_name,  $last_name, $email);
