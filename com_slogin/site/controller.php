@@ -837,6 +837,8 @@ class SLoginController extends SLoginControllerParent
         $params = new JRegistry;
         $params->loadString(JModuleHelper::getModule('mod_slogin')->params);
 
+        JFactory::getLanguage()->load('mod_slogin');
+
         $type	= modLoginHelper::getType();
         $return	= base64_decode($input->getBase64('return', ''));
         $callbackUrl = '&return=' . $return;
