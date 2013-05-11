@@ -35,7 +35,7 @@ if(!class_exists('SLoginControllerParent')){
 class SLoginController extends SLoginControllerParent
 {
     protected $config;
-    protected $name = null;
+    protected $realName = null;
     protected $username = null;
 
     public function __construct()
@@ -581,7 +581,7 @@ class SLoginController extends SLoginControllerParent
         }
         else{
             $this->username = $username;
-            $this->name = $name;
+            $this->realName = $name;
             $app->setUserState('com_slogin.reg_fields_edited', 1);
             $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, false, $info);
         }
@@ -672,7 +672,7 @@ class SLoginController extends SLoginControllerParent
             $username = (!empty($this->username)) ? $this->username : $this->setUserUserName($first_name,  $last_name, $provider, $email);
 
             //имя пользователя
-            $name = (!empty($this->name)) ? $this->name : $this->setUserName($first_name,  $last_name, $email);
+            $name = (!empty($this->realName)) ? $this->realName : $this->setUserName($first_name,  $last_name, $email);
 
             //записываем пользователя в таблицу джумлы и компонента
             $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup, $info);
