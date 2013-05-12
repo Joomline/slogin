@@ -75,4 +75,4 @@
         <filename>router.php</filename>
     </files>
 <updateservers><server type="extension" priority="1" name="Joomline">http://joomline.net/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=5&amp;dummy=extension.xml</server></updateservers>
-</extension>
+</extension> 
