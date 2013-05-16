@@ -52,3 +52,7 @@ div.slogin-clear{
 .slogin-buttons .linkedinslogin {
     background-position: 0 -380px;
 }
+
+.slogin-buttons .liveslogin {
+    background-position: 0 -420px;
+}
