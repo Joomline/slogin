@@ -689,7 +689,15 @@ class SLoginController extends SLoginControllerParent
 
                 $model = parent::getModel('Linking_user', 'SloginModel');
 
+                if($app->getUserState('com_slogin.after_reg_redirect'))
+                {
+                    $return = base64_decode($app->getUserState('com_slogin.after_reg_redirect'));
+                }
+                else
+                {
                 $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
+                }
+
 
                 //логинимся если ид пользователя верный
                 $this->loginUser($joomlaUserId, $provider, $info);

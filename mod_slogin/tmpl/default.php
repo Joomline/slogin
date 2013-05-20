@@ -11,6 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 ?>
+<noindex>
 <?php if ($type == 'logout') : ?>
 
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form">
@@ -35,7 +36,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
     <?php if (count($plugins)): ?>
     <?php foreach($plugins as $link): ?>
-            <a href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+            <a  rel="nofollow" href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 
@@ -71,18 +72,18 @@ defined('_JEXEC') or die('(@)|(@)');
 	</fieldset>
 	<ul>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
+			<a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
 			<?php echo JText::_('MOD_SLOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
 		</li>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
+			<a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
 			<?php echo JText::_('MOD_SLOGIN_FORGOT_YOUR_USERNAME'); ?></a>
 		</li>
 		<?php
 		$usersConfig = JComponentHelper::getParams('com_users');
 		if ($usersConfig->get('allowUserRegistration')) : ?>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
+			<a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
 				<?php echo JText::_('MOD_SLOGIN_REGISTER'); ?></a>
 		</li>
 		<?php endif; ?>
@@ -95,3 +96,4 @@ defined('_JEXEC') or die('(@)|(@)');
 </form>
 <?php endif; ?>
 <?php endif; ?>
+</noindex>
