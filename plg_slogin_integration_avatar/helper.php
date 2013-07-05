@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class Slogin_avatarHelper {
 
-	static function getavatar($userid) {
+	public static function getavatar($userid) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$q = "SELECT photo_src,provider FROM #__plg_slogin_avatar WHERE userid=".$userid." AND main=1";

@@ -25,7 +25,7 @@ class plgSlogin_integrationCombuilder extends JPlugin
 	 * @return	boolean
 	 * @since	1.6
 	 */
-	public function onAfterStoreUser($user)
+	public function onAfterSloginStoreUser($user)
 	{
         $issetUser = $this->getUser($user->id);
         if(!$issetUser){
@@ -33,7 +33,7 @@ class plgSlogin_integrationCombuilder extends JPlugin
         }
 	}
 
-    public function onAfterLoginUser($user)
+    public function onAfterSloginLoginUser($user)
     {
         $issetUser = $this->getUser($user->id);
         if(!$issetUser){

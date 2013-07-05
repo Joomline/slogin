@@ -16,15 +16,15 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
 
 
-	function __construct(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		JPlugin::loadLanguage('plg_slogin_integration_slogin_avatar', JPATH_ADMINISTRATOR);
 	}
 
-	
-	
-    function onAfterSloginLoginUser ($instance, $provider, $info) {
+
+
+    public function onAfterSloginLoginUser ($instance, $provider, $info) {
 
 		if(!$provider) return;
 		
@@ -219,7 +219,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      * проверим стоит ли писать аватар в базу, также обновляем главный аватар
 	 * @return boolean
      */
-	function getStatusUpdate ($provider, $userid, $file_input, $file_output, $w_o, $h_o) {
+	private function getStatusUpdate ($provider, $userid, $file_input, $file_output, $w_o, $h_o) {
 	
 		$statfoto = plgSlogin_integrationSlogin_avatar::resize($file_input, $file_output, $w_o, $h_o);
 
@@ -242,7 +242,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      * @param int     $w_o, $h_o	Максимальные ширина и высота генерируемого изображения
      * @return string    Результат выполнения false - изображения нет, up - успешно записали и нужно обновиться, ok - изображение существует и не требует модификации
      */
-	function resize($file_input, $file_output, $w_o, $h_o, $percent = false) {
+    private function resize($file_input, $file_output, $w_o, $h_o, $percent = false) {
 
 		//Если источник не указан
 		if(!$file_input) return false;
@@ -335,7 +335,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      * @param string    $data->user_provider	провайдер
 	 * @return boolean
      */
-	function addPhotoSql ($data) {
+    private function addPhotoSql ($data) {
 
 		if($data->up==0 or !$data->user_photo or !$data->user_provider or !$data->user_id) return false;
 		
@@ -373,7 +373,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      * @param int	$userid    Ид пользователя
      * @return
      */
-	function updateMainAvatar($provider,$userid) {
+    private function updateMainAvatar($provider,$userid) {
 		
 		//проверяем приоритет аватара
 		$db = JFactory::getDBO();
@@ -404,7 +404,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      * @param string     $params    Параметры для POST запроса
      * @return string    Результат запроса
      */
-    function openHttp($url, $method = false, $params = null) {
+    private function openHttp($url, $method = false, $params = null) {
 	
         if (!function_exists('curl_init')) {
             die('ERROR: CURL library not found!');
