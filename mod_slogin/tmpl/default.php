@@ -15,7 +15,14 @@ defined('_JEXEC') or die('(@)|(@)');
 <?php if ($type == 'logout') : ?>
 
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form">
-	<div class="login-greeting">
+
+    <?php if (!empty($avatar)) : ?>
+        <div class="slogin-avatar">
+            <img src="<?php echo $avatar; ?>" alt=""/>
+        </div>
+    <?php endif; ?>
+
+    <div class="login-greeting">
 	<?php echo JText::sprintf('MOD_SLOGIN_HINAME', htmlspecialchars($user->get('name')));	 ?>
 	</div>
 	<div class="logout-button">
