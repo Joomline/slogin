@@ -8,12 +8,14 @@
     <license>GNU/GPL v.3 or later.</license>
 	<packager>JoomLine</packager>
 	<packagerurl>http://joomline.ru</packagerurl>
-    <version>1.6</version>
+    <version>1.6.2</version>
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
 <files>
         <file type="component" method="upgrade" client="site">com_slogin.zip</file>
         <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
         <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
+        <file type="plugin" method="upgrade" client="site">plg_slogin_integration_avatar.zip</file> 
+        <file type="plugin" method="upgrade" client="site">plg_jcomments_slogin.zip</file> 
 		<file type="plugin" method="upgrade" client="site">plg_SL_facebook.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_google.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_mail.zip</file>	
