@@ -17,7 +17,7 @@ class plgSlogin_authTwitter extends JPlugin
 {
     public function onSloginAuth()
     {
-        $twitauth = new TwitterOAuth($this->params->get('id'), $this->params->get('password'));
+        $twitauth = new SloginTwitterOAuth($this->params->get('id'), $this->params->get('password'));
 
         $request_token = $twitauth->getRequestToken('');
 
@@ -53,7 +53,7 @@ class plgSlogin_authTwitter extends JPlugin
             $oauth_token = $session->get('oauth_token');
             $oauth_token_secret = $session->get('oauth_token_secret');
 
-            $connection = new TwitterOAuth($this->params->get('id'), $this->params->get('password'), $oauth_token, $oauth_token_secret);
+            $connection = new SloginTwitterOAuth($this->params->get('id'), $this->params->get('password'), $oauth_token, $oauth_token_secret);
             $access_token = $connection->getAccessToken($code);
             /* $access_token
             array(4) {

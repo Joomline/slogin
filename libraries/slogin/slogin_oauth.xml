@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="library" version="2.5" method="upgrade">
+  <name>slogin</name>
+  <libraryname>slogin</libraryname>
+  <version>1.0</version>
+  <creationDate>2013-04-28</creationDate>
+  <author>Arkadiy</author>
+  <authorUrl>argens.ru</authorUrl>
+  <authorEmail>a.sedelnikov@gmail.com</authorEmail>
+  <description>
+  <![CDATA[
+  Библиотека авторизации OAuth с измененными названиями классов для исключения конфликтов имен.
+  ]]>
+  </description>
+  <files>
+    <file>slogin_oauth.php</file>
+  </files>
+</extension>
