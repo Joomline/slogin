@@ -59,7 +59,7 @@ else{
 
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
-    $avatar = '';
+    $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'slogin_avatar')){
         require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/helper.php';
         $path = Slogin_avatarHelper::getavatar($user->id);
@@ -68,6 +68,7 @@ else{
             if(JString::strpos($avatar, '/') !== 0)
                 $avatar = '/'.$avatar;
         }
+		$profileLink = $path['profile'];
     }
 
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));

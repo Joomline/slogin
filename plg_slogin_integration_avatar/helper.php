@@ -16,7 +16,7 @@ class Slogin_avatarHelper {
 	public static function getavatar($userid) {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$q = "SELECT photo_src,provider FROM #__plg_slogin_avatar WHERE userid=".$userid." AND main=1";
+		$q = "SELECT photo_src, provider, profile FROM #__plg_slogin_avatar WHERE userid=".$userid." AND main=1";
 		$db->setQuery($q);
 		$avatar = $db->loadAssoc();
 		if (!$avatar) return false;

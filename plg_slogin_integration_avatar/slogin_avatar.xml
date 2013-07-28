@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
 	<name>PLG_SLOGIN_AVATAR</name>
 	<author>Andrew Zahalski</author>
-	<creationDate>2.05.2013</creationDate>
+	<creationDate>29.07.2013</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://mlife-media.by</authorUrl>
-	<version>1.4</version>
+	<version>1.5</version>
 	<description>PLG_SLOGIN_AVATAR_DESC</description>
 	<files>
 		<filename plugin="slogin_avatar">slogin_avatar.php</filename>

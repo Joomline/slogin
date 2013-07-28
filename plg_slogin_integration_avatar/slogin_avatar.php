@@ -27,7 +27,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
         if (!$provider) return;
 
-        $origimage = $new_image = '';
+        $profileLink = $origimage = $new_image = '';
         //Параметры изображений для noimage, если социальная сеть не отдает данные о том что аватар не загружен
         $arNoimage['vkontakte'] = 'camera_b.gif';
         $arNoimage['odnoklassniki'] = 'stub_50x50.gif';
@@ -50,6 +50,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                 if ($info->picture) {
                     $origimage = $info->picture;
                     $new_image = $provider . '_' . $info->id . '.jpg';
+                    $profileLink = $info->link;
                 }
                 break;
             //linkedin
@@ -57,6 +58,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                 if ($info->pictureUrl) {
                     $origimage = $info->pictureUrl;
                     $new_image = $provider . '_' . $info->id . '.jpg';
+                    $profileLink = 'http://www.linkedin.com/profile/view?id='.$info->id ;
                 }
                 break;
             //vkontakte
@@ -70,6 +72,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     $origimage = $request->photo_medium;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
+                $profileLink = 'http://vk.com/id'.$info->uid;
                 break;
             //facebook
             case 'facebook':
@@ -88,12 +91,14 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     }
                     $new_image = $provider . '_' . $info->id . '.jpg';
                 }
+                $profileLink = $info->link;
                 break;
             //twitter
             case 'twitter':
                 if ($info->default_profile_image != 1) {
                     $origimage = $info->profile_image_url;
                     $new_image = $provider . '_' . $info->id . '.jpg';
+                    $profileLink = 'https://twitter.com/'.$info->screen_name;
                 }
                 break;
             //odnoklassniki
@@ -102,6 +107,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     $origimage = $info->pic_1;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
+                $profileLink = 'http://www.odnoklassniki.ru/profile/'.$info->uid;
                 break;
             //mail
             case 'mail':
@@ -109,6 +115,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     $origimage = $info->pic_50;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
+                $profileLink = $info->link;
                 break;
             //yandex не дает аватарки, либо нужны жесткие права доступа
             case 'yandex':
@@ -122,6 +129,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
         if ($this->getStatusUpdate($provider, $data->user_id, $origimage, $new_image, $max_w, $max_h)) {
             $data->user_photo = $new_image;
+            $data->profile = $profileLink;
             plgSlogin_integrationSlogin_avatar::addPhotoSql($data);
         }
     }
@@ -266,6 +274,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         $row->userid = $data->user_id;
         $row->main = 1;
         $row->photo_src = $data->user_photo;
+        $row->profile = $data->profile;
 
         if (!$db->insertObject('#__plg_slogin_avatar', $row, 'id')) {
             echo $db->stderr();
