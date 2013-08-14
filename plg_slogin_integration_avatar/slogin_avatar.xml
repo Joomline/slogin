@@ -26,6 +26,11 @@
         <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
     </sql>
 	</install>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
     <config>
         <fields name="params">
 			<fieldset name="basic">

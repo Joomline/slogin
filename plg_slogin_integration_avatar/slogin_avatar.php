@@ -11,6 +11,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+jimport('joomla.filesystem.folder');
+
 class plgSlogin_integrationSlogin_avatar extends JPlugin
 {
 
