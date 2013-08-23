@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
 
 class plgSlogin_integrationSlogin_avatar extends JPlugin
 {
@@ -49,7 +50,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             //google
             case 'google':
                 $max_h = false; //google foto fix
-                if ($info->picture) {
+                if (isset($info->picture)){
                     $origimage = $info->picture;
                     $new_image = $provider . '_' . $info->id . '.jpg';
                     $profileLink = $info->link;
@@ -132,10 +133,60 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         if ($this->getStatusUpdate($provider, $data->user_id, $origimage, $new_image, $max_w, $max_h)) {
             $data->user_photo = $new_image;
             $data->profile = $profileLink;
-            plgSlogin_integrationSlogin_avatar::addPhotoSql($data);
+            $this->addPhotoSql($data);
         }
     }
 
+
+    public function onAfterSloginDeleteSloginUser($id)
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__slogin_users');
+        $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
+        $db->setQuery((string)$query, 0, 1);
+        $res = (int)$db->loadObject();
+
+        $this->deleteAvatar($res );
+    }
+
+    public function onAfterSloginDeleteUser($userId)
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__slogin_users');
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userId));
+        $db->setQuery((string)$query);
+        $res = (int)$db->loadObjectList();
+        if(counr($res)>0){
+            foreach($res as $v){
+                $this->deleteAvatar($v);
+            }
+        }
+    }
+
+    private function deleteAvatar($row)
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+        $rootfolder = $this->params->get('rootfolder', 'images/avatar');
+        $file = JPATH_BASE . '/' . $rootfolder . '/' . $row->photo_src;
+
+        if (is_file($file))
+        {
+            JFile::delete($file);
+        }
+
+        $query->delete();
+        $query->from($db->quoteName('#__plg_slogin_avatar'));
+        $query->where($db->quoteName('userid') . ' = ' . $db->quote($row->user_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
+        $db->setQuery($query);
+        $db->query();
+    }
 
     /**
      * проверим стоит ли писать аватар в базу, также обновляем главный аватар
