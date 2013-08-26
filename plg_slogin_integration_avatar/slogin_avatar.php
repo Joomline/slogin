@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
+require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/easyphpthumbnail.php';
 
 class plgSlogin_integrationSlogin_avatar extends JPlugin
 {
@@ -225,23 +226,29 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
         $imgcr = $this->params->get('imgcr', 80);
 
+        // Генерируем имя tmp-изображения
+        $tmp_name = JPATH_BASE . '/tmp/' . $file_output;
+
+        $output_path = JPATH_BASE . '/' . $rootfolder . '/';
+        $output_name = $output_path . $file_output;
+
         //Если файл существует и время замены не подошло возвращаем статус 'ok'
-        if (is_file(JPATH_BASE . '/' . $rootfolder . '/' . $file_output)) {
-            if (filemtime(JPATH_BASE . '/' . $rootfolder . '/' . $file_output) > ($time - $this->params->get('updatetime', 86400))) {
+        if (is_file($output_name)) {
+            if (filemtime($output_name) > ($time - $this->params->get('updatetime', 86400))) {
                 return 'ok';
             }
         }
 
         //генерация превью
         $file_input = plgSlogin_integrationSlogin_avatar::openHttp($file_input);
+
         if ($file_input) {
+
             //если папка для складирования аватаров не существует создаем ее
             if (!JFolder::exists(JPATH_BASE . '/' . $rootfolder)) {
                 JFolder::create(JPATH_BASE . '/' . $rootfolder);
                 file_put_contents(JPATH_BASE . '/' . $rootfolder . '/index.html', '');
             }
-            // Генерируем имя tmp-изображения
-            $tmp_name = JPATH_BASE . '/' . $rootfolder . '/' . $file_output;
 
             // Сохраняем изображение
             file_put_contents($tmp_name, $file_input);
@@ -252,44 +259,21 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             //Работаем с временным изображением
             $file_input = $tmp_name;
 
-            //Проверяем значение ширины и высоты
-            list($w_i, $h_i, $type) = getimagesize($file_input);
-            if (!$w_i || !$h_i) {
-                return false;
-            }
+            $thumb = new easyphpthumbnail;
+            $thumb->Chmodlevel = '0644';
+            $thumb->Quality = $imgcr;
+            $thumb->Thumbheight = $h_o;
+            $thumb->Thumbwidth = $w_o;
+            $thumb->Thumblocation = $output_path;
+            $thumb->Createthumb($file_input, 'file');
 
-            $types = array('', 'gif', 'jpeg', 'png');
-            $ext = $types[$type];
-            if ($ext) {
-                $func = 'imagecreatefrom' . $ext;
-                $img = $func($file_input);
-            } else {
-                //если формат файла некоректный
-                return false;
-            }
+            unlink($file_input);
 
-            //ширина и высота для нового изображения
-            if ($percent) {
-                $w_o *= $w_i / 100;
-                $h_o *= $h_i / 100;
-            }
-            if (!$h_o) $h_o = $w_o / ($w_i / $h_i);
-            if (!$w_o) $w_o = $h_o / ($h_i / $w_i);
-
-            //Генерируем аватар и записываем, возращаем статус 'up' если изображение успешно записали
-            $img_o = imagecreatetruecolor($w_o, $h_o);
-            imagecopyresampled($img_o, $img, 0, 0, 0, 0, $w_o, $h_o, $w_i, $h_i);
-
-            //если jpg
-            if ($type == 2) {
-                imagejpeg($img_o, JPATH_BASE . '/' . $rootfolder . '/' . $file_output, $imgcr);
+            if(is_file($output_name)){
                 return 'up';
-            } else {
-                //если другой формат то косяк
-                //TODO Здесь какая-то ошибка, разобраться если будут проблемы.
+            }  else {
                 return false;
             }
-
         } else {
             return false;
         }
@@ -333,7 +317,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             echo $db->stderr();
             return false;
         }
-
+        return true;
     }
 
 
