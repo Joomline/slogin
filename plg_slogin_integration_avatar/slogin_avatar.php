@@ -14,27 +14,22 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/easyphpthumbnail.php';
+require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
 class plgSlogin_integrationSlogin_avatar extends JPlugin
 {
-
-
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
         JPlugin::loadLanguage('plg_slogin_integration_slogin_avatar', JPATH_ADMINISTRATOR);
     }
 
-
     public function onAfterSloginLoginUser($instance, $provider, $info)
     {
-
         if (!$provider) return;
 
         $profileLink = $origimage = $new_image = '';
-        //Параметры изображений для noimage, если социальная сеть не отдает данные о том что аватар не загружен
-        $arNoimage['vkontakte'] = 'camera_b.gif';
-        $arNoimage['odnoklassniki'] = 'stub_50x50.gif';
+        $controller = new SLoginController();
 
         //максимальная ширина и высота для генерации изображения
         $max_h = $this->params->get('imgparam', 50);
@@ -68,11 +63,11 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             //vkontakte
             case 'vkontakte':
                 $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid=' . $info->uid . '&fields=photo_medium';
-                $request = json_decode(plgSlogin_integrationSlogin_avatar::openHttp($ResponseUrl))->response[0];
+                $request = json_decode($controller->open_http($ResponseUrl))->response[0];
                 if (!empty($request->error)) {
                     return;
                 }
-                if (substr($request->photo_medium, -12, 10000) != $arNoimage['vkontakte']) {
+                if (substr($request->photo_medium, -12, 10000) != 'camera_b.gif') {
                     $origimage = $request->photo_medium;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
@@ -81,7 +76,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             //facebook
             case 'facebook':
                 $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
-                $request_foto = json_decode(plgSlogin_integrationSlogin_avatar::openHttp($foto_url));
+                $request_foto = json_decode($controller->open_http($foto_url));
 
                 if (!empty($request_foto->error)) {
                     return;
@@ -107,7 +102,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                 break;
             //odnoklassniki
             case 'odnoklassniki':
-                if (substr($info->pic_1, -14, 10000) != $arNoimage['odnoklassniki']) {
+                if (substr($info->pic_1, -14, 10000) != 'stub_50x50.gif') {
                     $origimage = $info->pic_1;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
@@ -149,7 +144,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         $db->setQuery((string)$query, 0, 1);
         $res = (int)$db->loadObject();
 
-        $this->deleteAvatar($res );
+        $this->deleteAvatar($res);
     }
 
     public function onAfterSloginDeleteUser($userId)
@@ -195,10 +190,10 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
      */
     private function getStatusUpdate($provider, $userid, $file_input, $file_output, $w_o, $h_o)
     {
-        $statfoto = plgSlogin_integrationSlogin_avatar::resize($file_input, $file_output, $w_o, $h_o);
+        $statfoto = $this->resize($file_input, $file_output, $w_o, $h_o);
 
         if ($statfoto == 'up') {
-            plgSlogin_integrationSlogin_avatar::updateMainAvatar($provider, $userid);
+            $this->updateMainAvatar($provider, $userid);
             return true;
         } else { //ok, false
             return false;
@@ -226,6 +221,12 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
         $imgcr = $this->params->get('imgcr', 80);
 
+        //если папка для складирования аватаров не существует создаем ее
+        if (!JFolder::exists(JPATH_BASE . '/' . $rootfolder)) {
+            JFolder::create(JPATH_BASE . '/' . $rootfolder);
+            file_put_contents(JPATH_BASE . '/' . $rootfolder . '/index.html', '');
+        }
+
         // Генерируем имя tmp-изображения
         $tmp_name = JPATH_BASE . '/tmp/' . $file_output;
 
@@ -239,42 +240,29 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
             }
         }
 
-        //генерация превью
-        $file_input = plgSlogin_integrationSlogin_avatar::openHttp($file_input);
+        //заузка файла
+        $uploaded = $this->upload($file_input, $tmp_name);
 
-        if ($file_input) {
-
-            //если папка для складирования аватаров не существует создаем ее
-            if (!JFolder::exists(JPATH_BASE . '/' . $rootfolder)) {
-                JFolder::create(JPATH_BASE . '/' . $rootfolder);
-                file_put_contents(JPATH_BASE . '/' . $rootfolder . '/index.html', '');
-            }
-
-            // Сохраняем изображение
-            file_put_contents($tmp_name, $file_input);
-
-            // Очищаем память
-            unset($file_input);
-
-            //Работаем с временным изображением
-            $file_input = $tmp_name;
-
+        if ($uploaded)
+        {
             $thumb = new easyphpthumbnail;
             $thumb->Chmodlevel = '0644';
             $thumb->Quality = $imgcr;
             $thumb->Thumbheight = $h_o;
             $thumb->Thumbwidth = $w_o;
             $thumb->Thumblocation = $output_path;
-            $thumb->Createthumb($file_input, 'file');
+            $thumb->Createthumb($tmp_name, 'file');
 
-            unlink($file_input);
+            unlink($tmp_name);
 
             if(is_file($output_name)){
                 return 'up';
             }  else {
                 return false;
             }
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -351,40 +339,34 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
     }
 
-
-    /**
-     * Метод для отправки запросов
-     * @param string $url    УРЛ
-     * @param boolean $method    false - GET, true - POST
-     * @param string $params    Параметры для POST запроса
-     * @return string    Результат запроса
+    /** Загрузка файла с другого сервера
+     * @param $from - путь до источника
+     * @param $to - путь до локального файла
+     * @return bool
      */
-    private function openHttp($url, $method = false, $params = null)
+    private function upload($from, $to)
     {
-
-        if (!function_exists('curl_init')) {
-            die('ERROR: CURL library not found!');
+        if (!function_exists('curl_init') || empty($from) || empty($to)) {
+            return false;
         }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, $method);
-        if ($method == true && isset($params)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        $fp=fopen($to,"w");//создаем пустой файл
+        if($fp === false){
+            return false;
         }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Length: ' . strlen($params),
-            'Cache-Control: no-store, no-cache, must-revalidate',
-            "Expires: " . date("r")
-        ));
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
-
+        fclose($fp);
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_URL, $from);//запускаем сеанс curl
+        $fp=fopen($to,"w+");//открываем файл для записи
+        if($fp === false){
+            curl_close ($ch);//завершаем сеанс curl
+            return false;
+        }
+        curl_setopt($ch, CURLOPT_FILE, $fp);// записываем в файл
+        curl_setopt($ch, CURLOPT_REFERER, $from);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+        curl_exec ($ch);//выполняем команды curl
+        curl_close ($ch);//завершаем сеанс curl
+        fclose ($fp);//закрываем файл
+        return true;
     }
-
 }
