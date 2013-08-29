@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
+	<name>PLG_SLOGIN_AVATAR</name>
+	<author>Andrew Zahalski</author>
+	<creationDate>29.07.2013</creationDate>
+	<copyright>(C) 2012. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail></authorEmail>
+	<authorUrl>http://mlife-media.by</authorUrl>
+	<version>1.6</version>
+	<description>PLG_SLOGIN_AVATAR_DESC</description>
+	<files>
+		<filename plugin="slogin_avatar">slogin_avatar.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>easyphpthumbnail.php</filename>
+		<folder>sql</folder>
+	</files>
+	<languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_slogin_integration_slogin_avatar.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_slogin_integration_slogin_avatar.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_slogin_avatar.sys.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_slogin_avatar.ini</language>
+    </languages>
+	<install>
+    <sql>
+        <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+    </sql>
+	</install>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+    <config>
+        <fields name="params">
+			<fieldset name="basic">
+				<field name="rootfolder" type="text"
+						label="PLG_SLOGIN_AVATAR_ROOTFOLDER_LABEL" description="PLG_SLOGIN_AVATAR_ROOTFOLDER_DESC" default="images/avatar"/>
+				<field name="imgcr" type="text"
+						label="PLG_SLOGIN_AVATAR_IMGCR_LABEL" description="PLG_SLOGIN_AVATAR_IMGCR_DESC" default="80"/>
+				<field name="imgparam" type="text"
+						label="PLG_SLOGIN_AVATAR_IMGPARAM_LABEL" description="PLG_SLOGIN_AVATAR_IMGPARAM_DESC" default="50"/>
+				<field name="updatetime" type="text"
+						label="PLG_SLOGIN_AVATAR_UPDATETIME_LABEL" description="PLG_SLOGIN_AVATAR_UPDATETIME_DESC" default="86400"/>
+			</fieldset>
+		</fields>
+    </config>
+</extension>

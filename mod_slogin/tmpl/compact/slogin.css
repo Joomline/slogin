@@ -56,3 +56,15 @@ div.slogin-clear{
 .slogin-buttons .liveslogin {
     background-position: -0px -681px;
 }
+
+.slogin-avatar{
+    text-align: center;
+}
+.slogin-avatar img{
+    border: 1px solid #c0c0c0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+}

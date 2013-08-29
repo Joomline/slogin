@@ -62,6 +62,8 @@ class SLoginController extends SLoginControllerParent
             $msg = 'Table cleared';
             $msgType = 'message';
         }
+
+
         $app = JFactory::getApplication();
         $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
     }
@@ -98,15 +100,22 @@ class SLoginController extends SLoginControllerParent
 
     public function remove_slogin_users(){
         $input = new JInput();
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
         $app = JFactory::getApplication();
+        $db = JFactory::getDbo();
         $ids = $input->get('cid', array(), 'ARRAY');
         $model = $this->getModel('User', 'SloginModel');
         $table = $model->getTable();
         $errors = array();
         if(count($ids) > 0){
             foreach($ids as $id){
+                $dispatcher->trigger('onBeforeSloginDeleteSloginUser',array((int)$id));
                 if (!$table->delete((int)$id)) {
                     $errors[] = $table->getError();
+                }
+                else{
+                    $dispatcher->trigger('onAfterSloginDeleteSloginUser',array((int)$id));
                 }
             }
         }
@@ -121,6 +130,8 @@ class SLoginController extends SLoginControllerParent
 
     public function remove_joomla_users(){
         $input = new JInput();
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
         $app = JFactory::getApplication();
         $ids = $input->get('cid', array(), 'ARRAY');
         $model = $this->getModel('User', 'SloginModel');
@@ -136,6 +147,7 @@ class SLoginController extends SLoginControllerParent
                 $query->where('id = '.(int)$id);
                 $db->setQuery((string)$query, 0, 1);
                 $userId = $db->loadResult();
+                $dispatcher->trigger('onBeforeSloginDeleteUser',array($userId));
 
                 if (!$table->delete((int)$id)) {
                     $errors[] = $table->getError();
@@ -145,6 +157,9 @@ class SLoginController extends SLoginControllerParent
                     $user->delete();
                     if (!$table->deleteUserRows($userId)){
                         $errors[] = $table->getError();
+                    }
+                    else{
+                        $dispatcher->trigger('onAfterSloginDeleteUser',array($userId));
                     }
                 }
             }

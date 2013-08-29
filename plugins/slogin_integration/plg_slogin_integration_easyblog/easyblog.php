@@ -11,7 +11,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_integrationCombuilder extends JPlugin
+class plgSlogin_integrationEasyblog extends JPlugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -25,60 +25,40 @@ class plgSlogin_integrationCombuilder extends JPlugin
 	 * @return	boolean
 	 * @since	1.6
 	 */
-	public function onAfterStoreUser($user)
+	public function onAfterSloginStoreUser($user)
 	{
-        $issetUser = $this->getUser($user->id);
+        $issetUser = $this->getEasyUser($user->id);
         if(!$issetUser){
-             $this->createUser($user);
+             $this->createEasyUser($user);
         }
 	}
 
-    public function onAfterLoginUser($user)
+    public function onAfterSloginLoginUser($user)
     {
-        $issetUser = $this->getUser($user->id);
+        $issetUser = $this->getEasyUser($user->id);
         if(!$issetUser){
-            $this->createUser($user);
+            $this->createEasyUser($user);
         }
     }
 
-    private function getUser($userId)
+    private function getEasyUser($userId)
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
-        $query->from($db->quoteName('#__comprofiler'));
+        $query->from($db->quoteName('#__easyblog_users'));
         $query->where($db->quoteName('id') . ' = ' . $db->quote($userId));
         $db->setQuery($query, 0, 1);
         return (int)$db->loadResult();
     }
 
-    private function createUser($user)
+    private function createEasyUser($user)
     {
-        $name = explode(' ', $user->get('name'));
-        $name[1] = (!empty($name[1])) ? $name[1] : '';
-
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->insert('#__comprofiler');
-        $query->columns(array(
-            $db->quoteName('id'),
-            $db->quoteName('user_id'),
-            $db->quoteName('firstname'),
-            $db->quoteName('lastname'),
-            $db->quoteName('approved'),
-            $db->quoteName('confirmed'),
-            $db->quoteName('banned')
-            )
-        );
-        $query->values(
-            $db->quote($user->id). ', '
-          . $db->quote($user->id). ', '
-          . $db->quote($name[0]). ', '
-          . $db->quote($name[1]). ', '
-          . $db->quote(1). ', '
-          . $db->quote(1). ', '
-          . $db->quote(0)
-        );
+        $query->insert('#__easyblog_users');
+        $query->columns(array($db->quoteName('id'), $db->quoteName('nickname'), $db->quoteName('avatar'), $db->quoteName('published'), $db->quoteName('permalink')));
+        $query->values($db->quote($user->id). ', '. $db->quote($user->name). ', '. $db->quote('default_blogger.png'). ', '. $db->quote('1'). ', '. $db->quote($user->username));
         $db->setQuery($query);
         $db->query();
 

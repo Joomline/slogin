@@ -206,13 +206,30 @@ class SLoginController extends SLoginControllerParent
 
     private function deleteSloginUser($slogin_id, $provider){
         $db = JFactory::getDbo();
+
+        JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
+        $query = $db->getQuery(true);
+        $query->select('id');
+        $query->from('#__slogin_users');
+        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $db->setQuery((string)$query, 0, 1);
+        $id = (int)$db->loadResult();
+
+        if($id == 0){
+            return false;
+        }
+
+        $dispatcher->trigger('onBeforeSloginDeleteSloginUser',array($id));
         $query = $db->getQuery(true);
         $query->delete();
         $query->from($db->quoteName('#__slogin_users'));
-        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($slogin_id));
-        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
         $db->setQuery($query);
         $db->query();
+        $dispatcher->trigger('onAfterSloginDeleteSloginUser',array($id));
+        return true;
     }
 
     /**
@@ -689,7 +706,15 @@ class SLoginController extends SLoginControllerParent
 
                 $model = parent::getModel('Linking_user', 'SloginModel');
 
-                $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
+                if($app->getUserState('com_slogin.after_reg_redirect'))
+                {
+                    $return = base64_decode($app->getUserState('com_slogin.after_reg_redirect'));
+                }
+                else
+                {
+                    $return = base64_decode($model->getReturnURL($this->config, 'after_reg_redirect'));
+                }
+
 
                 //логинимся если ид пользователя верный
                 $this->loginUser($joomlaUserId, $provider, $info);
@@ -745,12 +770,14 @@ class SLoginController extends SLoginControllerParent
 
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->delete();
+        $query->select($db->quoteName('slogin_id'));
         $query->from($db->quoteName('#__slogin_users'));
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
         $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
-        $db->setQuery($query);
-        $db->query();
+        $db->setQuery($query, 0, 1);
+        $slogin_id = $db->loadResult();
+
+        $this->deleteSloginUser($slogin_id, $provider);
 
         $this->displayRedirect($link);
     }
