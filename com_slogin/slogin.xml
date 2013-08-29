@@ -7,7 +7,7 @@
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>sale@joomline.ru</authorEmail>
     <authoreUrl>http://joomline.ru</authoreUrl>
-    <version>1.6</version>
+    <version>1.6.3</version>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 
     <install> <!-- Runs on install -->
