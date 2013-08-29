@@ -30,7 +30,11 @@ class plgUserSlogin extends JPlugin
 		if (!$succes) {
 			return false;
 		}
-
+		
+		JPluginHelper::importPlugin('slogin_integration');
+        $dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterSloginDeleteUser',array((int)$user['id']));
+		
 		$db = JFactory::getDbo();
 		$db->setQuery(
 			'DELETE FROM '.$db->quoteName('#__slogin_users') .
