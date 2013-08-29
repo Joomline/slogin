@@ -8,23 +8,23 @@
     <license>GNU/GPL v.3 or later.</license>
 	<packager>JoomLine</packager>
 	<packagerurl>http://joomline.ru</packagerurl>
-    <version>1.6.3</version>
+    <version>1.7</version>
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
 <files>
 	        <file type="component" method="upgrade" client="site">com_slogin.zip</file>
 	        <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
-	        <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
-	        <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
-	        <file type="plugin" method="upgrade" client="site">plg_slogin_integration_avatar.zip</file> 
+	        <file type="library" method="upgrade" client="site">libraries/lib_slogin_oauth.zip</file>
+	        <file type="plugin" method="upgrade" client="site">plugins/user/plg_slogin.zip</file>
+	        <file type="plugin" method="upgrade" client="site">plugins/slogin_integration/plg_slogin_profile.zip</file> 
 	        <file type="plugin" method="upgrade" client="site">plg_jcomments_slogin.zip</file> 
-		<file type="plugin" method="upgrade" client="site">plg_SL_facebook.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_google.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_mail.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_odnoklassniki.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_twitter.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_vkontakte.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_yandex.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_linkedin.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_live.zip</file>
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_facebook.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_google.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_mail.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_odnoklassniki.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_twitter.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_vkontakte.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_yandex.zip</file>	
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_linkedin.zip</file>
+		<file type="plugin" method="upgrade" client="site">plugins/slogin_auth/plg_SL_live.zip</file>
 </files>
 </extension>
