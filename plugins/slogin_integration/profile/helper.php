@@ -25,15 +25,17 @@ class plgProfileHelper
         $profile = $db->loadObject();
 		if (!$profile)
             return false;
+
+        if(!empty($profile->avatar)){
 		//Получаем папку с изображениями
 		$plugin = JPluginHelper::getPlugin('slogin_integration', 'slogin_avatar');
 		$pluginParams = new JRegistry();
 		$pluginParams->loadString($plugin->params);
 		$paramFolder = $pluginParams->get('rootfolder', 'images/avatar');
-		//обратная совместимость со старыми версиями
+
         $profile->avatar = preg_replace("/.*?\//","",$profile->avatar);
-		//путь до аватара
         $profile->avatar = $paramFolder.'/'.$profile->avatar;
+        }
 		return $profile;
 	}
 }

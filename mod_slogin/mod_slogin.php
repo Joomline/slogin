@@ -60,7 +60,13 @@ else{
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
     $profileLink = $avatar = '';
-    if(JPluginHelper::isEnabled('slogin_integration', 'slogin_avatar')){
+    if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
+        require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';
+        $profile = plgProfileHelper::getProfile($user->id);
+        $avatar = isset($profile->avatar) ? $profile->avatar : '';
+        $profileLink = isset($profile->social_profile_link) ? $profile->social_profile_link : '';
+    }
+    else if(JPluginHelper::isEnabled('slogin_integration', 'slogin_avatar') && $user->id > 0){
         require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/helper.php';
         $path = Slogin_avatarHelper::getavatar($user->id);
         if(!empty($path['photo_src'])){
