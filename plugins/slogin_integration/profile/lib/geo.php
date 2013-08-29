@@ -8,7 +8,7 @@
  * @license 	GNU/GPL v.3 or later.
  */
 
-class Geo
+class SloginGeo
 {
     public function __construct($options = null) {
 

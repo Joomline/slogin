@@ -74,10 +74,8 @@ else{
             if(JString::strpos($avatar, '/') !== 0)
                 $avatar = '/'.$avatar;
         }
-		$profileLink = $path['profile'];
+		$profileLink = isset($path['profile']) ? $path['profile'] : '';
     }
 
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
 }
-
-

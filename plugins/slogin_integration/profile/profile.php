@@ -16,6 +16,7 @@ jimport('joomla.filesystem.file');
 jimport('joomla.image.image');
 
 require_once JPATH_BASE.'/plugins/slogin_integration/profile/lib/profiles.php';
+require_once JPATH_BASE.'/plugins/slogin_integration/profile/lib/geo.php';
 require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
 class plgSlogin_integrationProfile extends JPlugin
@@ -29,9 +30,8 @@ class plgSlogin_integrationProfile extends JPlugin
     {
         if(!method_exists($this, $provider."GetData")) return;
 
-        $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
-
         if($this->issetProfile($user, $provider)){
+            $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
             $this->updateAvatar($user, $provider, $data->picture, $info);
             $this->updateCurrentProfile($user, $provider);
         }
@@ -88,7 +88,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -113,7 +113,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->lastName;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -128,18 +128,18 @@ class plgSlogin_integrationProfile extends JPlugin
         $controller = new SLoginController();
         $data = new StdClass();
         $data->user_id = $user->id;
-        $data->slogin_id = $info->id;
+        $data->slogin_id = $info->uid;
         $data->provider = $provider;
 
         $data->gender = 0;
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name ;
         $data->phone = $info->home_phone;
-        $data->mobil_phone = $info->mobile_phone;
+        $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
         $data->social_profile_link = 'http://vk.com/id'.$info->uid;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -171,7 +171,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->email = $info->email;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -180,8 +180,9 @@ class plgSlogin_integrationProfile extends JPlugin
 
         $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
         $request_foto = json_decode($controller->open_http($foto_url));
+
         $data->picture = '';
-        if (!empty($request_foto->error)) {
+        if (empty($request_foto->error)){
             if ($request_foto->data->is_silhouette === false) { //если аватар загружен
                 if ($request_foto->data->url) {
                     $data->picture = $request_foto->data->url;
@@ -202,7 +203,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->name;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -211,11 +212,12 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->picture = ($info->default_profile_image != 1) ? $info->profile_image_url : '';
         return $data;
     }
+
     private function odnoklassnikiGetData($user, $provider, $info)
     {
         $data = new StdClass();
         $data->user_id = $user->id;
-        $data->slogin_id = $info->id;
+        $data->slogin_id = $info->uid;
         $data->provider = $provider;
         $data->social_profile_link = 'http://www.odnoklassniki.ru/profile/'.$info->uid;
         if($info->gender == 'male')
@@ -229,21 +231,22 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->email = $info->email;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
             $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
         }
 
-        $data->picture = ($info->default_profile_image != 1) ? $info->profile_image_url : '';
+        $data->picture = (substr($info->pic_1, -14) != 'stub_50x50.gif') ? $info->pic_2 : '';
+//        $data->picture = '';
         return $data;
     }
     private function mailGetData($user, $provider, $info)
     {
         $data = new StdClass();
         $data->user_id = $user->id;
-        $data->slogin_id = $info->id;
+        $data->slogin_id = $info->uid;
         $data->provider = $provider;
         $data->social_profile_link = $info->link;
         if($info->sex == 0)
@@ -255,7 +258,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->email = $info->email;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -281,7 +284,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->email = $info->default_email;
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -313,7 +316,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
         if($this->params->get('enable_geo', 0))
         {
-            $geo = new Geo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
+            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
             $geoData = $geo->get_geobase_data();
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
@@ -336,7 +339,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
         if (isset($data->picture)){
             $origimage = $info->picture;
-            $new_image = $provider . '_' . $info->id . '.jpg';
+            $id = isset($info->id) ? $info->id : $info->uid;
+            $new_image = $provider . '_' . $id . '.jpg';
             if ($this->createAvatar($origimage, $new_image, $max_w, $max_h)) {
                 $data->avatar = $new_image;
             }
@@ -370,7 +374,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
         $q = $db->getQuery(true);
         $q->update('#__plg_slogin_profile');
-        $q->set('`current` = 1');
+        $q->set('`current_profile` = 1');
         $q->where('`user_id` = '.(int)$user->id);
         $q->where('`provider` = '.$db->quote($provider));
         $db->setQuery($q);
@@ -420,7 +424,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $w_o = $this->params->get('imgparam', 50);
         $h_o= $this->params->get('imgparam', 50);
         $this->params->set('enable_geo', 0);
-        $file_output = $provider . '_' . $info->id . '.jpg';
+        $id = isset($info->id) ? $info->id : $info->uid;
+        $file_output = $provider . '_' . $id . '.jpg';
 
 
         $time = time();
@@ -494,7 +499,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $image = new JImage($tmp_name);
             $image->resize($width, $height, false, JImage::SCALE_INSIDE);
             $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
-            unlink($tmp_name);
+            //unlink($tmp_name);
         }
 
         $ret = (JFile::exists($output_name)) ? true : false;
@@ -524,11 +529,47 @@ class plgSlogin_integrationProfile extends JPlugin
             return false;
         }
         curl_setopt($ch, CURLOPT_FILE, $fp);// записываем в файл
-        curl_setopt($ch, CURLOPT_REFERER, $from);
+        curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
         curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
         curl_exec ($ch);//выполняем команды curl
         curl_close ($ch);//завершаем сеанс curl
         fclose ($fp);//закрываем файл
-        return true;
+
+        if(filesize($to)>0){
+            return true;
+        }
+
+        $file_input = $this->openHttp($from);
+        if($file_input) {
+            file_put_contents( $to, $file_input );
+            return true;
+        }
+        return false;
+    }
+
+    function openHttp($url, $method = false, $params = null) {
+
+        if (!function_exists('curl_init')) {
+            die('ERROR: CURL library not found!');
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, $method);
+        if ($method == true && isset($params)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        }
+        curl_setopt($ch,  CURLOPT_HTTPHEADER, array(
+            'Content-Length: '.strlen($params),
+            'Cache-Control: no-store, no-cache, must-revalidate',
+            "Expires: " . date("r")
+        ));
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
     }
 }

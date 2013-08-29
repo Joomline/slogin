@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `jos_plg_slogin_profile` (
+CREATE TABLE IF NOT EXISTS `#__plg_slogin_profile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `slogin_id` varchar(150) NOT NULL,
