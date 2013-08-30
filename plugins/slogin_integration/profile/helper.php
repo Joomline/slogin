@@ -28,7 +28,7 @@ class plgProfileHelper
 
         if(!empty($profile->avatar)){
 		//Получаем папку с изображениями
-		$plugin = JPluginHelper::getPlugin('slogin_integration', 'slogin_avatar');
+            $plugin = JPluginHelper::getPlugin('slogin_integration', 'profile');
 		$pluginParams = new JRegistry();
 		$pluginParams->loadString($plugin->params);
 		$paramFolder = $pluginParams->get('rootfolder', 'images/avatar');
