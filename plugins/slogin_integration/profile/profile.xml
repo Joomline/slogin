@@ -9,6 +9,8 @@
 	<authorUrl>http://argens.ru</authorUrl>
 	<version>1.0</version>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
+    <!-- Runs on install/uninstall/update; New in 1.6 -->
+    <scriptfile>script.php</scriptfile>
 	<files>
 		<filename plugin="profile">profile.php</filename>
 		<filename>index.html</filename>

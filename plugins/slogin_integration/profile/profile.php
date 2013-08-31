@@ -42,14 +42,15 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onAfterSloginDeleteSloginUser($id)
     {
+        echo '1'; var_dump($id);
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__slogin_users');
         $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
         $db->setQuery((string)$query, 0, 1);
-        $res = (int)$db->loadObject();
-
+        $res = $db->loadObject();
+        //echo '1'; var_dump($id);
         $this->deleteProfile($res);
     }
 
@@ -61,12 +62,33 @@ class plgSlogin_integrationProfile extends JPlugin
         $query->from('#__slogin_users');
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userId));
         $db->setQuery((string)$query);
-        $res = (int)$db->loadObjectList();
+        $res = $db->loadObjectList();
         if(counr($res)>0){
             foreach($res as $v){
                 $this->deleteProfile($v);
             }
         }
+    }
+
+    private function deleteProfile($row)
+    {
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+        $rootfolder = $this->params->get('rootfolder', 'images/avatar');
+        $file = JPATH_BASE . '/' . $rootfolder . '/' . $row->photo_src;
+
+        if (is_file($file))
+        {
+            JFile::delete($file);
+        }
+
+        $query->delete();
+        $query->from($db->quoteName('#__plg_slogin_profile'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($row->user_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
+        $db->setQuery($query);
+        $db->query();
     }
 
     private function googleGetData($user, $provider, $info){
@@ -395,26 +417,6 @@ class plgSlogin_integrationProfile extends JPlugin
         return $res > 0;
     }
 
-    private function deleteProfile($row)
-    {
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-
-        $rootfolder = $this->params->get('rootfolder', 'images/avatar');
-        $file = JPATH_BASE . '/' . $rootfolder . '/' . $row->photo_src;
-
-        if (is_file($file))
-        {
-            JFile::delete($file);
-        }
-
-        $query->delete();
-        $query->from($db->quoteName('#__plg_slogin_profile'));
-        $query->where($db->quoteName('userid') . ' = ' . $db->quote($row->user_id));
-        $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
-        $db->setQuery($query);
-        $db->query();
-    }
 
     private function updateAvatar($user, $provider, $file_input, $info)
     {

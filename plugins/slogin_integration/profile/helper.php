@@ -23,18 +23,19 @@ class plgProfileHelper
         $q->where('`current_profile` = 1');
         $db->setQuery($q);
         $profile = $db->loadObject();
+
 		if (!$profile)
             return false;
 
         if(!empty($profile->avatar)){
-		//Получаем папку с изображениями
+            //Получаем папку с изображениями
             $plugin = JPluginHelper::getPlugin('slogin_integration', 'profile');
-		$pluginParams = new JRegistry();
-		$pluginParams->loadString($plugin->params);
-		$paramFolder = $pluginParams->get('rootfolder', 'images/avatar');
+            $pluginParams = new JRegistry();
+            $pluginParams->loadString($plugin->params);
+            $paramFolder = $pluginParams->get('rootfolder', 'images/avatar');
 
-        $profile->avatar = preg_replace("/.*?\//","",$profile->avatar);
-        $profile->avatar = $paramFolder.'/'.$profile->avatar;
+            $profile->avatar = preg_replace("/.*?\//","",$profile->avatar);
+            $profile->avatar = $paramFolder.'/'.$profile->avatar;
         }
 		return $profile;
 	}

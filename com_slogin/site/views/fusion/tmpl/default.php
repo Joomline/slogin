@@ -22,7 +22,7 @@ JHtml::_('behavior.keepalive');
     </h1>
 
     <div class="login-description">
-        <?php echo JText::sprintf('COM_SLOGIN_FUSION_DESC', $this->email); ?>
+        <?php echo JText::_('COM_SLOGIN_FUSION_DESC'); ?>
     </div>
     <?php if ($this->user->get('id') == 0): ?>
 
