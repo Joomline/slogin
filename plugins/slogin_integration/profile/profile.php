@@ -72,15 +72,12 @@ class plgSlogin_integrationProfile extends JPlugin
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
         $file = JPATH_BASE . '/' . $rootfolder . '/' . $row->photo_src;
-
         if (is_file($file))
         {
             JFile::delete($file);
         }
-
         $query->delete();
         $query->from($db->quoteName('#__plg_slogin_profile'));
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($row->user_id));
@@ -98,28 +95,16 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->given_name;
         $data->l_name = $info->family_name ;
         $data->email = $info->email;
-
         if($info->gender == 'male')
             $data->gender = 1;
         elseif($info->gender == 'female')
             $data->gender = 2;
         else
             $data->gender = 0;
-
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
+        $this->getGeoInfo($data);
         $data->picture = isset($info->picture) ? $info->picture : '';
-
         return $data;
     }
-
-
 
     private function linkedinGetData($user, $provider, $info)
     {
@@ -131,14 +116,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->gender = 0;
         $data->f_name = $info->firstName;
         $data->l_name = $info->lastName;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
+        $this->getGeoInfo($data);
         $data->picture = isset($info->pictureUrl) ? $info->pictureUrl : '';
         return $data;
     }
@@ -150,22 +128,13 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->user_id = $user->id;
         $data->slogin_id = $info->uid;
         $data->provider = $provider;
-
         $data->gender = 0;
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name ;
         $data->phone = $info->home_phone;
         $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
         $data->social_profile_link = 'http://vk.com/id'.$info->uid;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
-
+        $this->getGeoInfo($data);
         $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid=' . $info->uid . '&fields=photo_medium';
         $request = json_decode($controller->open_http($ResponseUrl))->response[0];
         $data->picture = (empty($request->error) && substr($request->photo_medium, -12, 10000) != 'camera_b.gif') ? $request->photo_medium : '';
@@ -189,18 +158,9 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
-
+        $this->getGeoInfo($data);
         $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
         $request_foto = json_decode($controller->open_http($foto_url));
-
         $data->picture = '';
         if (empty($request_foto->error)){
             if ($request_foto->data->is_silhouette === false) { //если аватар загружен
@@ -221,14 +181,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->social_profile_link = 'https://twitter.com/'.$info->screen_name;
         $data->gender = 0;
         $data->f_name = $info->name;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
+        $this->getGeoInfo($data);
         $data->picture = ($info->default_profile_image != 1) ? $info->profile_image_url : '';
         return $data;
     }
@@ -249,15 +202,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
-
+        $this->getGeoInfo($data);
         $data->picture = (substr($info->pic_1, -14) != 'stub_50x50.gif') ? $info->pic_2 : '';
 //        $data->picture = '';
         return $data;
@@ -276,15 +221,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
-
+        $this->getGeoInfo($data);
         $data->picture = ($info->has_pic == '1') ? $info->pic_50 : '';
         return $data;
     }
@@ -302,15 +239,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 2;
         $data->f_name = $info->real_name;
         $data->email = $info->default_email;
-        if($this->params->get('enable_geo', 0))
-        {
-            $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
-            $geoData = $geo->get_geobase_data();
-            $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
-            $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
-            $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
-        }
-
+        $this->getGeoInfo($data);
         $data->picture = '';
         return $data;
     }
@@ -333,7 +262,12 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->email = $info->emails->personal;
         else if(!empty($info->emails->business))
             $data->email = $info->emails->business;
+        $this->getGeoInfo($data);
+        $data->picture = '';
+        return $data;
+    }
 
+    private function getGeoInfo(&$data){
         if($this->params->get('enable_geo', 0))
         {
             $geo = new SloginGeo(array('charset'=>'UTF-8', 'ip'=>$_SERVER["REMOTE_ADDR"]));
@@ -341,10 +275,9 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->country = (!empty($geoData["country"])) ? $geoData["country"] : '';
             $data->region = (!empty($geoData["region"])) ? $geoData["region"] : '';
             $data->city = (!empty($geoData["city"])) ? $geoData["city"] : '';
+            $data->lat = (!empty($geoData["lat"])) ? $geoData["lat"] : '';
+            $data->lng = (!empty($geoData["lng"])) ? $geoData["lng"] : '';
         }
-
-        $data->picture = '';
-        return $data;
     }
 
     private function createProfile($user, $provider, $info)

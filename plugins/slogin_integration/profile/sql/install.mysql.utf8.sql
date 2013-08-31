@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS `#__plg_slogin_profile` (
   `country` varchar(5) NOT NULL,
   `region` varchar(50) NOT NULL,
   `city` varchar(50) NOT NULL,
+  `lat` varchar(50) NOT NULL,
+  `lng` varchar(50) NOT NULL,
   `avatar` varchar(100) NOT NULL,
   `current_profile` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
