@@ -21,8 +21,17 @@ class plgProfileHelper
         $q->from('#__plg_slogin_profile');
         $q->where('`user_id` = '.(int)$userid);
         $q->where('`current_profile` = 1');
-        $db->setQuery($q);
+        $db->setQuery($q,0,1);
         $profile = $db->loadObject();
+
+		if (!$profile){
+            $q = $db->getQuery(true);
+            $q->select('*');
+            $q->from('#__plg_slogin_profile');
+            $q->where('`user_id` = '.(int)$userid);
+            $db->setQuery($q,0,1);
+            $profile = $db->loadObject();
+        }
 
 		if (!$profile)
             return false;
