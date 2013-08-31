@@ -42,7 +42,6 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onAfterSloginDeleteSloginUser($id)
     {
-        echo '1'; var_dump($id);
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
@@ -50,7 +49,6 @@ class plgSlogin_integrationProfile extends JPlugin
         $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
         $db->setQuery((string)$query, 0, 1);
         $res = $db->loadObject();
-        //echo '1'; var_dump($id);
         $this->deleteProfile($res);
     }
 
