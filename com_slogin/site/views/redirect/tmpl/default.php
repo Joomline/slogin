@@ -9,8 +9,8 @@
  */
 
 // защита от прямого доступа
-defined('_JEXEC') or die('@-_-@'); 
-$url = JRoute::_('index.php?option=com_slogin&amp;task=sredirect');
+defined('_JEXEC') or die('@-_-@');
+
 ?>
 
 <!DOCTYPE html>
@@ -20,16 +20,16 @@ $url = JRoute::_('index.php?option=com_slogin&amp;task=sredirect');
 
 if (window.opener) {
 	window.close();
-	window.opener.location = '<?php echo $url; ?>'
+	window.opener.location = '<?php echo $this->url; ?>'
 } else {
-	window.location = '<?php echo $url; ?>'
+	window.location = '<?php echo $this->url; ?>'
 }
 
 </script>
 </head>
 <body>
 <h2 id="title" style="display:none;">Redirecting back to the application...</h2>
-<h3 id="link"><a href="<?php echo $url; ?>">Click here to return to the application.</a></h3>
+<h3 id="link"><a href="<?php echo $this->url; ?>">Click here to return to the application.</a></h3>
 <script type="text/javascript">
 document.getElementById('title').style.display = '';
 document.getElementById('link').style.display = 'none';

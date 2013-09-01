@@ -314,6 +314,7 @@ class SLoginController extends SLoginControllerParent
 
         // If _getUser returned an error, then pass it back.
         if ($instance instanceof Exception) {
+            $this->setError(JText::_('COM_SLOGIN_ERROR_NO_USER'));
             return false;
         }
 
@@ -354,15 +355,15 @@ class SLoginController extends SLoginControllerParent
     /**
      * Метод для отображения специального редиректа, с закрытием окна
      */
-    public function displayRedirect($redirect='index.php', $popup=false, $msg = '', $msgType = 'message')
+    public function displayRedirect($redirect='/', $popup=false, $msg = '', $msgType = 'message')
     {
         if($popup){
             $app = JFactory::getApplication();
             $app->setUserState('com_slogin.msg', $msg);
             $app->setUserState('com_slogin.msgType', $msgType);
             $session = JFactory::getSession();
-            $redirect = base64_encode(JRoute::_($redirect));
-            $session->set('slogin_return', JRoute::_($redirect));
+            $redirect = base64_encode($redirect);
+            $session->set('slogin_return', $redirect);
             $view = $this->getView('Redirect', 'html');
             $view->display();
             exit;
@@ -377,11 +378,11 @@ class SLoginController extends SLoginControllerParent
      * Метод для установки ошибки
      * @param string $error    ошибка
      */
-    public function setError($error)
+    public function setError($error, $popup=true)
     {
         $session = JFactory::getSession();
-        $error = $session->set('slogin_errors', $error);
-        $this->displayRedirect();
+        $session->set('slogin_errors', $error);
+        $this->displayRedirect('/', $popup, $error, 'error');
         return false;
     }
 
@@ -404,8 +405,6 @@ class SLoginController extends SLoginControllerParent
             $app->redirect($redirect);
             return false;
         }
-
-
     }
 
     // проверить, не зарегистрирован ли уже пользователь с таким email

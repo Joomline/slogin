@@ -37,6 +37,10 @@ class SLoginViewRedirect extends SLoginViewRedirectParent
 	 */
 	public function display($tpl = null)
 	{
+        $session = JFactory::getSession();
+
+        $this->url = JRoute::_('index.php?option=com_slogin&amp;task=sredirect');
+
 		parent::display($tpl);
 	}
 
