@@ -432,7 +432,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $image = new JImage($tmp_name);
             $image->resize($width, $height, false, JImage::SCALE_INSIDE);
             $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
-            //unlink($tmp_name);
+            unlink($tmp_name);
         }
 
         $ret = (JFile::exists($output_name)) ? true : false;
