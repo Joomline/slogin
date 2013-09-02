@@ -21,6 +21,8 @@
 	<languages folder="language">
         <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_profile.sys.ini</language>
         <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_profile.ini</language>
+		<language tag="ru-RU">en-GB/en-GB.plg_slogin_integration_profile.sys.ini</language>
+        <language tag="ru-RU">en-GB/en-GB.plg_slogin_integration_profile.ini</language>
     </languages>
 	<install>
     <sql>
