@@ -11,12 +11,12 @@
     <version>1.7</version>
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
 <files>
-	        <file type="component" method="upgrade" client="site">com_slogin.zip</file>
-	        <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
-	        <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
-	        <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
-	        <file type="plugin" method="upgrade" client="site">plg_slogin_profile.zip</file> 
-	        <file type="plugin" method="upgrade" client="site">plg_jcomments_slogin.zip</file> 
+	    <file type="component" method="upgrade" client="site">com_slogin.zip</file>
+	    <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
+	    <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
+	    <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
+	    <file type="plugin" method="upgrade" client="site">plg_slogin_profile.zip</file> 
+	    <file type="plugin" method="upgrade" client="site">plg_jcomments_slogin.zip</file> 
 		<file type="plugin" method="upgrade" client="site">plg_SL_facebook.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_google.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_mail.zip</file>	
