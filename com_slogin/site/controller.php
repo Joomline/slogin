@@ -585,7 +585,21 @@ class SLoginController extends SLoginControllerParent
         }
         else if(!$validator->checkUniqueEmail($email)){
             $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
-            $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
+            if($this->config->get('collate_users', 0) == 1)
+            {
+                $data = array(
+                    'email' => $email,
+                    'id' => $this->getUserIdByMail($email),
+                    'provider' => $provider,
+                    'slogin_id' => $slogin_id,
+                );
+                $app->setUserState('com_slogin.comparison_user.data', $data);
+                $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', false, $msg, 'error');
+            }
+            else
+            {
+                $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
+            }
         }
         else if(!$validator->validateName($name)){
             $msg = JText::_('COM_SLOGIN_ERROR_VALIATE_NAME');
@@ -654,7 +668,21 @@ class SLoginController extends SLoginControllerParent
                 }
                 else if(!$validator->checkUniqueEmail($email)){
                     $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
-                    $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
+                    if($this->config->get('collate_users', 0) == 1)
+                    {
+                        $data = array(
+                            'email' => $email,
+                            'id' => $this->getUserIdByMail($email),
+                            'provider' => $provider,
+                            'slogin_id' => $slogin_id,
+                        );
+                        $app->setUserState('com_slogin.comparison_user.data', $data);
+                        $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', $popup, $msg, 'error');
+                    }
+                    else
+                    {
+                        $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
+                    }
                 }
             }
             else if(empty($email)){
