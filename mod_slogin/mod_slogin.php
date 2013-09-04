@@ -13,6 +13,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
 //подключаем helper стандартного модуля авторизации, для ридеректа
 require_once JPATH_BASE.'/modules/mod_login/helper.php';
+require_once dirname(__FILE__).'/helper.php';
 
 $doc = JFactory::getDocument();
 
@@ -58,7 +59,9 @@ else{
     $plugins = array();
 
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
-
+	
+	$allow = modSLoginHelper::getalw($params);
+	
     $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
         require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';

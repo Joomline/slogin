@@ -12,6 +12,7 @@
 	<files>
 		<filename module="mod_slogin">mod_slogin.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>mod_slogin.xml</filename>
 		<folder>tmpl</folder>
 		<folder>media</folder>
@@ -84,7 +85,12 @@
 					description="MOD_SLOGIN_FIELD_LOGOUT_REDIRECTURL_DESC" >
 					<option
 						value="">JDEFAULT</option>
-				</field>				
+				</field>
+				<field
+					name="secretkey"
+					type="text"
+					label="COM_MODULES_FIELD_SECRETKEY_LABEL"
+					description="COM_MODULES_FIELD_SECRETKEY_DESC" />				
 			</fieldset>
 			
 			
@@ -127,6 +133,7 @@
 					<option value="0">JYES</option>
 					<option value="1">JNO</option>
 				</field>
+				
 			</fieldset>
 		</fields>	
 	</config>
