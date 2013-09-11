@@ -7,7 +7,7 @@
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://argens.ru</authorUrl>
-	<version>1.0</version>
+	<version>1.0.1</version>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
     <!-- Runs on install/uninstall/update; New in 1.6 -->
     <scriptfile>script.php</scriptfile>
