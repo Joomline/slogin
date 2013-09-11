@@ -17,7 +17,7 @@ jimport('joomla.image.image');
 
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/profiles.php';
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/geo.php';
-require_once JPATH_ROOT.'/components/com_slogin/controller.php';
+require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
 class plgSlogin_integrationProfile extends JPlugin
 {
@@ -61,7 +61,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userId));
         $db->setQuery((string)$query);
         $res = $db->loadObjectList();
-        if(counr($res)>0){
+        if(count($res)>0){
             foreach($res as $v){
                 $this->deleteProfile($v);
             }
