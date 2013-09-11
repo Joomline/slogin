@@ -15,9 +15,9 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 jimport('joomla.image.image');
 
-require_once JPATH_BASE.'/plugins/slogin_integration/profile/lib/profiles.php';
-require_once JPATH_BASE.'/plugins/slogin_integration/profile/lib/geo.php';
-require_once JPATH_BASE.'/components/com_slogin/controller.php';
+require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/profiles.php';
+require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/geo.php';
+require_once JPATH_ROOT.'/components/com_slogin/controller.php';
 
 class plgSlogin_integrationProfile extends JPlugin
 {
@@ -73,7 +73,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
-        $file = JPATH_BASE . '/' . $rootfolder . '/' . $row->photo_src;
+        $file = JPATH_ROOT . '/' . $rootfolder . '/' . $row->photo_src;
         if (is_file($file))
         {
             JFile::delete($file);
@@ -363,7 +363,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
         $time = time();
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
-        $output_path = JPATH_BASE . '/' . $rootfolder . '/';
+        $output_path = JPATH_ROOT . '/' . $rootfolder . '/';
         $output_name = $output_path . $file_output;
 
         //Если файл существует и время замены не подошло возвращаем статус 'ok'
@@ -413,15 +413,15 @@ class plgSlogin_integrationProfile extends JPlugin
         $img_quality = $this->params->get('img_quality', 80);
 
         //если папка для складирования аватаров не существует создаем ее
-        if (!JFolder::exists(JPATH_BASE . '/' . $rootfolder)) {
-            JFolder::create(JPATH_BASE . '/' . $rootfolder);
-            file_put_contents(JPATH_BASE . '/' . $rootfolder . '/index.html', '');
+        if (!JFolder::exists(JPATH_ROOT . '/' . $rootfolder)) {
+            JFolder::create(JPATH_ROOT . '/' . $rootfolder);
+            file_put_contents(JPATH_ROOT . '/' . $rootfolder . '/index.html', '');
         }
 
         // Генерируем имя tmp-изображения
-        $tmp_name = JPATH_BASE . '/tmp/' . $file_output;
+        $tmp_name = JPATH_ROOT . '/tmp/' . $file_output;
 
-        $output_path = JPATH_BASE . '/' . $rootfolder . '/';
+        $output_path = JPATH_ROOT . '/' . $rootfolder . '/';
         $output_name = $output_path . $file_output;
 
         //заузка файла
