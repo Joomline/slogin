@@ -309,6 +309,7 @@ class SLoginController extends SLoginControllerParent
         $db = JFactory::getDBO();
 
         JPluginHelper::importPlugin('slogin_integration');
+	JPluginHelper::importPlugin('user');
         $dispatcher = JDispatcher::getInstance();
         $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
 
@@ -349,6 +350,8 @@ class SLoginController extends SLoginControllerParent
         $instance->setLastVisit();
 
         $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
+	$dispatcher->trigger('onUserLogin',array($instance, array('remember' => false)));
+
 
     }
 
