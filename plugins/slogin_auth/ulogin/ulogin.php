@@ -50,12 +50,12 @@ class plgSlogin_authUlogin extends JPlugin
 
             $returnRequest->first_name = (isset($request->first_name)) ? $request->first_name : '';
             $returnRequest->last_name = (isset($request->last_name)) ? $request->last_name : '';
-            $returnRequest->email = $request->email;
+            $returnRequest->email = isset($request->email) ? $request->email: '';
             $returnRequest->id = 'ulogin_' . $request->network . '_' . $request->uid;
-            $returnRequest->real_name = $request->nickname;
-            $returnRequest->sex = $request->sex;
-            $returnRequest->display_name = $request->nickname;
-            $returnRequest->birthday = $request->bdate;
+            $returnRequest->real_name = isset($request->nickname) ? $request->nickname: $request->first_name;
+            $returnRequest->sex = isset($request->sex) ? $request->sex: 0;
+            $returnRequest->display_name = isset($request->nickname) ? $request->nickname: $request->first_name;
+            $returnRequest->birthday = isset($request->bdate) ? $request->bdate: '';
             $returnRequest->all_request  = $request;
 
             $app = JFactory::getApplication();
@@ -82,7 +82,7 @@ class plgSlogin_authUlogin extends JPlugin
         $links[$i]['plugin_name'] = 'ulogin';
         $links[$i]['params'] = array(
            'id'=>'uLogin',
-           'data-ulogin'=>'display=window;fields=first_name,last_name;redirect_uri=' . $redirect
+           'data-ulogin'=>'display=window;fields=first_name,last_name,email,photo,sex;redirect_uri=' . $redirect
         );
     }
 }

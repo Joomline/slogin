@@ -255,3 +255,20 @@ LinkedIn
 ["pictureUrl"]=>
     string(107) "http://m3.licdn.com/mpr/mprx/0_zR-8K5l6p94t8B1YUgAxKFzMrqDrGlCYBM60KFPQftJhjzvOMjGuObFeOJSfTn_tq4rYx8DZPH6K"
 }
+
+Ulogin
+object(stdClass)#272 (13) {
+["verified_email"]=> string(2) "-1"
+["bdate"]=> string(10) "26.12.1969"
+["uid"]=> string(21) "112217272973802620922"
+["network"]=> string(10) "googleplus"
+["sex"]=> string(1) "2"
+["profile"]=> string(50) "https://plus.google.com/u/0/112217272973802620922/"
+["manual"]=> string(20) "email,nickname,bdate"
+["email"]=> string(22) "a.sedelnikov@gmail.com"
+["last_name"]=> string(22) "Седельников"
+["nickname"]=> string(7) "Arkadij"
+["first_name"]=> string(14) "Аркадий"
+["identity"]=> string(50) "https://plus.google.com/u/0/112217272973802620922/"
+["photo"]=> string(99) "https://lh3.googleusercontent.com/-YRHR-cWwCjM/AAAAAAAAAAI/AAAAAAAAAEE/ke-gZEjHSXE/photo.jpg?sz=100"
+}

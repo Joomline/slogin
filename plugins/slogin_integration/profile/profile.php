@@ -106,6 +106,21 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function uloginGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = 'ulogin_' . $info->network . '_' . $info->uid;
+        $data->provider = $provider;
+        $data->social_profile_link = isset($info->profile) ? $info->profile : '';
+        $data->f_name = $info->first_name;
+        $data->l_name = $info->last_name;
+        $data->email = isset($info->email) ? $info->email: '';
+        $data->gender = (int)$info->sex;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->photo) ? $info->photo : '';
+        return $data;
+    }
+
     private function linkedinGetData($user, $provider, $info)
     {
         $data = new StdClass();

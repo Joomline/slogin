@@ -8,35 +8,11 @@
 	<authorEmail></authorEmail>
 	<authorUrl>http://joomline.ru</authorUrl>
 	<version>1.0</version>
-	<description>Yandex auth. Instructions for setting up the plugin: http://joomline.ru/stati/53-komponenty/306-sozdanie-prilozhenij-dlja-socialnoj-avtoriziacii.html</description>
+	<description>Ulogin auth. Instructions for setting up the plugin: http://joomline.ru/stati/53-komponenty/306-sozdanie-prilozhenij-dlja-socialnoj-avtoriziacii.html</description>
 	<files>
 		<filename plugin="ulogin">ulogin.php</filename>
 		<filename>index.html</filename>
 		<folder>assets</folder>
         <folder>element</folder>
 	</files>
-    <config>
-        <fields name="params">
-            <fieldset name="basic" addfieldpath="plugins/slogin_auth/ulogin/element">
-                <field name="id" type="text" default=""
-                       description="Yandex Application Id"
-                       label="Id"
-                        />
-                <field name="password" type="text" default=""
-                       description="Yandex Application Password"
-                       label="Password"
-                        />
-                <field
-                        name="callback_url"
-                        type="callbackurl"
-                        label="Callback URI"
-                        description="Callback URI"
-                        filter="unset"
-                        value="yandex"
-                        readonly="true"
-                        class="readonly"
-                        />
-            </fieldset>
-        </fields>
-    </config>
 </extension>
