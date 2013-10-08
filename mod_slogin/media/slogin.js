@@ -6,6 +6,9 @@ var SLogin = SLogin || {
         var elements = block.getElementsByTagName('a');
         var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes"
         for (var i = 0; i < elements.length; i++) {
+            if(elements[i].getAttribute('id') == 'uLogin'){
+                continue;
+            }
             elements[i].onclick = function (e) {
                 if (typeof(PopUpWindow) == 'window') {
                     PopUpWindow.close();

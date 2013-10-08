@@ -111,10 +111,14 @@ class SLoginController extends SLoginControllerParent
             exit;
         }
 
+        $app = JFactory::getApplication();
+        $popup = $app->getUserState('com_slogin.popup', 'yes');
+        $app->setUserState('com_slogin.popup', 'yes');
+        $popup = ($popup == 'none') ? false : true;
 
         if (isset($request->first_name))
         {
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, true, $request->all_request);
+            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, $popup, $request->all_request);
         }
     }
 
@@ -309,7 +313,6 @@ class SLoginController extends SLoginControllerParent
         $db = JFactory::getDBO();
 
         JPluginHelper::importPlugin('slogin_integration');
-	JPluginHelper::importPlugin('user');
         $dispatcher = JDispatcher::getInstance();
         $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
 
@@ -350,8 +353,6 @@ class SLoginController extends SLoginControllerParent
         $instance->setLastVisit();
 
         $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
-	$dispatcher->trigger('onUserLogin',array($instance, array('remember' => false)));
-
 
     }
 

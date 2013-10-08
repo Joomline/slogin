@@ -45,8 +45,16 @@ defined('_JEXEC') or die('(@)|(@)');
 
 <div id="slogin-buttons" class="slogin-buttons <?php echo $moduleclass_sfx?>">
     <?php if (count($plugins)): ?>
-        <?php foreach($plugins as $link): ?>
-            <a  rel="nofollow" href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+        <?php
+        foreach($plugins as $link):
+            $linkParams = '';
+            if(isset($link['params'])){
+                foreach($link['params'] as $k => $v){
+                    $linkParams .= ' ' . $k . '="' . $v . '"';
+                }
+            }
+            ?>
+            <a  rel="nofollow" <?php echo $linkParams;?> href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
