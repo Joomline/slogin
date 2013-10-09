@@ -26,7 +26,11 @@ class plgSlogin_authUlogin extends JPlugin
 
         $input = JFactory::getApplication()->input;
 
+        $app	= JFactory::getApplication();
+
         $request = null;
+
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
 
         $token = $input->get('token', null, 'STRING');
 
@@ -74,7 +78,7 @@ class plgSlogin_authUlogin extends JPlugin
         $doc = JFactory::getDocument();
         $doc->addScript('//ulogin.ru/js/ulogin.js');
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=ulogin');
+        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=ulogin'.$add);
 
         $i = count($links);
         $links[$i]['link'] = '#';
