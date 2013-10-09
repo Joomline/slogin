@@ -31,6 +31,7 @@ class plgSlogin_authUlogin extends JPlugin
         $request = null;
 
         $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
         $token = $input->get('token', null, 'STRING');
 
