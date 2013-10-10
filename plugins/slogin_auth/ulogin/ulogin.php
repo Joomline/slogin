@@ -61,6 +61,7 @@ class plgSlogin_authUlogin extends JPlugin
             $returnRequest->sex = isset($request->sex) ? $request->sex: 0;
             $returnRequest->display_name = isset($request->nickname) ? $request->nickname: $request->first_name;
             $returnRequest->birthday = isset($request->bdate) ? $request->bdate: '';
+            $returnRequest->network = isset($request->network) ? $request->network: '';
             $returnRequest->all_request  = $request;
 
             $app = JFactory::getApplication();
