@@ -53,8 +53,20 @@ JHtml::_('behavior.keepalive');
 
     <h2><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h2>
     <div id="slogin-buttons" class="slogin-buttons">
-        <?php foreach($this->attachedProviders as $provider) : ?>
-        <a href="<?php echo JRoute::_($provider['link']);?>">
+        <?php
+        foreach($this->attachedProviders as $provider) :
+
+            if($provider['plugin_name'] == 'ulogin')
+                continue;
+
+            $linkParams = '';
+            if(isset($provider['params'])){
+                foreach($provider['params'] as $k => $v){
+                    $linkParams .= ' ' . $k . '="' . $v . '"';
+                }
+            }
+            ?>
+        <a <?php echo $linkParams;?> href="<?php echo JRoute::_($provider['link']);?>">
             <span class="<?php echo $provider['class'];?>">&nbsp;</span>
         </a>
         <?php endforeach; ?>

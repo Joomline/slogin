@@ -34,9 +34,17 @@ if(!class_exists('SLoginControllerParent')){
  */
 class SLoginController extends SLoginControllerParent
 {
-    protected $config;
-    protected $realName = null;
-    protected $username = null;
+    protected
+        $config,
+        $realName,
+        $username,
+        $first_name,
+        $last_name,
+        $email,
+        $slogin_id,
+        $provider,
+        $rawRequest,
+        $network;
 
     public function __construct()
     {
@@ -118,7 +126,17 @@ class SLoginController extends SLoginControllerParent
 
         if (isset($request->first_name))
         {
-            $this->storeOrLogin($request->first_name, $request->last_name, $request->email, $request->id, $plugin, $popup, $request->all_request);
+            $this->realName     = !empty($request->real_name) ? $request->real_name : '';
+            //$this->username     = !empty($request->real_name) ? $request->real_name : '';
+            $this->first_name   = !empty($request->first_name) ? $request->first_name : '';
+            $this->last_name    = !empty($request->last_name) ? $request->last_name : '';
+            $this->email        = !empty($request->email) ? $request->email : '';
+            $this->slogin_id    = !empty($request->id) ? $request->id : '';
+            $this->provider     = $plugin;
+            $this->rawRequest   = $request->all_request;
+            $this->network      = !empty($request->network) ? $request->network : '';
+
+            $this->storeOrLogin($popup);
         }
     }
 
@@ -164,26 +182,29 @@ class SLoginController extends SLoginControllerParent
      * @param string $last_name        Фамилия
      * @return string    Имя пользователя, в зовизимости от параметров компонента
      */
-    public function setUserName($first_name, $last_name, $email)
+    public function setUserName()
     {
         $confName = $this->config->get('user_name', 1);
         if ($confName == 1) {
-            $name = $first_name . ' ' . $last_name;
+            $name = $this->first_name . ' ' . $this->last_name;
         } else if($confName == 2){
-            $name = (!empty($email)) ? $email : $first_name . ' ' . $last_name;
+            $name = (!empty($this->email)) ? $this->email : $this->first_name . ' ' . $this->last_name;
         } else{
-            $name = $first_name;
+            $name = $this->first_name;
         }
         return $name;
     }
 
-    public function setUserUserName($first_name, $last_name, $provider, $email)
+    public function setUserUserName()
     {
         $confName = $this->config->get('user_user_name', 1);
         if ($confName == 1) {
-            $name = $this->transliterate($first_name.'-'.$last_name.'-'.$provider);
+            $name = $this->transliterate($this->first_name.'-'.$this->last_name.'-'.$this->provider);
+            if(!empty($this->network)){
+                $name .= '-'.$this->network;
+            }
         } else{
-            $name = $email;
+            $name = $this->email;
         }
         return $name;
     }
@@ -245,23 +266,22 @@ class SLoginController extends SLoginControllerParent
      * @param $provider                 идентификатор провайдера
      * @throws Exception
      */
-    protected function storeUser($username, $name, $email, $slogin_id, $provider, $popup=false, $info=array())
+    protected function storeUser($popup=false)
     {
         $app	= JFactory::getApplication();
 
         //отсылаем на подверждение владения мылом если разрешено и найдено
-        $userId = $this->CheckEmail($email);
+        $userId = $this->CheckEmail($this->email);
 
         if($userId){
-            $name = explode(' ', $name);
-            if(!isset($name[1])) $name[1] = '';
+
 
             $data = array(
-                'email' => $email,
-                'first_name' => $name[0],
-                'last_name' => $name[1],
-                'provider' => $provider,
-                'slogin_id' => $slogin_id,
+                'email' => $this->email,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'provider' => $this->provider,
+                'slogin_id' => $this->slogin_id,
             );
             $app->setUserState('com_slogin.provider.data', $data);
         }
@@ -270,9 +290,9 @@ class SLoginController extends SLoginControllerParent
         $user_config = JComponentHelper::getParams('com_users');
         $defaultUserGroup = $user_config->get('new_usertype', 2);
 
-        $user['username'] = $this->CheckUniqueName($username);
-        $user['name'] = $name;
-        $user['email'] = $email;
+        $user['username'] = $this->CheckUniqueName($this->username);
+        $user['name'] = $this->realName;
+        $user['email'] = $this->email;
         $user['registerDate'] = JFactory::getDate()->toSQL();
         $user['usertype'] = 'deprecated';
         $user['groups'] = array($defaultUserGroup);
@@ -291,12 +311,12 @@ class SLoginController extends SLoginControllerParent
             //throw new Exception($user_object->getError());
         }
 
-        $this->storeSloginUser($user_object->id, $slogin_id, $provider);
+        $this->storeSloginUser($user_object->id, $this->slogin_id, $this->provider);
 
         //вставка нового пользователя в таблицы других компонентов
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterSloginStoreUser',array($user_object, $provider, $info));
+        $dispatcher->trigger('onAfterSloginStoreUser',array($user_object, $this->provider, $this->rawRequest));
 
         return $user_object->id;
     }
@@ -431,15 +451,15 @@ class SLoginController extends SLoginControllerParent
     }
 
     // проверить, не зарегистрирован ли уже пользователь с таким email
-    public function GetUserId($id, $provider)
+    public function GetUserId()
     {
         // Initialise some variables
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('user_id'));
         $query->from($db->quoteName('#__slogin_users'));
-        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($id));
-        $query->where($db->quoteName('provider') . ' = ' . $db->quote($provider));
+        $query->where($db->quoteName('slogin_id') . ' = ' . $db->quote($this->slogin_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($this->provider));
         $db->setQuery($query, 0, 1);
         $userId = $db->loadResult();
         return $userId;
@@ -569,9 +589,6 @@ class SLoginController extends SLoginControllerParent
         $input = new JInput;
 
         $data =         $app->getUserState('com_slogin.provider.data');
-        $info =         $app->getUserState('com_slogin.provider.info');
-        $first_name =   $data['first_name'];
-        $last_name =    $data['last_name'];
         $slogin_id =    $data['slogin_id'];
         $provider =     $data['provider'];
         $email =        $input->getString('email', '');
@@ -616,15 +633,24 @@ class SLoginController extends SLoginControllerParent
         else{
             $this->username = $username;
             $this->realName = $name;
+            $this->first_name   = $data['first_name'];
+            $this->last_name    = $data['last_name'];
+            $this->email        = $email;
+            $this->slogin_id    = $slogin_id;
+            $this->provider     = $provider;
+            $this->rawRequest   = $app->getUserState('com_slogin.provider.info');
+            $this->network      = !empty($this->rawRequest->network) ? $this->rawRequest->network : '';
+
             $app->setUserState('com_slogin.reg_fields_edited', 1);
-            $this->storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, false, $info);
+
+            $this->storeOrLogin(false);
         }
     }
 
-    protected function storeOrLogin($first_name, $last_name, $email, $slogin_id, $provider, $popup=false, $info = array())
+    protected function storeOrLogin($popup=false)
     {
         //проверка на пустую запись ида пользователя
-        if(empty($slogin_id)){
+        if(empty($this->slogin_id)){
             echo '<p>Provider return empty user code.</p>';
             die;
         }
@@ -637,15 +663,15 @@ class SLoginController extends SLoginControllerParent
 
         $app = JFactory::getApplication();
 
-        $app->setUserState('com_slogin.provider.info', $info);
+        $app->setUserState('com_slogin.provider.info', $this->rawRequest);
 
         //если разрешено слияние - сливаем
         if($app->getUserState('com_slogin.action.data') == 'fusion'){
-            $this->fusion($slogin_id, $provider, $popup);
+            $this->fusion($this->slogin_id, $this->provider, $popup);
         }
 
         //проверяем существует ли пользователь с таким уидом и провайдером
-        $sloginUserId = $this->GetUserId($slogin_id, $provider);
+        $sloginUserId = $this->GetUserId();
 
         //Переадресация пользователя из модуля
         $appReturn = $app->getUserState('com_slogin.return_url');
@@ -655,7 +681,7 @@ class SLoginController extends SLoginControllerParent
             //если разрешено редактирование данных пользователем
             $reg_fields_edited = $app->getUserState('com_slogin.reg_fields_edited', 0);
             if($this->config->get('enable_edit_reg_fields', 0) && !$reg_fields_edited){
-                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup);
+                $this->queryEmail($popup);
                 $msg  = JText::_('COM_SLOGIN_EDIT_REG_FIELDS');
                 $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg);
             }
@@ -663,22 +689,22 @@ class SLoginController extends SLoginControllerParent
             //проверка пустого мыла
             if($this->config->get('query_email', 0)==1)
             {
-                $this->queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup);
+                $this->queryEmail($popup);
                 //маленькая валидация
 
-                if(!$validator->validateEmail($email)){
+                if(!$validator->validateEmail($this->email)){
                     $msg  = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
                     $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
                 }
-                else if(!$validator->checkUniqueEmail($email)){
+                else if(!$validator->checkUniqueEmail($this->email)){
                     $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
                     if($this->config->get('collate_users', 0) == 1)
                     {
                         $data = array(
-                            'email' => $email,
-                            'id' => $this->getUserIdByMail($email),
-                            'provider' => $provider,
-                            'slogin_id' => $slogin_id,
+                            'email' => $this->email,
+                            'id' => $this->getUserIdByMail($this->email),
+                            'provider' => $this->provider,
+                            'slogin_id' => $this->slogin_id,
                         );
                         $app->setUserState('com_slogin.comparison_user.data', $data);
                         $this->displayRedirect('index.php?option=com_slogin&view=comparison_user', $popup, $msg, 'error');
@@ -689,22 +715,22 @@ class SLoginController extends SLoginControllerParent
                     }
                 }
             }
-            else if(empty($email)){
-                $email = (strpos($provider, '.') === false) ? $slogin_id.'@'.$provider.'.com' : $slogin_id.'@'.$provider;
+            else if(empty($this->email)){
+                $this->email = (strpos($this->provider, '.') === false) ? $this->slogin_id.'@'.$this->provider.'.com' : $this->slogin_id.'@'.$this->provider;
             }
 
             //проверка свободности мыла
-            $freeEmail = $this->getFreeMail($email);
+            $freeEmail = $this->getFreeMail($this->email);
 
             //если мыло занято
-            if($freeEmail != $email){
+            if($freeEmail != $this->email){
                 //если в настройках установлено подтверждать права на почту и почта есть в базе пользователей
                 if($this->config->get('collate_users', 0) == 1){
                     $data = array(
-                        'email' => $email,
-                        'id' => $this->getUserIdByMail($email),
-                        'provider' => $provider,
-                        'slogin_id' => $slogin_id,
+                        'email' => $this->email,
+                        'id' => $this->getUserIdByMail($this->email),
+                        'provider' => $this->provider,
+                        'slogin_id' => $this->slogin_id,
                     );
                     $app->setUserState('com_slogin.comparison_user.data', $data);
                     $return = 'index.php?option=com_slogin&view=comparison_user';
@@ -712,26 +738,26 @@ class SLoginController extends SLoginControllerParent
                     $this->displayRedirect($return, $popup, $msg);
                 }
                 else{
-                     $email = $freeEmail;
+                    $this->email = $freeEmail;
                 }
             }
 
             //логин пользователя
-            $username = (!empty($this->username)) ? $this->username : $this->setUserUserName($first_name,  $last_name, $provider, $email);
+            $this->username = (!empty($this->username)) ? $this->username : $this->setUserUserName();
 
             //имя пользователя
-            $name = (!empty($this->realName)) ? $this->realName : $this->setUserName($first_name,  $last_name, $email);
+            $this->realName = (!empty($this->realName)) ? $this->realName : $this->setUserName();
 
             //записываем пользователя в таблицу джумлы и компонента
-            $joomlaUserId = $this->storeUser($username, $name, $email, $slogin_id, $provider, $popup, $info);
+            $joomlaUserId = $this->storeUser($popup);
 
             if($joomlaUserId > 0)
             {
                 $data = array(
-                    'email' => $email,
+                    'email' => $this->email,
                     'id' => $joomlaUserId,
-                    'provider' => $provider,
-                    'slogin_id' => $slogin_id,
+                    'provider' => $this->provider,
+                    'slogin_id' => $this->slogin_id,
                 );
                 $app->setUserState('com_slogin.comparison_user.data', $data);
 
@@ -748,13 +774,13 @@ class SLoginController extends SLoginControllerParent
 
 
                 //логинимся если ид пользователя верный
-                $this->loginUser($joomlaUserId, $provider, $info);
+                $this->loginUser($joomlaUserId, $this->provider, $this->rawRequest);
 
                 $app->setUserState('com_slogin.return_url', $appReturn);
             }
         }
         else {   //или логинимся
-            $this->loginUser($sloginUserId, $provider, $info);
+            $this->loginUser($sloginUserId, $this->provider, $this->rawRequest);
         }
         $this->displayRedirect($return, $popup, $msg);
     }
@@ -844,19 +870,28 @@ class SLoginController extends SLoginControllerParent
     protected function localCheckDebug($provider){
         if($this->config->get('local_debug', 0) == 1){
             $slogin_id =  '12345678910';
-            $this->storeOrLogin('Вася', 'Пупкин', '', $slogin_id, $provider, true);
+            $this->realName     = 'Вася Пупкин';
+            //$this->username     = !empty($request->real_name) ? $request->real_name : '';
+            $this->first_name   = 'Вася';
+            $this->last_name    = 'Пупкин';
+            $this->email        = '';
+            $this->slogin_id    = '12345678910';
+            $this->provider     = $provider;
+            $this->rawRequest   = new stdClass();
+            $this->network      = '';
+            $this->storeOrLogin(true);
         }
     }
 
-    protected function queryEmail($first_name, $last_name, $email, $slogin_id, $provider, $popup=false)
+    protected function queryEmail($popup=false)
     {
         $app	= JFactory::getApplication();
         $data = array(
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-            'slogin_id' => $slogin_id,
-            'provider' => $provider
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'slogin_id' => $this->slogin_id,
+            'provider' => $this->provider
         );
         $app->setUserState('com_slogin.provider.data', $data);
     }

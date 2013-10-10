@@ -186,7 +186,8 @@ function SLoginParseRoute($segments)
 						$vars['task'] = 'join_mail';
 						break;
 
-					case 'view':
+                    case 'view':
+                    default:
 						$vars['view'] = 'mail';
 						break;
 				}

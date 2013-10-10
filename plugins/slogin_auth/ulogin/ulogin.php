@@ -26,7 +26,12 @@ class plgSlogin_authUlogin extends JPlugin
 
         $input = JFactory::getApplication()->input;
 
+        $app	= JFactory::getApplication();
+
         $request = null;
+
+        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+        $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
         $token = $input->get('token', null, 'STRING');
 
@@ -56,6 +61,7 @@ class plgSlogin_authUlogin extends JPlugin
             $returnRequest->sex = isset($request->sex) ? $request->sex: 0;
             $returnRequest->display_name = isset($request->nickname) ? $request->nickname: $request->first_name;
             $returnRequest->birthday = isset($request->bdate) ? $request->bdate: '';
+            $returnRequest->network = isset($request->network) ? $request->network: '';
             $returnRequest->all_request  = $request;
 
             $app = JFactory::getApplication();
@@ -74,7 +80,7 @@ class plgSlogin_authUlogin extends JPlugin
         $doc = JFactory::getDocument();
         $doc->addScript('//ulogin.ru/js/ulogin.js');
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=ulogin');
+        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=ulogin'.$add);
 
         $i = count($links);
         $links[$i]['link'] = '#';
