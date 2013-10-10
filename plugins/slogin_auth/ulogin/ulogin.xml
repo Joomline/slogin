@@ -10,6 +10,8 @@
 	<version>1.0</version>
 	<description>Ulogin auth. Instructions for setting up the plugin: http://joomline.ru/stati/53-komponenty/306-sozdanie-prilozhenij-dlja-socialnoj-avtoriziacii.html</description>
 	<files>
+		<folder>assets</folder>
+		<folder>element</folder>
 		<filename plugin="ulogin">ulogin.php</filename>
 		<filename>index.html</filename>
 	</files>
