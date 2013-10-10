@@ -12,7 +12,5 @@
 	<files>
 		<filename plugin="ulogin">ulogin.php</filename>
 		<filename>index.html</filename>
-		<folder>assets</folder>
-        <folder>element</folder>
 	</files>
 </extension>

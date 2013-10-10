@@ -25,6 +25,7 @@
 		<file type="plugin" method="upgrade" client="site">plg_SL_vkontakte.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_yandex.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_linkedin.zip</file>
+		<file type="plugin" method="upgrade" client="site">plg_SL_ulogin.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_live.zip</file>
 </files>
 </extension>

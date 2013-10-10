@@ -57,6 +57,10 @@ div.slogin-clear{
     background-position: 0 -420px;
 }
 
+.slogin-buttons .uloginslogin {
+    background-position: -100px -100px;
+}
+
 .slogin-avatar{
     text-align: center;
 }
