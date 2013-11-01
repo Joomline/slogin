@@ -44,13 +44,18 @@ class SLoginController extends SLoginControllerParent
         $slogin_id,
         $provider,
         $rawRequest,
-        $network;
+        $network,
+        $cache;
 
     public function __construct()
     {
 
         $cofig = array();
         parent::__construct($cofig);
+        $this->cache = JFactory::getCache();
+        $this->cache->clean();
+        $this->cache->remove($this->cache->makeId(), 'page');
+
 
         $this->config = JComponentHelper::getParams('com_slogin');
     }
@@ -60,6 +65,9 @@ class SLoginController extends SLoginControllerParent
      */
     public function auth()
     {
+        $this->cache->clean();
+        $this->cache->remove($this->cache->makeId(), 'page');
+
         $app	= JFactory::getApplication();
 
         $input = $app->input;
@@ -99,6 +107,9 @@ class SLoginController extends SLoginControllerParent
      */
     public function check()
     {
+        $this->cache->clean();
+        $this->cache->remove($this->cache->makeId(), 'page');
+        
         $input = JFactory::getApplication()->input;
 
         $plugin = $input->getString('plugin', '');
