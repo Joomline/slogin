@@ -1,6 +1,90 @@
 div.slogin-clear{
     clear: both;
 }
+
+#form-login-remember label {
+    cursor: pointer;float:none;
+}
+
+#modlgn-remember {
+    bottom: 3px;
+    display: inline-block;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: auto;
+}
+
+
+.button
+{
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: medium none;
+    color: #444444;
+    display: inline-block;
+    letter-spacing: normal;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
+	background-color: #00A8E6;
+    color: #FFFFFF
+}
+#modlgn-username
+{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+	width: 100%;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+}
+.ul-jlslogin
+{
+	list-style: none outside none;
+	padding: 5px 0 0;
+	margin: 0;
+}
+
+#modlgn-passwd
+{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    width: 100%;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+}
+
+.login-greeting
+{
+    padding: 0 0 5px;
+}
+#login-form
+{
+	padding: 10px 0 0;
+}
+
+#form-login-remember label{cursor:pointer}
+
+.userdata #form-login-password label
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    width: 20%;
+}
+
+.userdata #form-login-username label
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    width: 20%;
+}
+
 .slogin-buttons span {
     background: url(../../media/socials_sprite.png) no-repeat;
     height: 25px;
@@ -8,7 +92,6 @@ div.slogin-clear{
     display:block;
 }
 .slogin-buttons a, .slogin-buttons a:hover {
-    border:1px solid #c0c0c0;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -22,6 +105,7 @@ div.slogin-clear{
     margin:5px 5px 0 0;
 	text-decoration: none;
 }
+
 .slogin-buttons a:hover {
     background:#f4f3f2;
 }

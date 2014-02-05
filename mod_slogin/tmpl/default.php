@@ -27,6 +27,14 @@ defined('_JEXEC') or die('(@)|(@)');
     <div class="login-greeting">
 	<?php echo JText::sprintf('MOD_SLOGIN_HINAME', htmlspecialchars($user->get('name')));	 ?>
 	</div>
+		<ul class="ul-jlslogin">
+			<?php	if ($params->get('slogin_link_profile') != '1') {?>		
+				<li><a href="<?php echo JRoute::_('index.php?option=com_users&view=edit'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_PROFILE'); ?></a></li>
+			<?php }	?>
+			<?php	if ($params->get('slogin_link_auch_edit') != '1') {?>	
+			<li><a href="<?php echo JRoute::_('index.php?option=com_slogin&view=fusion'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
+			<?php }	?>
+		</ul>
 	<div class="logout-button">
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGOUT'); ?>" />
 		<input type="hidden" name="option" value="com_users" />
@@ -76,10 +84,13 @@ defined('_JEXEC') or die('(@)|(@)');
 		<input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
 	</p>
 	<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-	<p id="form-login-remember">
-		<label for="modlgn-remember"><?php echo JText::_('MOD_SLOGIN_REMEMBER_ME') ?></label>
-		<input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
-	</p>
+		<p id="form-login-remember">
+			<label for="modlgn-remember">
+				 <input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
+				 <?php echo JText::_('MOD_SLOGIN_REMEMBER_ME') ?>
+			</label>
+		</p>
+	<div class="slogin-clear"></div>
 	<?php endif; ?>
 	<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
 	<input type="hidden" name="option" value="com_users" />
@@ -87,7 +98,7 @@ defined('_JEXEC') or die('(@)|(@)');
 	<input type="hidden" name="return" value="<?php echo $return; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 	</fieldset>
-	<ul>
+	<ul class="ul-jlslogin">
 		<li>
 			<a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
 			<?php echo JText::_('MOD_SLOGIN_FORGOT_YOUR_PASSWORD'); ?></a>

@@ -2,6 +2,21 @@ div.slogin-clear{
     clear: both;
 }
 
+#form-login-remember label {
+    cursor: pointer;float:none;
+}
+
+#modlgn-remember {
+    bottom: 3px;
+    display: inline-block;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: auto;
+}
+
+
 .button
 {
     background: none repeat scroll 0 0 #EEEEEE;
@@ -21,14 +36,15 @@ div.slogin-clear{
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
-    max-width: 100%;
+	width: 100%;
     padding: 4px 6px;
     transition: all 0.2s linear 0s;
 }
 .ul-jlslogin
 {
 	list-style: none outside none;
-	padding: 0;
+	padding: 5px 0 0;
+	margin: 0;
 }
 
 #modlgn-passwd.inputbox 
@@ -37,7 +53,7 @@ div.slogin-clear{
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
-    max-width: 100%;
+    width: 100%;
     padding: 4px 6px;
     transition: all 0.2s linear 0s;
 }
@@ -48,7 +64,7 @@ div.slogin-clear{
 }
 #login-form
 {
-	margin-top: 20px;
+	padding: 10px 0 0;
 }
 
 #form-login-remember label{cursor:pointer}
@@ -76,7 +92,6 @@ div.slogin-clear{
     display:block;
 }
 .slogin-buttons a, .slogin-buttons a:hover {
-
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -86,7 +101,6 @@ div.slogin-clear{
 .slogin-buttons a {
     display: block;
     width: 49px;
-
     margin:5px 5px 0 0;
 }
 .slogin-buttons a:hover {
