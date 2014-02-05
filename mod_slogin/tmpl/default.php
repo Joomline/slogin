@@ -129,4 +129,4 @@ defined('_JEXEC') or die('(@)|(@)');
 	<div style="text-align: right;">
 		<a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a>
 	</div>
-<? endif;
+<?php endif;
