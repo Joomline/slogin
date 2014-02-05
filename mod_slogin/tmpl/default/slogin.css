@@ -20,6 +20,7 @@ div.slogin-clear{
     width: 95px;
     padding:5px 10px 5px 10px;
     margin:5px 5px 0 0;
+	text-decoration: none;
 }
 .slogin-buttons a:hover {
     background:#f4f3f2;
