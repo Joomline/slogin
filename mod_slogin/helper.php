@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Social Login
+ *
+ * @version 	1.7
+ * @author		SmokerMan, Arkadiy, Joomline
+ * @copyright	© 2012. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
+ */
+ 
 // no direct access
 defined('_JEXEC') or die;
 

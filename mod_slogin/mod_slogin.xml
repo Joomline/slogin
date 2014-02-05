@@ -5,9 +5,9 @@
 	<creationDate>06.10.2012</creationDate>
 	<copyright>© 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
-	<authorEmail>kolyamba831@inbox.ru</authorEmail>
+	<authorEmail>sale@joomline.ru</authorEmail>
 	<authorUrl>http://joomline.ru</authorUrl>
-	<version>1.6</version>
+	<version>1.7</version>
 	<description>MOD_SLOGIN_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_slogin">mod_slogin.php</filename>
