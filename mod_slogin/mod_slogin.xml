@@ -45,6 +45,24 @@
                         label="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM"
                         description="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM_DESC" />
 				<field
+					name="slogin_link_profile"
+					type="list"
+					default="0"
+					label="MOD_SLOGIN_FIELD_EDIT_YOUR_PROFILE_LABEL"
+					description="MOD_SLOGIN_FIELD_EDIT_YOUR_PROFILE_DESC">
+					<option value="0">JYES</option>
+					<option value="1">JNO</option>
+				</field>
+				<field
+					name="slogin_link_auch_edit"
+					type="list"
+					default="0"
+					label="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_LABEL"
+					description="MOD_SLOGIN_FIELD_EDIT_AUCH_DESC">
+					<option value="0">JYES</option>
+					<option value="1">JNO</option>
+				</field>
+				<field
 					name="inittext"
 					type="textarea"
 					filter="safehtml"
