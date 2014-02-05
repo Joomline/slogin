@@ -88,9 +88,12 @@ defined('_JEXEC') or die('(@)|(@)');
             </p>
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
             <p id="form-login-remember">
-                <label for="modlgn-remember"><?php echo JText::_('MOD_SLOGIN_REMEMBER_ME') ?></label>
-                <input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
-            </p>
+-				 <label for="modlgn-remember">
+-				  	<input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
+-				  	<?php echo JText::_('MOD_SLOGIN_REMEMBER_ME') ?>
+-				 </label>
+-			</p>
+-			<div class="slogin-clear"></div>
             <?php endif; ?>
             <input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
             <input type="hidden" name="option" value="com_users" />
