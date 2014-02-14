@@ -13,15 +13,25 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authFacebook extends JPlugin
 {
+    private $provider = 'facebook';
+
     public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=facebook';
 
+        $scope = 'email,user_photos,user_about_me,user_hometown';
+
+        if($this->params->get('repost_comments', 0))
+        {
+            $scope .= ',offline_access,publish_actions,publish_stream';
+        }
+
         $params = array(
             'client_id=' . $this->params->get('id'),
             'redirect_uri=' . urlencode($redirect),
-            'scope=email,user_photos,user_about_me,user_hometown,user_photos'
+            'scope=' . $scope
         );
+
         $params = implode('&', $params);
 
         $url = 'http://www.facebook.com/dialog/oauth?' . $params;
@@ -42,31 +52,15 @@ class plgSlogin_authFacebook extends JPlugin
 
         $returnRequest = new SloginRequest();
 
-        if ($code) {
-
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=facebook');
-            //подключение к API
-            $params = array(
-                'client_id=' . $this->params->get('id'),
-                'client_secret=' . $this->params->get('password'),
-                'code=' . $code,
-                'redirect_uri='. $redirect
-            );
-            $params = implode('&', $params);
-            $url = 'https://graph.facebook.com/oauth/access_token?' . $params;
-            $data = $controller->open_http($url);
-            parse_str($data, $data_array);
-
-            if(empty($data_array['access_token'])){
-                echo 'Error - empty access tocken';
-                exit;
-            }
+        if ($code)
+        {
+            $token = $this->getToken($code);
 
 // 			Получение данных о пользователе
 // 			id, name, first_name, last_name, link, gender, timezone, locale, verified, updated_time
 // 			email смотреть параметр scope в методе auth()!
 
-            $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$data_array['access_token'];
+            $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$token;
             $request = json_decode($controller->open_http($ResponseUrl));
 
             if(empty($request)){
@@ -77,7 +71,9 @@ class plgSlogin_authFacebook extends JPlugin
                 echo 'Error - '. $request->error;
                 exit;
             }
-            //var_dump($request); die;
+
+            JFactory::getApplication()->setUserState('slogin.user',  $request->id);
+
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
             $returnRequest->email       = $request->email;
@@ -94,11 +90,51 @@ class plgSlogin_authFacebook extends JPlugin
             exit;
         }
     }
+
+    public function getToken($code)
+    {
+        require_once JPATH_BASE.'/components/com_slogin/controller.php';
+        $controller = new SLoginController();
+
+        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=facebook');
+
+        //подключение к API
+        $params = array(
+            'client_id=' . $this->params->get('id'),
+            'client_secret=' . $this->params->get('password'),
+            'code=' . $code,
+            'redirect_uri='. $redirect
+        );
+
+        $params = implode('&', $params);
+
+        $url = 'https://graph.facebook.com/oauth/access_token?' . $params;
+        $data = $controller->open_http($url);
+        parse_str($data, $data_array);
+
+        if(empty($data_array['access_token'])){
+            echo 'Error - empty access tocken';
+            exit;
+        }
+
+        //сохраняем данные токена в сессию
+        //expire - время устаревания скрипта, метка времени Unix
+        JFactory::getApplication()->setUserState('slogin.token', array(
+            'provider' => $this->provider,
+            'token' => $data_array['access_token'],
+            'expire' => (time() + $data_array['expires']),
+            'repost_comments' => $this->params->get('repost_comments', 0),
+            'secret' => $this->params->get('password', '')
+        ));
+
+        return $data_array['access_token'];
+    }
+
     public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;
         $links[$i]['class'] = 'facebookslogin';
-        $links[$i]['plugin_name'] = 'facebook';
+        $links[$i]['plugin_name'] = $this->provider;
     }
 }
