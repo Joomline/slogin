@@ -31,6 +31,8 @@ $type	= modLoginHelper::getType();
 
 $return	= modLoginHelper::getReturnURL($params, $type);
 
+$allow = modSLoginHelper::getalw($params);
+
 if($loadAfter == 1 && $type != 'logout'){
     ?>
     <div id="mod_slogin">
@@ -59,8 +61,6 @@ else{
     $plugins = array();
 
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
-	
-	$allow = modSLoginHelper::getalw($params);
 	
     $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
