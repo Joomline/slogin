@@ -28,10 +28,10 @@ defined('_JEXEC') or die('(@)|(@)');
         <?php echo JText::sprintf('MOD_SLOGIN_HINAME', htmlspecialchars($user->get('name')));	 ?>
     </div>
 		<ul class="ul-jlslogin">
-			<?php	if ($params->get('slogin_link_profile') != '1') {?>		
+			<?php	if ($params->get('slogin_link_auch_edit', 1) == 1) {?>
 				<li><a href="<?php echo JRoute::_('index.php?option=com_users&view=edit'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_PROFILE'); ?></a></li>
 			<?php }	?>
-			<?php	if ($params->get('slogin_link_auch_edit') != '1') {?>	
+			<?php	if ($params->get('slogin_link_profile', 1) == 1) {?>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_slogin&view=fusion'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
 			<?php }	?>
 		</ul>
