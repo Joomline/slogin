@@ -13,15 +13,25 @@ defined('_JEXEC') or die;
 
 class plgSlogin_authVkontakte extends JPlugin
 {
+    private $provider = 'vkontakte';
+
     public function onSloginAuth()
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=vkontakte';
+
+        $scope = 'offline';
+
+        if($this->params->get('repost_comments', 0))
+        {
+            $scope .= ',wall';
+            //$scope .= ',groups';
+        }
 
         $params = array(
             'client_id=' . $this->params->get('id'),
             'response_type=code',
             'redirect_uri=' . urlencode($redirect),
-            'scope=offline'
+            'scope=' . $scope
         );
         $params = implode('&', $params);
 
@@ -43,21 +53,7 @@ class plgSlogin_authVkontakte extends JPlugin
         $returnRequest = new SloginRequest();
 
         if ($code) {
-
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=vkontakte');
-
-            //подключение к API
-            $params = array(
-                'client_id=' . $this->params->get('id'),
-                'client_secret=' . $this->params->get('password'),
-                'code=' . $code,
-                'redirect_uri=' . $redirect
-            );
-            $params = implode('&', $params);
-
-            $url = 'https://oauth.vk.com/access_token?' . $params;
-
-            $data = json_decode($controller->open_http($url));
+            $data = $this->getToken($code);
 
             if (empty($data->access_token) || $data->error) {
                 $error = (!empty($data->error_description)) ? $data->error_description : $data->info;
@@ -93,6 +89,18 @@ class plgSlogin_authVkontakte extends JPlugin
                 exit;
             }
 
+            //сохраняем данные токена в сессию
+            //expire - время устаревания скрипта, метка времени Unix
+            JFactory::getApplication()->setUserState('slogin.token', array(
+                'provider' => $this->provider,
+                'token' => $data->access_token,
+                'expire' => $data->expires_in,
+                'repost_comments' => $this->params->get('repost_comments', 0),
+                'slogin_user' => $data->user_id,
+                'app_id' => $this->params->get('id', 0),
+                'app_secret' => $this->params->get('password', 0)
+            ));
+
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
             $returnRequest->id          = $request->uid;
@@ -107,11 +115,34 @@ class plgSlogin_authVkontakte extends JPlugin
         }
     }
 
+    public function getToken($code)
+    {
+        require_once JPATH_BASE.'/components/com_slogin/controller.php';
+        $controller = new SLoginController();
+
+        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=vkontakte');
+
+        //подключение к API
+        $params = array(
+            'client_id=' . $this->params->get('id'),
+            'client_secret=' . $this->params->get('password'),
+            'code=' . $code,
+            'redirect_uri=' . $redirect
+        );
+        $params = implode('&', $params);
+
+        $url = 'https://oauth.vk.com/access_token?' . $params;
+
+        $data = json_decode($controller->open_http($url));
+
+        return $data;
+    }
+
     public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte' . $add;
         $links[$i]['class'] = 'vkontakteslogin';
-        $links[$i]['plugin_name'] = 'vkontakte';
+        $links[$i]['plugin_name'] = $this->provider;
     }
 }

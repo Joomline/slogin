@@ -23,7 +23,8 @@ class plgSlogin_authFacebook extends JPlugin
 
         if($this->params->get('repost_comments', 0))
         {
-            $scope .= ',offline_access,publish_actions,publish_stream';
+            $scope .= ',publish_actions,publish_stream';
+            //$scope .= ',offline_access';
         }
 
         $params = array(
@@ -60,7 +61,7 @@ class plgSlogin_authFacebook extends JPlugin
 // 			id, name, first_name, last_name, link, gender, timezone, locale, verified, updated_time
 // 			email смотреть параметр scope в методе auth()!
 
-            $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$token;
+            $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$token['access_token'];
             $request = json_decode($controller->open_http($ResponseUrl));
 
             if(empty($request)){
@@ -72,7 +73,17 @@ class plgSlogin_authFacebook extends JPlugin
                 exit;
             }
 
-            JFactory::getApplication()->setUserState('slogin.user',  $request->id);
+            //сохраняем данные токена в сессию
+            //expire - время устаревания скрипта, метка времени Unix
+            JFactory::getApplication()->setUserState('slogin.token', array(
+                'provider' => $this->provider,
+                'token' => $token['access_token'],
+                'expire' => (time() + $token['expires']),
+                'repost_comments' => $this->params->get('repost_comments', 0),
+                'slogin_user' => $request->id,
+                'app_id' => $this->params->get('id', 0),
+                'app_secret' => $this->params->get('password', 0)
+            ));
 
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
@@ -117,17 +128,7 @@ class plgSlogin_authFacebook extends JPlugin
             exit;
         }
 
-        //сохраняем данные токена в сессию
-        //expire - время устаревания скрипта, метка времени Unix
-        JFactory::getApplication()->setUserState('slogin.token', array(
-            'provider' => $this->provider,
-            'token' => $data_array['access_token'],
-            'expire' => (time() + $data_array['expires']),
-            'repost_comments' => $this->params->get('repost_comments', 0),
-            'secret' => $this->params->get('password', '')
-        ));
-
-        return $data_array['access_token'];
+        return $data_array;
     }
 
     public function onCreateSloginLink(&$links, $add = '')

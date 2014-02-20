@@ -27,6 +27,13 @@
                        label="Secret"
                         />
                 <field
+                        name="repost_comments"
+                        type="checkbox"
+                        label="Repost Comments"
+                        description="Repost Comments"
+                        value="1"
+                        />
+                <field
                         name="callback_url"
                         type="callbackurl"
                         label="Callback URI"
@@ -36,13 +43,7 @@
                         readonly="true"
                         class="readonly"
                         />
-                <field
-                        name="repost_comments"
-                        type="checkbox"
-                        label="Repost Comments"
-                        description="Repost Comments"
-                        value="1"
-                        />
+
             </fieldset>
         </fields>
     </config>
