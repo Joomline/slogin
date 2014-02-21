@@ -15,6 +15,8 @@ require_once JPATH_BASE.'/plugins/slogin_auth/twitter/assets/twitteroauth/twitte
 
 class plgSlogin_authTwitter extends JPlugin
 {
+    private $provider = 'twitter';
+
     public function onSloginAuth()
     {
         $twitauth = new SloginTwitterOAuth($this->params->get('id'), $this->params->get('password'));
@@ -81,6 +83,18 @@ class plgSlogin_authTwitter extends JPlugin
                     exit;
                 }
 
+                //сохраняем данные токена в сессию
+                //expire - время устаревания скрипта, метка времени Unix
+                JFactory::getApplication()->setUserState('slogin.token', array(
+                    'provider' => $this->provider,
+                    'token' => $access_token,
+//                    'expire' => (time() + $token['expires']),
+                    'repost_comments' => $this->params->get('repost_comments', 0),
+                    'slogin_user' => $request->id,
+                    'app_id' => $this->params->get('id', 0),
+                    'app_secret' => $this->params->get('password', 0)
+                ));
+
                 $returnRequest->first_name  = $request->name;
                 $returnRequest->last_name   = $request->screen_name;
                 $returnRequest->id          = $request->id;
@@ -105,6 +119,6 @@ class plgSlogin_authTwitter extends JPlugin
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter' . $add;
         $links[$i]['class'] = 'twitterslogin';
-        $links[$i]['plugin_name'] = 'twitter';
+        $links[$i]['plugin_name'] = $this->provider;
     }
 }
