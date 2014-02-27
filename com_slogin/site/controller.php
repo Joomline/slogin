@@ -49,14 +49,8 @@ class SLoginController extends SLoginControllerParent
 
     public function __construct()
     {
-
-        $cofig = array();
-        parent::__construct($cofig);
+        parent::__construct(array());
         $this->cache = JFactory::getCache();
-        $this->cache->clean();
-        $this->cache->remove($this->cache->makeId(), 'page');
-
-
         $this->config = JComponentHelper::getParams('com_slogin');
     }
 
