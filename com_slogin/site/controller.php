@@ -464,7 +464,6 @@ class SLoginController extends SLoginControllerParent
     // проверить, не зарегистрирован ли уже пользователь с таким email
     public function GetUserId()
     {
-        // Initialise some variables
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('user_id'));
@@ -473,6 +472,32 @@ class SLoginController extends SLoginControllerParent
         $query->where($db->quoteName('provider') . ' = ' . $db->quote($this->provider));
         $db->setQuery($query, 0, 1);
         $userId = $db->loadResult();
+
+        if ($userId)
+        { //проверить не удален ли пользователь из основной таблицы пользователей
+            $query = $db->getQuery(true);
+            $query->select($db->quoteName('id'));
+            $query->from($db->quoteName('#__users'));
+            $query->where($db->quoteName('id') . ' = ' . $db->quote($userId));
+            $db->setQuery($query, 0, 1);
+            $result = $db->loadResult();
+
+            if (!$result)
+            {
+                $query = $db->getQuery(true);
+                $query->delete('#__slogin_users');
+                $query->where('`user_id` = ' . $db->quote($userId));
+                $db->setQuery($query);
+                $db->execute();
+                
+                return false;
+            }
+        } 
+        else 
+        {
+            return false;
+        }
+        
         return $userId;
     }
 
