@@ -49,14 +49,8 @@ class SLoginController extends SLoginControllerParent
 
     public function __construct()
     {
-
-        $cofig = array();
-        parent::__construct($cofig);
+        parent::__construct(array());
         $this->cache = JFactory::getCache();
-        $this->cache->clean();
-        $this->cache->remove($this->cache->makeId(), 'page');
-
-
         $this->config = JComponentHelper::getParams('com_slogin');
     }
 
@@ -343,6 +337,7 @@ class SLoginController extends SLoginControllerParent
         $session = JFactory::getSession();
         $db = JFactory::getDBO();
 
+        JPluginHelper::importPlugin('user');
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
         $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
@@ -384,6 +379,22 @@ class SLoginController extends SLoginControllerParent
         $instance->setLastVisit();
 
         $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
+
+        if($this->config->get('run_user_login_trigger', 0))
+        {
+            jimport('joomla.user.authentication');
+
+            $response = new JAuthenticationResponse;
+            $response->type = 'SLogin';
+            $response->status = 1;
+            $response->username = $instance->get('username');
+            $response->fullname = $instance->get('username');
+            $response->password = '';
+
+            $options = array();
+
+            $dispatcher->trigger('onUserLogin', array((array) $response, $options));
+        }
 
     }
 
@@ -464,7 +475,6 @@ class SLoginController extends SLoginControllerParent
     // проверить, не зарегистрирован ли уже пользователь с таким email
     public function GetUserId()
     {
-        // Initialise some variables
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('user_id'));
@@ -473,6 +483,32 @@ class SLoginController extends SLoginControllerParent
         $query->where($db->quoteName('provider') . ' = ' . $db->quote($this->provider));
         $db->setQuery($query, 0, 1);
         $userId = $db->loadResult();
+
+        if ($userId)
+        { //проверить не удален ли пользователь из основной таблицы пользователей
+            $query = $db->getQuery(true);
+            $query->select($db->quoteName('id'));
+            $query->from($db->quoteName('#__users'));
+            $query->where($db->quoteName('id') . ' = ' . $db->quote($userId));
+            $db->setQuery($query, 0, 1);
+            $result = $db->loadResult();
+
+            if (!$result)
+            {
+                $query = $db->getQuery(true);
+                $query->delete('#__slogin_users');
+                $query->where('`user_id` = ' . $db->quote($userId));
+                $db->setQuery($query);
+                $db->execute();
+                
+                return false;
+            }
+        } 
+        else 
+        {
+            return false;
+        }
+        
         return $userId;
     }
 
