@@ -154,3 +154,93 @@ div.slogin-clear{
     padding: 5px;
     margin: 10px;
 }
+
+#username.validate-username {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+    width: 300px;
+}
+
+#password.validate-password {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+    width: 300px;
+}
+
+#password-lbl {
+    width: 70px;
+	display: inline-block;
+}
+#username-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+.login-fields
+{
+padding: 5px;
+}
+
+#name.validate-name {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+    width: 300px;
+}
+
+#email.validate-email{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+    width: 300px;
+}
+
+#jform_email.validate-email{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    transition: all 0.2s linear 0s;
+    width: 300px;
+}
+
+#name-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+
+#email-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+
+.validate
+{
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: medium none;
+    color: #444444;
+    display: inline-block;
+    letter-spacing: normal;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
+	background-color: #00A8E6;
+    color: #FFFFFF
+}
