@@ -18,7 +18,7 @@ div.slogin-clear{
 
 .button
 {
-    background: none repeat scroll 0 0 #EEEEEE;
+    background: #EEE;
     border: medium none;
     color: #444444;
     display: inline-block;
@@ -31,13 +31,12 @@ div.slogin-clear{
 }
 #modlgn-username
 {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
 	width: 100%;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
 }
 .ul-jlslogin
 {
@@ -48,13 +47,12 @@ div.slogin-clear{
 
 #modlgn-passwd
 {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     width: 100%;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
 }
 
 .login-greeting

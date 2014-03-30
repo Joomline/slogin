@@ -38,7 +38,6 @@ div.slogin-clear{
     height: 30px;
 	width: 100%;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
 }
 .ul-jlslogin
 {
@@ -55,7 +54,6 @@ div.slogin-clear{
     height: 30px;
     width: 100%;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
 }
 
 .login-greeting

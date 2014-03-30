@@ -1,20 +1,18 @@
 #username.validate-username {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
     width: 300px;
 }
 
 #password.validate-password {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
     width: 300px;
 }
 
@@ -33,32 +31,30 @@ padding: 5px;
 }
 
 #name.validate-name {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
     width: 300px;
 }
 
 #email.validate-email{
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
     width: 300px;
 }
 
 #jform_email.validate-email{
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
     padding: 4px 6px;
-    transition: all 0.2s linear 0s;
+
     width: 300px;
 }
 
@@ -76,8 +72,8 @@ padding: 5px;
 
 .validate
 {
-    background: none repeat scroll 0 0 #EEEEEE;
-    border: medium none;
+    background: #EEE;
+    border: none;
     color: #444444;
     display: inline-block;
     letter-spacing: normal;
