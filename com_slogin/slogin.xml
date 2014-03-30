@@ -55,6 +55,7 @@
     <media destination="com_slogin" folder="media">
         <filename>icon_48x48.png</filename>
         <filename>icon_16x16.png</filename>
+		<filename>comslogin.css</filename>
     </media>
 
     <languages folder="languages/site">

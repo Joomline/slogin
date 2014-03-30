@@ -11,6 +11,8 @@
 // No direct access to this file
 defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
+$doc = JFactory::getDocument();
+$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
 ?>
 <div class="login">
 
