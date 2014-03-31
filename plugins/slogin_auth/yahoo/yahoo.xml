@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
+	<name>Social Login Yahoo auth</name>
+	<author>Arkadiy, Joomline</author>
+	<creationDate>21.09.2012</creationDate>
+	<copyright>(C) 2012. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail></authorEmail>
+	<authorUrl>http://joomline.ru</authorUrl>
+	<version>1.0</version>
+	<description>Yahoo auth</description>
+	<files>
+		<filename plugin="yahoo">yahoo.php</filename>
+		<filename>index.html</filename>
+		<folder>assets</folder>
+		<folder>element</folder>
+	</files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="plugins/slogin_auth/yahoo/element">
+                <field name="app_id" type="text" default=""
+                       description="Application ID"
+                       label="Application ID"
+                        />
+                <field name="key" type="text" default=""
+                       description="Consumer Key"
+                       label="Consumer Key"
+                        />
+                <field name="secret" type="text" default=""
+                       description="Consumer Secret"
+                       label="Consumer Secret"
+                        />
+                <field
+                        name="callback_url"
+                        type="callbackurl"
+                        label="Callback URL"
+                        description="Callback URL"
+                        filter="unset"
+                        value="yahoo"
+                        readonly="true"
+                        class="readonly"
+                        />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
