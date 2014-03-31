@@ -26,13 +26,13 @@
                        description="Secret key"
                        label="Secret key"
                         />
-                <field
+          <!--	<field
                         name="repost_comments"
                         type="checkbox"
                         label="Repost Comments"
                         description="Repost Comments"
                         value="1"
-                        />
+                        /> --> 
                 <field
                         name="callback_url"
                         type="callbackurl"

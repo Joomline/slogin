@@ -1,0 +1,85 @@
+#username.validate-username {
+    background: #FFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    width: 300px;
+}
+
+#password.validate-password {
+    background: #FFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    width: 300px;
+}
+
+#password-lbl {
+    width: 70px;
+	display: inline-block;
+}
+#username-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+.login-fields
+{
+padding: 5px;
+}
+
+#name.validate-name {
+    background: #FFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    width: 300px;
+}
+
+#email.validate-email{
+    background: #FFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+    width: 300px;
+}
+
+#jform_email.validate-email{
+    background: #FFF;
+    border: 1px solid #DDDDDD;
+    color: #444444;
+    height: 30px;
+    padding: 4px 6px;
+
+    width: 300px;
+}
+
+#name-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+
+#email-lbl
+{
+    width: 70px;
+	display: inline-block;
+}
+
+.validate
+{
+    background: #EEE;
+    border: none;
+    color: #444444;
+    display: inline-block;
+    letter-spacing: normal;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
+	background-color: #00A8E6;
+    color: #FFFFFF
+}

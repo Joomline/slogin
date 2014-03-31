@@ -337,6 +337,7 @@ class SLoginController extends SLoginControllerParent
         $session = JFactory::getSession();
         $db = JFactory::getDBO();
 
+        JPluginHelper::importPlugin('user');
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
         $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
@@ -378,6 +379,22 @@ class SLoginController extends SLoginControllerParent
         $instance->setLastVisit();
 
         $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
+
+        if($this->config->get('run_user_login_trigger', 0))
+        {
+            jimport('joomla.user.authentication');
+
+            $response = new JAuthenticationResponse;
+            $response->type = 'SLogin';
+            $response->status = 1;
+            $response->username = $instance->get('username');
+            $response->fullname = $instance->get('username');
+            $response->password = '';
+
+            $options = array();
+
+            $dispatcher->trigger('onUserLogin', array((array) $response, $options));
+        }
 
     }
 
