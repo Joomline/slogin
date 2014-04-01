@@ -980,7 +980,9 @@ class SLoginController extends SLoginControllerParent
 
         //подключаем helper стандартного модуля авторизации, для ридеректа
         require_once JPATH_BASE.'/modules/mod_login/helper.php';
-
+		require_once JPATH_BASE.'/modules/mod_slogin/helper.php';
+		$allow = modSLoginHelper::getalw($params);
+		
         $user = JFactory::getUser();
         $doc = JFactory::getDocument();
         $input = new JInput;
