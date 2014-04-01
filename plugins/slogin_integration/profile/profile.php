@@ -106,6 +106,26 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function yahooGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->guid;
+        $data->provider = $provider;
+        $data->social_profile_link = $info->profileUrl;
+        $data->f_name = $info->givenName;
+        $data->l_name = $info->familyName ;
+        $data->email = $info->emails->handle;
+        if($info->gender == 'M')
+            $data->gender = 1;
+        elseif($info->gender == 'F')
+            $data->gender = 2;
+        else
+            $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->image->imageUrl) ? $info->image->imageUrl : '';
+        return $data;
+    }
+
     private function uloginGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
@@ -306,9 +326,8 @@ class plgSlogin_integrationProfile extends JPlugin
 
         $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
         if (isset($data->picture)){
-            $origimage = $info->picture;
-            $id = isset($info->id) ? $info->id : $info->uid;
-            $new_image = $provider . '_' . $id . '.jpg';
+            $origimage = $data->picture;
+            $new_image = $provider . '_' . $data->slogin_id . '.jpg';
             if ($this->createAvatar($origimage, $new_image, $max_w, $max_h)) {
                 $data->avatar = $new_image;
             }
