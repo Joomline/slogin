@@ -18,7 +18,7 @@ div.slogin-clear{
 
 .button
 {
-    background: #EEE;
+    background: #EEEEEE;
     border: medium none;
     color: #444444;
     display: inline-block;
@@ -31,12 +31,13 @@ div.slogin-clear{
 }
 #modlgn-username
 {
-    background: #FFF;
+    background: #FFFFFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
 	width: 100%;
     padding: 4px 6px;
+
 }
 .ul-jlslogin
 {
@@ -47,7 +48,7 @@ div.slogin-clear{
 
 #modlgn-passwd
 {
-    background: #FFF;
+    background: #FFFFFF;
     border: 1px solid #DDDDDD;
     color: #444444;
     height: 30px;
@@ -141,6 +142,10 @@ div.slogin-clear{
 
 .slogin-buttons .uloginslogin {
     background-position: -100px -100px;
+}
+
+.slogin-buttons .yahooslogin {
+    background-position: -100px -180px;
 }
 
 .slogin-avatar{
