@@ -126,6 +126,21 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function wordpressData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->ID;
+        $data->provider = $provider;
+        $data->social_profile_link = $info->profile_URL;
+        $data->f_name = $info->display_name;
+        $data->l_name = '' ;
+        $data->email = $info->email;
+        $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->avatar_URL) ? $info->avatar_URL : '';
+        return $data;
+    }
+	
     private function uloginGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
