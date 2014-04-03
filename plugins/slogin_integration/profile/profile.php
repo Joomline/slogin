@@ -209,7 +209,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name;
         $data->email = $info->email;
         $this->getGeoInfo($data);
-        $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
+        $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=large&redirect=false';
         $request_foto = json_decode($controller->open_http($foto_url));
         $data->picture = '';
         if (empty($request_foto->error)){
@@ -272,7 +272,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name;
         $data->email = $info->email;
         $this->getGeoInfo($data);
-        $data->picture = ($info->has_pic == '1') ? $info->pic_50 : '';
+        $data->picture = ($info->has_pic == '1') ? $info->pic_big : '';
         return $data;
     }
     private function yandexGetData($user, $provider, $info)
