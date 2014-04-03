@@ -31,26 +31,15 @@ class plgSlogin_authWordpress extends JPlugin
 
     public function onSloginCheck()
     {
-        require_once JPATH_BASE.'/components/com_slogin/controller.php';
-
-        $controller = new SLoginController();
-
         $input = JFactory::getApplication()->input;
 
         $error = $input->getString('error', '');
+
         if($error == 'access_denied'){
-            $config = JComponentHelper::getParams('com_slogin');
-
-            JModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModel::getInstance('Linking_user', 'SloginModel');
-
-            $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-
-            $controller = JControllerLegacy::getInstance('SLogin');
-            $controller->displayRedirect($redirect, true);
+            die('ERROR: access_denied.');
         }
 
-        $code = $input->get('code', null, 'STRING');
+        $code = $input->getString('code', '');
 
         $returnRequest = new SloginRequest();
 
@@ -61,7 +50,7 @@ class plgSlogin_authWordpress extends JPlugin
             }
 
             // get access_token for google API
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=wordpress');
+            $redirect = JURI::base().'?option=com_slogin&task=check&plugin=wordpress';
 
             $params = array(
                 'client_id' => $this->params->get('id'),
@@ -71,15 +60,16 @@ class plgSlogin_authWordpress extends JPlugin
                 'grant_type' => 'authorization_code'
             );
 
-            $url = 'https://public-api.wordpress.com/oauth2/token';
-
             $curl = curl_init( "https://public-api.wordpress.com/oauth2/token" );
             curl_setopt( $curl, CURLOPT_POST, true );
             curl_setopt( $curl, CURLOPT_POSTFIELDS, $params);
-            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
             $auth = curl_exec( $curl );
+            curl_close($curl);
+
             $secret = json_decode($auth);
-            $access_key = $secret->access_token;
 
             if(empty($secret)){
                 echo 'Error - empty access tocken';
@@ -90,8 +80,12 @@ class plgSlogin_authWordpress extends JPlugin
                 exit;
             }
 
-            $curl = curl_init( "https://public-api.wordpress.com/rest/v1/me/?pretty=1" );
+            $access_key = $secret->access_token;
+
+
+            $curl = curl_init( "https://public-api.wordpress.com/rest/v1/me/?raw=1" );
             curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Authorization: Bearer ' . $access_key ) );
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_exec( $curl );
             $request = curl_exec($curl);
             curl_close($curl);
@@ -106,24 +100,23 @@ class plgSlogin_authWordpress extends JPlugin
                 exit;
             }
             /*
-            Response Body
-            {
-                +"ID": 1001000100,
-                "display_name": "Mr. Test",
-                "username": "test",
-                "email": "test@example.com",
-                "primary_blog": 415,
-                "avatar_URL": "http:\/\/0.gravatar.com\/avatar\/a178ebb1731d432338e6bb0158720fcc?s=96&d=identicon&r=G",
-                "profile_URL": "http:\/\/en.gravatar.com\/test",
-                "verified" : true,
-                "meta": {
-                    "links": {
-                        "self": "https:\/\/public-api.wordpress.com\/rest\/v1\/me",
-                        "help": "https:\/\/public-api.wordpress.com\/rest\/v1\/me\/help",
-                        "site": "https:\/\/public-api.wordpress.com\/rest\/v1\/sites\/30434183"
-                    }
+        object(stdClass)#387 (10) {
+            ["ID"]=> int(45759137)
+            ["display_name"]=> string(11) "asd"
+            ["username"]=> string(11) "asd"
+            ["email"]=> string(22) "asd@gmail.com"
+            ["primary_blog"]=> int(123)
+            ["token_site_id"]=> int(123)
+            ["avatar_URL"]=> string(83) "https://0.gravatar.com/avatar/9f3ceeb379f3db5f82bcdc4c5a0a51c7?s=96&d=identicon&r=G"
+            ["profile_URL"]=> string(34) "http://en.gravatar.com/asedelnikov" ["verified"]=> bool(true)
+            ["meta"]=> object(stdClass)#386 (1) {
+                ["links"]=> object(stdClass)#385 (3) {
+                    ["self"]=> string(43) "https://public-api.wordpress.com/rest/v1/me"
+                    ["help"]=> string(48) "https://public-api.wordpress.com/rest/v1/me/help"
+                    ["site"]=> string(55) "https://public-api.wordpress.com/rest/v1/sites/46631777"
                 }
             }
+        }
             */
 
             $returnRequest->id              = $request->ID;
