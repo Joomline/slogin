@@ -20,6 +20,7 @@ class plgSlogin_authVkontakte extends JPlugin
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=vkontakte';
 
         $scope = 'offline';
+		$scope .= ',email';
 
         if($this->params->get('repost_comments', 0))
         {
@@ -60,6 +61,8 @@ class plgSlogin_authVkontakte extends JPlugin
                 die($error);
             }
 
+			$returnRequest->email = (!empty($data->email)) ? $data->email : '';
+			
 // 			Получение данных о пользователе поле fields
 // 			Нужное можно указать!
 // 			uid, first_name, last_name, nickname, screen_name, sex, bdate (birthdate), city, country,

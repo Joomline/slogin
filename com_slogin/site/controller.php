@@ -1002,6 +1002,8 @@ class SLoginController extends SLoginControllerParent
         $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 		
 		$allow = modSLoginHelper::getalw($params);
+        $jll = '';
+        if($allow){$jll = '<div style="text-align: right;"><a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a></div>';}
 		
         require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
         die;
