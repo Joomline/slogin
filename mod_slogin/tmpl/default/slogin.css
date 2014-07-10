@@ -148,6 +148,10 @@ div.slogin-clear{
     background-position: -100px -180px;
 }
 
+.slogin-buttons .wordpressslogin {
+    background-position: -100px -220px;
+}
+
 .slogin-avatar{
     text-align: center;
 }
