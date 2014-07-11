@@ -64,7 +64,7 @@ var SLogin = SLogin || {
                 size = {width:585, height:350};
                 break;
             case 'googleslogin':
-                size = {width:450, height:350};
+                size = {width:450, height:450};
                 break;
             case 'facebookslogin':
                 size = {width:900, height:550};
