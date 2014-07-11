@@ -18,7 +18,7 @@ defined('_JEXEC') or die('(@)|(@)');
 
     <?php if (!empty($avatar)) : ?>
         <div class="slogin-avatar">
-			<a href="<?php echo $profileLink; ?>">
+			<a href="<?php echo $profileLink; ?>" target="_blank">
 				<img src="<?php echo $avatar; ?>" alt=""/>
 			</a>
         </div>

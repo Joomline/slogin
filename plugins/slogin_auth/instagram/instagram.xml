@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
+	<name>Social Login Instagram auth</name>
+	<author>Arkadiy, Joomline</author>
+	<creationDate>21.09.2012</creationDate>
+	<copyright>(C) 2012. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail></authorEmail>
+	<authorUrl>http://joomline.ru</authorUrl>
+	<version>1.0</version>
+	<description>Instagram auth</description>
+	<files>
+		<filename plugin="instagram">instagram.php</filename>
+		<filename>index.html</filename>
+		<folder>assets</folder>
+		<folder>element</folder>
+	</files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="plugins/slogin_auth/instagram/element">
+                <field name="id" type="text" default=""
+                       description="Instagram Client Id"
+                       label="Client Id"
+                        />
+                <field name="password" type="text" default=""
+                       description="Instagram Client Secret"
+                       label="Client Secret"
+                        />
+
+                <field
+                        name="callback_url"
+                        type="callbackurl"
+                        label="Callback URI"
+                        description="Callback URI"
+                        filter="unset"
+                        value=""
+                        readonly="true"
+                        class="readonly"
+                        />
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>

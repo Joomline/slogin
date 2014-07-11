@@ -221,6 +221,21 @@ class plgSlogin_integrationProfile extends JPlugin
         }
         return $data;
     }
+    private function instagramGetData($user, $provider, $info)
+    {
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->user->id;
+        $data->provider = $provider;
+        $data->social_profile_link = 'http://instagram.com/' . $info->user->username;
+        $data->gender = 0;
+        $data->f_name = $info->user->full_name;
+        $data->l_name = '';
+        $data->email = '';
+        $data->picture = $info->user->profile_picture;
+        $this->getGeoInfo($data);
+        return $data;
+    }
 
     private function twitterGetData($user, $provider, $info)
     {
