@@ -36,7 +36,7 @@ $allow = modSLoginHelper::getalw($params);
 if($loadAfter == 1 && $type != 'logout'){
     ?>
     <div id="mod_slogin">
-        <img src="/modules/mod_slogin/media/ajax-loader.gif"/>
+        <img src="/modules/mod_slogin/media/ajax-loader.gif" alt="Loader"/>
     </div>
     <script type="text/javascript">
         var sloginReturnUri = '<?php echo base64_encode($return);?>';
