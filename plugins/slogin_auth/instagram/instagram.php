@@ -77,7 +77,7 @@ class plgSlogin_authInstagram extends JPlugin
                 'app_id' => $this->params->get('id', 0),
                 'app_secret' => $this->params->get('password', 0)
             ));
-            var_dump($data);
+            
             $returnRequest->first_name      = $data->user->full_name;
             $returnRequest->id              = $data->user->id;
             $returnRequest->real_name       = $data->user->full_name;
