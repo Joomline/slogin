@@ -126,7 +126,7 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
-    private function wordpressData($user, $provider, $info){
+    private function wordpressGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
         $data->slogin_id = $info->ID;
