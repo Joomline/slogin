@@ -31,7 +31,7 @@ class JFormFieldCallbackUrl extends JFormField
 	 */
 	protected function getInput()
 	{
-		$task = !empty($this->element['value']) ? '?option=com_slogin%26task=check%26plugin=' . (string) $this->element['value'] : '';
+		$task = !empty($this->element['value']) ? '?option=com_slogin&task=check&plugin=' . (string) $this->element['value'] : '';
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
