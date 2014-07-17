@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted Access');
         <?php echo JText::_('ID'); ?>
 	</th>
 	<th width="5%">
-		<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
+		<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 	</th>			
 	<th width="10%">
         <?php echo JText::_('COM_SLOGIN_USER_ID'); ?>
