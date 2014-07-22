@@ -107,46 +107,63 @@ div.slogin-clear{
 
 .slogin-buttons .googleslogin {
     background-position: 0 -473px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .odnoklassnikislogin {
     background-position: -51px -473px;
+	opacity: 0.7;
 }
 .slogin-buttons .vkontakteslogin {
     background-position: 0 -525px;
+	opacity: 0.7;
 }
 .slogin-buttons .facebookslogin {
     background-position: -51px -525px;
+	opacity: 0.7;
 }
 .slogin-buttons .mailslogin {
     background-position: 0 -577px;
+	opacity: 0.7;
 }
 .slogin-buttons .twitterslogin {
     background-position: -51px -577px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .yandexslogin {
     background-position: 0px -629px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .linkedinslogin {
     background-position: -51px -629px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .liveslogin {
     background-position: -0px -681px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .uloginslogin {
     background-position: -51px -681px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .yahooslogin {
     background-position: -51px -733px;
+	opacity: 0.7;
 }
 
 .slogin-buttons .wordpressslogin {
     background-position: -0px -785px;
+	opacity: 0.7;
+}
+
+.slogin-buttons .instagramslogin {
+    background-position: -51px -785px;
+	opacity: 0.7;
 }
 
 .slogin-avatar{
@@ -161,3 +178,6 @@ div.slogin-clear{
     margin: 10px;
 }
 
+.slogin-buttons .twitterslogin:hover, .mailslogin:hover, .facebookslogin:hover, .vkontakteslogin:hover, .googleslogin:hover, .yandexslogin:hover, .linkedinslogin:hover, .liveslogin:hover, .uloginslogin:hover, .yahooslogin:hover, .wordpressslogin:hover, .instagramslogin:hover, .odnoklassnikislogin:hover {
+    opacity: 1;
+}
