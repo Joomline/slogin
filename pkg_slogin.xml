@@ -29,5 +29,6 @@
 		<file type="plugin" method="upgrade" client="site">plg_SL_live.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_yahoo.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_wordpress.zip</file>
+		<file type="plugin" method="upgrade" client="site">plg_SL_instagram.zip</file>
 </files>
 </extension>
