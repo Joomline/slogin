@@ -15,6 +15,7 @@ Component supported Joomline
 
 Description:
 Russian - http://joomline.ru/rasshirenija/komponenty/slogin.html
+
 English - http://joomline.org/extensions/component-for-joomla/slogin.html
 
 You can support the project:
