@@ -1,0 +1,97 @@
+<project name="slogin" default="dist" basedir=".">
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="filename" value="pkg_slogin_v1.9_j2.5_j3.zip" />
+
+	<description>
+        Build slogin.
+    </description>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="dist" depends="init, pack-plugins">
+		<zip destfile="${dist}/${filename}">
+			<fileset file="${build}/**" />
+		</zip>
+	</target>
+
+	<target name="pack-plugins">
+		<zip destfile="${build}/mod_slogin.zip" description="mod_slogin">
+			<fileset dir="mod_slogin" />
+		</zip>
+		<zip destfile="${build}/com_slogin.zip" description="com_slogin">
+			<fileset dir="com_slogin" />
+		</zip>
+		<zip destfile="${build}/lib_slogin_oauth.zip" description="lib_slogin_oauth">
+			<fileset dir="libraries/slogin" />
+		</zip>
+
+		<!-- Plugins -->
+		<zip destfile="${build}/plg_slogin.zip" description="plg_slogin">
+			<fileset dir="plugins/user/plg_slogin" />
+		</zip>
+
+		<zip destfile="${build}/plg_slogin_profile.zip" description="plg_slogin_profile">
+			<fileset dir="plugins/slogin_integration/profile" />
+		</zip>
+		<zip destfile="${build}/plg_slogin_integration_avatar.zip" description="plg_slogin_integration_avatar">
+			<fileset dir="plugins/slogin_integration/plg_slogin_integration_avatar" />
+		</zip>
+		<zip destfile="${build}/plg_slogin_integration_combuilder.zip" description="plg_slogin_integration_combuilder">
+			<fileset dir="plugins/slogin_integration/plg_slogin_integration_combuilder" />
+		</zip>
+		<zip destfile="${build}/plg_slogin_integration_easyblog.zip" description="plg_slogin_integration_easyblog">
+			<fileset dir="plugins/slogin_integration/plg_slogin_integration_easyblog" />
+		</zip>
+
+		<zip destfile="${build}/plg_SL_facebook.zip" description="facebook">
+			<fileset dir="plugins/slogin_auth/facebook" />
+		</zip>
+		<zip destfile="${build}/plg_SL_google.zip" description="google">
+			<fileset dir="plugins/slogin_auth/google" />
+		</zip>
+		<zip destfile="${build}/plg_SL_instagram.zip" description="instagram">
+			<fileset dir="plugins/slogin_auth/instagram" />
+		</zip>
+		<zip destfile="${build}/plg_SL_linkedin.zip" description="linkedin">
+			<fileset dir="plugins/slogin_auth/linkedin" />
+		</zip>
+		<zip destfile="${build}/plg_SL_live.zip" description="live">
+			<fileset dir="plugins/slogin_auth/live" />
+		</zip>
+		<zip destfile="${build}/plg_SL_mail.zip" description="mail">
+			<fileset dir="plugins/slogin_auth/mail" />
+		</zip>
+		<zip destfile="${build}/plg_SL_odnoklassniki.zip" description="odnoklassniki">
+			<fileset dir="plugins/slogin_auth/odnoklassniki" />
+		</zip>
+		<zip destfile="${build}/plg_SL_twitter.zip" description="twitter">
+			<fileset dir="plugins/slogin_auth/twitter" />
+		</zip>
+		<zip destfile="${build}/plg_SL_ulogin.zip" description="ulogin">
+			<fileset dir="plugins/slogin_auth/ulogin" />
+		</zip>
+		<zip destfile="${build}/plg_SL_vkontakte.zip" description="vkontakte">
+			<fileset dir="plugins/slogin_auth/vkontakte" />
+		</zip>
+		<zip destfile="${build}/plg_SL_wordpress.zip" description="wordpress">
+			<fileset dir="plugins/slogin_auth/wordpress" />
+		</zip>
+		<zip destfile="${build}/plg_SL_yahoo.zip" description="yahoo">
+			<fileset dir="plugins/slogin_auth/yahoo" />
+		</zip>
+		<zip destfile="${build}/plg_SL_yandex.zip" description="yandex">
+			<fileset dir="plugins/slogin_auth/yandex" />
+		</zip>
+
+		<copy file="pkg_slogin.xml" todir="${build}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
