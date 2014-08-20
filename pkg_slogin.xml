@@ -16,7 +16,9 @@
 	    <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
 	    <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
 	    <file type="plugin" method="upgrade" client="site">plg_slogin_profile.zip</file> 
-	    <file type="plugin" method="upgrade" client="site">plg_jcomments_slogin.zip</file> 
+		<file type="plugin" method="upgrade" client="site">plg_slogin_integration_avatar.zip</file>
+		<file type="plugin" method="upgrade" client="site">plg_slogin_integration_combuilder.zip</file>
+		<file type="plugin" method="upgrade" client="site">plg_slogin_integration_easyblog.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_facebook.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_google.zip</file>	
 		<file type="plugin" method="upgrade" client="site">plg_SL_mail.zip</file>	
