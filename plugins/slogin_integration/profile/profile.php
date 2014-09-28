@@ -247,7 +247,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->gender = 0;
         $data->f_name = $info->name;
         $this->getGeoInfo($data);
-        $data->picture = ($info->default_profile_image != 1) ? $info->profile_image_url : '';
+//        $data->picture = ($info->default_profile_image != 1) ? $info->profile_image_url : '';
+        $data->picture = ($info->default_profile_image != 1) ? str_replace('_normal.', '_400x400.', $info->profile_image_url) : '';
         return $data;
     }
 
