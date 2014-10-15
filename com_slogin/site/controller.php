@@ -15,6 +15,7 @@ defined('_JEXEC') or die('(@)|(@)');
 jimport('joomla.application.component.controller');
 
 jimport('joomla.environment.http');
+jimport('joomla.user.authentication');
 
 //костыль для поддержки 2 и  3 джумлы
 if(!class_exists('SLoginControllerParent')){

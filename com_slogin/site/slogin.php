@@ -21,8 +21,17 @@ jimport('joomla.application.component.controller');
 //$controller = JController::getInstance('SLogin');
 $controller = call_user_func(array($className, 'getInstance'), 'SLogin');
 
+$app = JFactory::getApplication();
+$task = $app->input->get('task');
+$view = $app->input->get('view');
+
+if(!$view && !$task)
+{
+    $app->redirect(JURI::root());
+}
+
 // Perform the Request task
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute($task);
 
 // Redirect if set by the controller
 $controller->redirect();
