@@ -61,19 +61,19 @@ var SLogin = SLogin || {
 
         switch (el) {
             case 'vkontakteslogin':
-                size = {width:585, height:350};
+                size = {width:900, height:550};
                 break;
             case 'googleslogin':
                 size = {width:450, height:450};
                 break;
             case 'facebookslogin':
-                size = {width:900, height:550};
+                size = {width:900, height:700};
                 break;
             case 'twitterslogin':
                 size = {width:450, height:550};
                 break;
             case 'yandexslogin':
-                size = {width:350, height:450};
+                size = {width:900, height:550};
                 break;
             case 'linkedinslogin':
                 size = {width:350, height:450};
