@@ -14,6 +14,7 @@
 	    <file type="component" method="upgrade" client="site">com_slogin.zip</file>
 	    <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
 	    <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
+		<file type="library" client="site" method="upgrade">lib_amcharts_1.0.zip</file>
 	    <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
 	    <file type="plugin" method="upgrade" client="site">plg_slogin_profile.zip</file> 
 		<file type="plugin" method="upgrade" client="site">plg_slogin_integration_avatar.zip</file>

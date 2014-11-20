@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="library" version="2.5" method="upgrade">
+    <name>amcharts</name>
+    <libraryname>amcharts</libraryname>
+    <version>1.0</version>
+    <creationDate>2014-04-21</creationDate>
+    <author>Arkadiy</author>
+    <authorUrl>argens.ru</authorUrl>
+    <authorEmail>a.sedelnikov@gmail.com</authorEmail>
+    <description>
+        <![CDATA[ Chart Library AmCharts ]]>
+    </description>
+    <files>
+		<folder>amcharts</folder>
+		<folder>images</folder>
+		<folder>samples</folder>
+        <file>changeLog.txt</file>
+        <file>index.html</file>
+        <file>licence.txt</file>
+        <file>thirdPartySoftwareList.txt</file>
+    </files>
+</extension>
