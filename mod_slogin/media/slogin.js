@@ -4,7 +4,7 @@ var SLogin = SLogin || {
         var block = document.getElementById('slogin-buttons');
         if (block === null) return;
         var elements = block.getElementsByTagName('a');
-        var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes"
+        var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes";
         for (var i = 0; i < elements.length; i++) {
             if(elements[i].getAttribute('id') == 'uLogin'){
                 continue;
@@ -67,7 +67,7 @@ var SLogin = SLogin || {
                 size = {width:450, height:450};
                 break;
             case 'facebookslogin':
-                size = {width:900, height:700};
+                size = {width:1200, height:600};
                 break;
             case 'twitterslogin':
                 size = {width:450, height:550};
