@@ -25,11 +25,11 @@ $sess = JFactory::getSession();
 
 <div class="span12">
     <div class="row">
-        <div class="span6">
+        <div class="span7">
              <h2><?php echo JText::_('COM_SLOGIN_USER_STRUCTURE'); ?></h2>
-            <div id="pie_chartdiv" style="width:800px; height:300px;"></div>
+            <div id="pie_chartdiv" style="width:100%; height:350px;"></div>
         </div>
-        <div class="span6">
+        <div class="span5">
             <h2><?php echo JText::_('COM_SLOGIN'); ?></h2>
             <p><?php echo JText::_('COM_SLOGIN_XML_DESCRIPTION'); ?></p>
             <ul>
