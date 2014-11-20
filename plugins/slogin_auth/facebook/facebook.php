@@ -19,7 +19,7 @@ class plgSlogin_authFacebook extends JPlugin
     {
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=facebook';
 
-        $scope = 'email,user_photos,user_about_me,user_hometown';
+        $scope = 'email,user_photos,user_about_me,user_hometown,public_profile,user_birthday';
 
         if($this->params->get('repost_comments', 0))
         {
@@ -61,7 +61,7 @@ class plgSlogin_authFacebook extends JPlugin
 // 			id, name, first_name, last_name, link, gender, timezone, locale, verified, updated_time
 // 			email смотреть параметр scope в методе auth()!
 
-            $ResponseUrl = 'https://graph.facebook.com/me?access_token='.$token['access_token'];
+            $ResponseUrl = 'https://graph.facebook.com/v2.2/me?access_token='.$token['access_token'].'&fields=id,name,first_name,last_name,link,gender,email,birthday';
             $request = json_decode($controller->open_http($ResponseUrl));
 
             if(empty($request)){
