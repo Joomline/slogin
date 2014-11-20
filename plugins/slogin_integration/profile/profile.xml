@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
 	<name>PLG_SLOGIN_PROFILE</name>
 	<author>Arkadiy Sedelnikov</author>
-	<creationDate>29.08.2013</creationDate>
+	<creationDate>20.11.2014</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://argens.ru</authorUrl>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
     <!-- Runs on install/uninstall/update; New in 1.6 -->
     <scriptfile>script.php</scriptfile>

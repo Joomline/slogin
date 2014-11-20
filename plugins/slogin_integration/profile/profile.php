@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 jimport('joomla.image.image');
+jimport('joomla.date.date');
 
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/profiles.php';
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/geo.php';
@@ -95,6 +96,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->given_name;
         $data->l_name = $info->family_name ;
         $data->email = $info->email;
+        $date = new JDate($info->birthday);
+        $data->birthday = $date->toSql();
         if($info->gender == 'male')
             $data->gender = 1;
         elseif($info->gender == 'female')
@@ -151,6 +154,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name;
         $data->email = isset($info->email) ? $info->email: '';
         $data->gender = (int)$info->sex;
+        $date = new JDate($info->bdate);
+        $data->birthday = $date->toSql();
         $this->getGeoInfo($data);
         $data->picture = isset($info->photo) ? $info->photo : '';
         return $data;
@@ -184,6 +189,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->phone = $info->home_phone;
         $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
         $data->social_profile_link = 'http://vk.com/id'.$info->uid;
+        $date = new JDate($info->bdate);
+        $data->birthday = $date->toSql();
         $this->getGeoInfo($data);
         $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid=' . $info->uid . '&fields=photo_medium';
         $request = json_decode($controller->open_http($ResponseUrl))->response[0];
@@ -205,6 +212,8 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 2;
         else
             $data->gender = 0;
+        $date = new JDate($info->birthday);
+        $data->birthday = $date->toSql();
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
@@ -265,6 +274,8 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 2;
         else
             $data->gender = 0;
+        $date = new JDate($info->birthday);
+        $data->birthday = $date->toSql();
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
@@ -284,6 +295,8 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 1;
         elseif($info->sex == 1)
             $data->gender = 2;
+        $date = new JDate($info->birthday);
+        $data->birthday = $date->toSql();
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name;
         $data->email = $info->email;
