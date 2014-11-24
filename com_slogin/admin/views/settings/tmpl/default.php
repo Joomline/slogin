@@ -57,7 +57,11 @@ $sess = JFactory::getSession();
         </div>
     </div>
     <div class="row">
-        <div class="span6">
+        	<?php	if ( version_compare( JVERSION, '3.0', '<' ) == 1) { ?>	
+				<div class="width-50 fltlft">
+			<?php } else{ ?>
+				<div class="span6">
+			<?php } ?>
             <h2><?php echo JText::_('COM_SLOGIN_AUTH_PLUGINS'); ?></h2>
             <table class="table">
                 <thead>
@@ -84,7 +88,11 @@ $sess = JFactory::getSession();
                 </tbody>
             </table>
         </div>
-        <div class="span6">
+        	<?php	if ( version_compare( JVERSION, '3.0', '<' ) == 1) { ?>	
+				<div class="width-50 fltlft">
+			<?php } else{ ?>
+				<div class="span6">
+			<?php } ?>
             <h2><?php echo JText::_('COM_SLOGIN_INTEGRATION_PLUGINS'); ?></h2>
             <table class="table">
                 <thead>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
-	<name>PLG_SLOGIN_PROFILE</name>
+	<name>Plugin profile Slogin</name>
 	<author>Arkadiy Sedelnikov</author>
 	<creationDate>20.11.2014</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
