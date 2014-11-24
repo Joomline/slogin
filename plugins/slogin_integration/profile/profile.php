@@ -96,7 +96,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->given_name;
         $data->l_name = $info->family_name ;
         $data->email = $info->email;
-		if(!empty($info->birthday){
+		if(!empty($info->birthday)){
 			$date = new JDate($info->birthday);
 			$data->birthday = $date->toSql();
 		}
@@ -156,7 +156,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name;
         $data->email = isset($info->email) ? $info->email: '';
         $data->gender = (int)$info->sex;
-		if(!empty($info->bdate){
+		if(!empty($info->bdate)){
 			$date = new JDate($info->bdate);
 			$data->birthday = $date->toSql();
 		}
@@ -193,7 +193,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->phone = $info->home_phone;
         $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
         $data->social_profile_link = 'http://vk.com/id'.$info->uid;
-        if(!empty($info->bdate){
+        if(!empty($info->bdate)){
 			$date = new JDate($info->bdate);
 			$data->birthday = $date->toSql();
 		}
@@ -218,7 +218,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 2;
         else
             $data->gender = 0;
-		if(!empty($info->birthday){
+		if(!empty($info->birthday)){
 			$date = new JDate($info->birthday);
 			$data->birthday = $date->toSql();
 		}
@@ -282,7 +282,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 2;
         else
             $data->gender = 0;
-		if(!empty($info->birthday){
+		if(!empty($info->birthday)){
 			$date = new JDate($info->birthday);
 			$data->birthday = $date->toSql();
 		}
@@ -305,7 +305,7 @@ class plgSlogin_integrationProfile extends JPlugin
             $data->gender = 1;
         elseif($info->sex == 1)
             $data->gender = 2;
-		if(!empty($info->birthday){
+		if(!empty($info->birthday)){
 			$date = new JDate($info->birthday);
 			$data->birthday = $date->toSql();
 		}
