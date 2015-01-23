@@ -21,3 +21,5 @@ English - http://joomline.org/extensions/component-for-joomla/slogin.html
 You can support the project:
 Donate - http://joomline.org/donation.html
 Voting on JED - http://extensions.joomla.org/extensions/access-a-security/site-access/authentication-cloud-based/22343
+
+Localization component - https://opentranslators.transifex.com/projects/p/slogin/
