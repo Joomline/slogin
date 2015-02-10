@@ -59,7 +59,7 @@
                         type="text"
 						label="PLG_SLOGIN_PROFILE_IMG_SIZE_LABEL"
                         description="PLG_SLOGIN_PROFILE_IMG_SIZE_DESC"
-                        default="50"/>
+                        default="150"/>
 				<field
                         name="updatetime"
                         type="text"

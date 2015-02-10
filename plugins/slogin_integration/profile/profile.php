@@ -31,7 +31,8 @@ class plgSlogin_integrationProfile extends JPlugin
     {
         if(!method_exists($this, $provider."GetData")) return;
 
-        if($this->issetProfile($user, $provider)){
+        if($this->issetProfile($user, $provider))
+        {
             $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
             $this->updateAvatar($user, $provider, $data->picture, $info);
             $this->updateCurrentProfile($user, $provider);
@@ -41,7 +42,7 @@ class plgSlogin_integrationProfile extends JPlugin
         }
     }
 
-    public function onAfterSloginDeleteSloginUser($id)
+    public function onBeforeSloginDeleteSloginUser($id)
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -53,7 +54,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $this->deleteProfile($res);
     }
 
-    public function onAfterSloginDeleteUser($userId)
+    public function onBeforeSloginDeleteUser($userId)
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -73,12 +74,20 @@ class plgSlogin_integrationProfile extends JPlugin
     {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $query->select('avatar');
+        $query->from($db->quoteName('#__plg_slogin_profile'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($row->user_id));
+        $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
+        $db->setQuery($query,0,1);
+        $avatar = $db->loadResult();
+
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
-        $file = JPATH_ROOT . '/' . $rootfolder . '/' . $row->photo_src;
+        $file = JPATH_ROOT . '/' . $rootfolder . '/' . $avatar;
         if (is_file($file))
         {
             JFile::delete($file);
         }
+        $query->clear();
         $query->delete();
         $query->from($db->quoteName('#__plg_slogin_profile'));
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($row->user_id));
@@ -376,15 +385,12 @@ class plgSlogin_integrationProfile extends JPlugin
         if (!$provider) return;
         if(!method_exists($this, $provider."GetData")) return;
 
-        //максимальная ширина и высота для генерации изображения
-        $max_h = $this->params->get('imgparam', 50);
-        $max_w = $this->params->get('imgparam', 50);
-
         $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
         if (isset($data->picture)){
             $origimage = $data->picture;
             $new_image = $provider . '_' . $data->slogin_id . '.jpg';
-            if ($this->createAvatar($origimage, $new_image, $max_w, $max_h)) {
+            if ($this->createAvatar($origimage, $new_image))
+            {
                 $data->avatar = $new_image;
             }
         }
@@ -443,9 +449,6 @@ class plgSlogin_integrationProfile extends JPlugin
     {
         if(empty($file_input)) return false;
 
-        //максимальная ширина и высота для генерации изображения
-        $w_o = $this->params->get('imgparam', 50);
-        $h_o= $this->params->get('imgparam', 50);
         $this->params->set('enable_geo', 0);
         $id = isset($info->id) ? $info->id : $info->uid;
         $file_output = $provider . '_' . $id . '.jpg';
@@ -462,7 +465,7 @@ class plgSlogin_integrationProfile extends JPlugin
                 return true;
             }
         }
-        if($this->createAvatar($file_input, $file_output, $w_o, $h_o)){
+        if($this->createAvatar($file_input, $file_output)){
             if($this->updateAvatarDB($user, $provider, $file_output)){
                 return true;
             }
@@ -492,7 +495,7 @@ class plgSlogin_integrationProfile extends JPlugin
      * @param int $w_o, $h_o    Максимальные ширина и высота генерируемого изображения
      * @return string    Результат выполнения false - изображения нет, up - успешно записали и нужно обновиться, ok - изображение существует и не требует модификации
      */
-    private function createAvatar($file_input, $file_output, $width, $height)
+    private function createAvatar($file_input, $file_output)
     {
 
         //Если источник не указан
@@ -501,6 +504,9 @@ class plgSlogin_integrationProfile extends JPlugin
         //папка для работы с изображением и качество сжатия
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
         $img_quality = $this->params->get('img_quality', 80);
+        //максимальная ширина и высота для генерации изображения
+        $width = $this->params->get('imgparam', 150);
+        $height = $this->params->get('imgparam', 150);
 
         //если папка для складирования аватаров не существует создаем ее
         if (!JFolder::exists(JPATH_ROOT . '/' . $rootfolder)) {
