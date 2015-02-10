@@ -5,6 +5,24 @@
 			addfieldpath="administrator/components/com_slogin/models/fields"
 			>
 		<field
+			name="secret"
+			type="text"
+			label="COM_SLOGIN_SECRET"
+			description="COM_SLOGIN_SECRET_DESC"
+			default=""
+			required="true"
+			/>
+		<field
+			name="remember_user"
+			type="list"
+			label="COM_SLOGIN_REMEMBER_USER"
+			description="COM_SLOGIN_REMEMBER_USER_DESC"
+			default="1"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="user_name"
 			type="list"
 			label="COM_SLOGIN_FIELD_USER_NAME_LABEL"
@@ -59,16 +77,16 @@
 				<option value="0">JNO</option>
 		</field>
 
-		<field
-			name="run_user_login_trigger"
-			type="radio"
-			label="COM_SLOGIN_RUN_USER_LOGIN_TRIGGER"
-			description="COM_SLOGIN_RUN_USER_LOGIN_TRIGGER_DESC"
-			default="0"
-			>
-				<option value="1">JYES</option>
-				<option value="0">JNO</option>
-		</field>
+		<!--<field-->
+			<!--name="run_user_login_trigger"-->
+			<!--type="radio"-->
+			<!--label="COM_SLOGIN_RUN_USER_LOGIN_TRIGGER"-->
+			<!--description="COM_SLOGIN_RUN_USER_LOGIN_TRIGGER_DESC"-->
+			<!--default="0"-->
+			<!-->-->
+				<!--<option value="1">JYES</option>-->
+				<!--<option value="0">JNO</option>-->
+		<!--</field>-->
 
 		<field
 			name="local_debug"

@@ -32,7 +32,7 @@ class sloginModelSettings  extends JModelList
 
         if(!$allUsers)
         {
-            return '';
+            return '[]';
         }
 
         $onePercent = $allUsers/100;
@@ -76,7 +76,7 @@ class sloginModelSettings  extends JModelList
 
         if(count($array) == 0)
         {
-            return '';
+            return '[]';
         }
 
         return json_encode($array);

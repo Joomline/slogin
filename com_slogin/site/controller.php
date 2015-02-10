@@ -17,6 +17,8 @@ jimport('joomla.application.component.controller');
 jimport('joomla.environment.http');
 jimport('joomla.user.authentication');
 
+require_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
+
 //костыль для поддержки 2 и  3 джумлы
 if(!class_exists('SLoginControllerParent')){
     if(class_exists('JControllerLegacy')){
@@ -191,11 +193,17 @@ class SLoginController extends SLoginControllerParent
     public function setUserName()
     {
         $confName = $this->config->get('user_name', 1);
-        if ($confName == 1) {
+
+        if ($confName == 1)
+        {
             $name = $this->first_name . ' ' . $this->last_name;
-        } else if($confName == 2){
+        }
+        else if($confName == 2)
+        {
             $name = (!empty($this->email)) ? $this->email : $this->first_name . ' ' . $this->last_name;
-        } else{
+        }
+        else
+        {
             $name = $this->first_name;
         }
         return $name;
@@ -204,23 +212,30 @@ class SLoginController extends SLoginControllerParent
     public function setUserUserName()
     {
         $confName = $this->config->get('user_user_name', 1);
-        if ($confName == 1) {
+        if ($confName == 1)
+        {
             $name = $this->transliterate($this->first_name.'-'.$this->last_name.'-'.$this->provider);
-            if(!empty($this->network)){
+            if(!empty($this->network))
+            {
                 $name .= '-'.$this->network;
             }
-        } else{
+        }
+        else
+        {
             $name = $this->email;
         }
         return $name;
     }
 
-    private function CheckUniqueName($username){
+    private function CheckUniqueName($username)
+    {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $uname = $username;
         $i = 0;
-        while($uname){
+        $name = '';
+        while($uname)
+        {
             $name = ($i == 0) ? $username : $username.'-'.$i;
 
             $query->clear();
@@ -272,59 +287,77 @@ class SLoginController extends SLoginControllerParent
      * @param $provider                 идентификатор провайдера
      * @throws Exception
      */
-    protected function storeUser($popup=false)
+    protected function storeUser()
     {
         $app	= JFactory::getApplication();
 
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($this->email);
 
-        if($userId){
-
-
-            $data = array(
-                'email' => $this->email,
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'provider' => $this->provider,
-                'slogin_id' => $this->slogin_id,
+        if($userId)
+        {
+            $app->setUserState(
+                'com_slogin.provider.data',
+                array(
+                    'email' => $this->email,
+                    'first_name' => $this->first_name,
+                    'last_name' => $this->last_name,
+                    'provider' => $this->provider,
+                    'slogin_id' => $this->slogin_id,
+                )
             );
-            $app->setUserState('com_slogin.provider.data', $data);
         }
 
-        //установка групп для нового пользователя
-        $user_config = JComponentHelper::getParams('com_users');
-        $defaultUserGroup = $user_config->get('new_usertype', 2);
+        if(JComponentHelper::getParams('com_users')->get('useractivation') > 0)
+        {
+            $this->setUserActivation();
+        }
 
-        $user['username'] = $this->CheckUniqueName($this->username);
-        $user['name'] = $this->realName;
-        $user['email'] = $this->email;
-        $user['registerDate'] = JFactory::getDate()->toSQL();
-        $user['usertype'] = 'deprecated';
-        $user['groups'] = array($defaultUserGroup);
+        $secret = $this->config->get('secret', '');
+        $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $secret);
 
-        $user_object = new JUser;
+        JModel::addIncludePath(JPATH_SITE.'/components/com_users/models');
+        $model	= $this->getModel('Registration', 'UsersModel');
 
-        if (!$user_object->bind($user)) {
-            $this->setError($user_object->getError());
+        $userId	= $model->register(
+            array(
+                "name" => $this->realName,
+                "username" => $this->CheckUniqueName($this->username),
+                "password1" => $password,
+                "password2" => $password,
+                "email1" => $this->email,
+                "email2" => $this->email
+            )
+        );
+
+        if ($userId === false)
+        {
             return false;
-            //throw new Exception($user_object->getError());
         }
 
-        if (!$user_object->save()) {
-            $this->setError($user_object->getError());
-            return false;
-            //throw new Exception($user_object->getError());
-        }
-
-        $this->storeSloginUser($user_object->id, $this->slogin_id, $this->provider);
+        $this->storeSloginUser($userId, $this->slogin_id, $this->provider);
 
         //вставка нового пользователя в таблицы других компонентов
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterSloginStoreUser',array($user_object, $this->provider, $this->rawRequest));
+        $dispatcher->trigger('onAfterSloginStoreUser',array(JFactory::getUser($userId), $this->provider, $this->rawRequest));
 
-        return $user_object->id;
+        return $userId;
+    }
+
+    protected function setUserActivation()
+    {
+        $params = JComponentHelper::getParams('com_users');
+        // устанавливаем требуемое значение
+        $params->set('useractivation', 0);
+        // записываем измененные параметры в БД
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->update($db->quoteName('#__extensions'));
+        $query->set($db->quoteName('params') . '= ' . $db->quote((string)$params));
+        $query->where($db->quoteName('element') . ' = ' . $db->quote('com_users'));
+        $query->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+        $db->setQuery($query)->execute();
     }
 
     /**
@@ -333,70 +366,35 @@ class SLoginController extends SLoginControllerParent
      */
     protected function loginUser($id, $provider, $info=array())
     {
-        $instance = JUser::getInstance($id);
+        $user = JUser::getInstance($id);
         $app = JFactory::getApplication();
-        $session = JFactory::getSession();
-        $db = JFactory::getDBO();
 
-        JPluginHelper::importPlugin('user');
         JPluginHelper::importPlugin('slogin_integration');
         $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeSloginLoginUser',array($instance, $provider, $info));
+        $dispatcher->trigger('onBeforeSloginLoginUser',array($user, $provider, $info));
 
-        // If _getUser returned an error, then pass it back.
-        if ($instance instanceof Exception) {
-            $this->setError(JText::_('COM_SLOGIN_ERROR_NO_USER'));
-            return false;
-        }
+        $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $this->config->get('secret',''));
 
-        // If the user is blocked, redirect with an error
-        if ($instance->get('block') == 1) {
-            $this->setError(JText::_('JERROR_NOLOGIN_BLOCKED'));
-            return false;
-        }
-
-        // Mark the user as logged in
-        $instance->set('guest', 0);
-
-        $instance->set('usertype', 'deprecated');
-
-        // Register the needed session variables
-        $session->set('user', $instance);
-
-        // Check to see the the session already exists.
-        $app->checkSession();
-
-        // Update the user related fields for the Joomla sessions table.
-        $db->setQuery(
-            'UPDATE ' . $db->quoteName('#__session') .
-                ' SET ' . $db->quoteName('guest') . ' = ' . $db->quote($instance->get('guest')) . ',' .
-                '	' . $db->quoteName('username') . ' = ' . $db->quote($instance->get('username')) . ',' .
-                '	' . $db->quoteName('userid') . ' = ' . (int)$instance->get('id') .
-                ' WHERE ' . $db->quoteName('session_id') . ' = ' . $db->quote($session->getId())
+        $credentials = array(
+            'username' => $user->get('username'),
+            'password' => $password
         );
-        $db->query();
 
-        // Hit the user last visit field
-        $instance->setLastVisit();
+        $options = array(
+            'silent' => true,
+            'remember' => $this->config->get('remember_user',1)
+        );
 
-        $dispatcher->trigger('onAfterSloginLoginUser',array($instance, $provider, $info));
+        $return = $app->login($credentials, $options);
 
-        if($this->config->get('run_user_login_trigger', 0))
+        if (!$return)
         {
-            jimport('joomla.user.authentication');
-
-            $response = new JAuthenticationResponse;
-            $response->type = 'SLogin';
-            $response->status = 1;
-            $response->username = $instance->get('username');
-            $response->fullname = $instance->get('username');
-            $response->password = '';
-
-            $options = array();
-
-            $dispatcher->trigger('onUserLogin', array((array) $response, $options));
+            return false;
         }
 
+        $dispatcher->trigger('onAfterSloginLoginUser',array($user, $provider, $info));
+
+        return true;
     }
 
     /**
@@ -466,9 +464,12 @@ class SLoginController extends SLoginControllerParent
         $db->setQuery($query, 0, 1);
         $userId = $db->loadResult();
 
-        if (!$userId) {
+        if (!$userId)
+        {
             return false;
-        } else {
+        }
+        else
+        {
             return $userId;
         }
     }
@@ -791,13 +792,13 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $this->username = (!empty($this->username)) ? $this->username : $this->setUserUserName();
+            $this->username = $this->setUserUserName();
 
             //имя пользователя
-            $this->realName = (!empty($this->realName)) ? $this->realName : $this->setUserName();
+            $this->realName = $this->setUserName();
 
             //записываем пользователя в таблицу джумлы и компонента
-            $joomlaUserId = $this->storeUser($popup);
+            $joomlaUserId = $this->storeUser();
 
             if($joomlaUserId > 0)
             {
