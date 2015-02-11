@@ -268,12 +268,14 @@ class SLoginController extends SLoginControllerParent
         }
 
         $dispatcher->trigger('onBeforeSloginDeleteSloginUser',array($id));
+
         $query = $db->getQuery(true);
         $query->delete();
         $query->from($db->quoteName('#__slogin_users'));
         $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
         $db->setQuery($query);
         $db->query();
+
         $dispatcher->trigger('onAfterSloginDeleteSloginUser',array($id));
         return true;
     }
@@ -345,19 +347,19 @@ class SLoginController extends SLoginControllerParent
         return $userId;
     }
 
-    protected function setUserActivation()
+    protected function setUserActivation($value=0)
     {
         $params = JComponentHelper::getParams('com_users');
         // устанавливаем требуемое значение
-        $params->set('useractivation', 0);
+        $params->set('useractivation', $value);
         // записываем измененные параметры в БД
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true);
-        $query->update($db->quoteName('#__extensions'));
-        $query->set($db->quoteName('params') . '= ' . $db->quote((string)$params));
-        $query->where($db->quoteName('element') . ' = ' . $db->quote('com_users'));
-        $query->where($db->quoteName('type') . ' = ' . $db->quote('component'));
-        $db->setQuery($query)->execute();
+//        $db = JFactory::getDbo();
+//        $query = $db->getQuery(true);
+//        $query->update($db->quoteName('#__extensions'));
+//        $query->set($db->quoteName('params') . '= ' . $db->quote((string)$params));
+//        $query->where($db->quoteName('element') . ' = ' . $db->quote('com_users'));
+//        $query->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+//        $db->setQuery($query)->execute();
     }
 
     /**
@@ -381,7 +383,7 @@ class SLoginController extends SLoginControllerParent
         );
 
         $options = array(
-            'silent' => true,
+            'silent' => false,
             'remember' => $this->config->get('remember_user',1)
         );
 
