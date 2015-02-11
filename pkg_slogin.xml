@@ -10,7 +10,8 @@
 	<packagerurl>http://joomline.ru</packagerurl>
     <version>2.0</version>
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
-<files>
+	<scriptfile>script.php</scriptfile>
+	<files>
 	    <file type="component" method="upgrade" client="site">com_slogin.zip</file>
 	    <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
 	    <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
@@ -30,5 +31,6 @@
 		<file type="plugin" method="upgrade" client="site">plg_SL_yahoo.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_wordpress.zip</file>
 		<file type="plugin" method="upgrade" client="site">plg_SL_instagram.zip</file>
-</files>
+		<file type="plugin" method="upgrade" client="site">plg_authentication_slogin.zip</file>
+	</files>
 </extension>
