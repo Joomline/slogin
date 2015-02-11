@@ -23,8 +23,9 @@ class SloginPasswordHelper
         return md5($slogin_id.$provider.$secret);
     }
 
-    static function getPassword($user_id)
+    static function getPasswords($user_id)
     {
+        $passwords = array();
         $secret = JComponentHelper::getParams('com_slogin')->get('secret','');
 
         if(empty($secret))
@@ -42,14 +43,17 @@ class SloginPasswordHelper
         $query->select('*')
             ->from('`#__slogin_users`')
             ->where('`user_id` = '.$db->quote($user_id));
-        $result = $db->setQuery($query,0,1)->loadObject();
+        $result = $db->setQuery($query)->loadObjectList();
 
-        if(empty($result->slogin_id) || empty($result->provider))
+        if(is_array($result) && count($result))
         {
-            return false;
+            foreach($result as $v)
+            {
+                $passwords[] = self::generatePassword($v->slogin_id, $v->provider, $secret);
+            }
         }
 
-        return self::generatePassword($result->slogin_id, $result->provider, $secret);
+        return $passwords;
     }
 
     private static function createSecret()

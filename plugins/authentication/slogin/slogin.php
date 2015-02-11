@@ -41,50 +41,37 @@ class plgAuthenticationSlogin extends JPlugin
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
 
-		$query->select('id');
-		$query->from('#__users');
-		$query->where('username=' . $db->quote($credentials['username']));
-
-		$db->setQuery($query,0,1);
-		$uid = $db->loadResult();
+		$query->select('id')
+			->from('#__users')
+			->where('username=' . $db->quote($credentials['username']));
+		$uid = $db->setQuery($query,0,1)->loadResult();
 
 		if ($uid)
 		{
-			$password = SloginPasswordHelper::getPassword($uid);
+			$passwords = SloginPasswordHelper::getPasswords($uid);
 
-			if($password !== false)
+			if (is_array($passwords) && in_array($credentials['password'], $passwords))
 			{
-				$match = JUserHelper::verifyPassword($credentials['password'], $password, $uid);
+				$user = JUser::getInstance($uid); // Bring this in line with the rest of the system
+				$response->email = $user->email;
+				$response->fullname = $user->name;
 
-				if ($match === true)
+				if (JFactory::getApplication()->isAdmin())
 				{
-					$user = JUser::getInstance($uid); // Bring this in line with the rest of the system
-					$response->email = $user->email;
-					$response->fullname = $user->name;
-
-					if (JFactory::getApplication()->isAdmin())
-					{
-						$response->language = $user->getParam('admin_language');
-					}
-					else
-					{
-						$response->language = $user->getParam('language');
-					}
-					$response->status = JAuthentication::STATUS_SUCCESS;
-					$response->error_message = '';
+					$response->language = $user->getParam('admin_language');
 				}
 				else
 				{
-					$response->status = JAuthentication::STATUS_FAILURE;
-					$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
+					$response->language = $user->getParam('language');
 				}
+				$response->status = JAuthentication::STATUS_SUCCESS;
+				$response->error_message = '';
 			}
 			else
 			{
 				$response->status = JAuthentication::STATUS_FAILURE;
 				$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
 			}
-
 		}
 		else
 		{
