@@ -142,6 +142,8 @@ div.slogin-clear{
 
 .slogin-buttons .uloginslogin {
     background-position: -100px -100px;
+	width: 100px !important;
+	height: 25px !important;
 }
 
 .slogin-buttons .yahooslogin {
@@ -160,10 +162,30 @@ div.slogin-clear{
     text-align: center;
 }
 .slogin-avatar img{
-    border: 1px solid #c0c0c0;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding: 5px;
-    margin: 10px;
+	border: 1px solid #c0c0c0;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	padding: 0px;
+	margin: 0px 0px 10px;
+}
+
+#modlgn-username.inputbox {
+padding: 0 0 0 5px;
+}
+
+#modlgn-passwd.inputbox {
+padding: 0 0 0 5px;
+}
+
+input.button {
+    cursor: pointer;
+}
+
+input.button:hover {
+    background: #53b5de;
+}
+
+.ul-jlslogin {
+    padding: 5px 0px 10px;
 }

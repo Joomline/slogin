@@ -37,12 +37,12 @@ div.slogin-clear{
     color: #444444;
     height: 30px;
 	width: 100%;
-    padding: 4px 6px;
+    padding: 0 0 0 5px;
 }
 .ul-jlslogin
 {
 	list-style: none outside none;
-	padding: 5px 0 0;
+	padding: 5px 0px 10px;
 	margin: 0;
 }
 
@@ -53,7 +53,7 @@ div.slogin-clear{
     color: #444444;
     height: 30px;
     width: 100%;
-    padding: 4px 6px;
+    padding: 0 0 0 5px;
 }
 
 .login-greeting
@@ -149,6 +149,8 @@ div.slogin-clear{
 .slogin-buttons .uloginslogin {
     background-position: -51px -681px;
 	opacity: 0.7;
+	width: 50px !important;
+	height: 50px !important;
 }
 
 .slogin-buttons .yahooslogin {
@@ -170,14 +172,22 @@ div.slogin-clear{
     text-align: center;
 }
 .slogin-avatar img{
-    border: 1px solid #c0c0c0;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding: 5px;
-    margin: 10px;
+	border: 1px solid #c0c0c0;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	padding: 0px;
+	margin: 0px 0px 10px;
 }
 
 .slogin-buttons .twitterslogin:hover, .mailslogin:hover, .facebookslogin:hover, .vkontakteslogin:hover, .googleslogin:hover, .yandexslogin:hover, .linkedinslogin:hover, .liveslogin:hover, .uloginslogin:hover, .yahooslogin:hover, .wordpressslogin:hover, .instagramslogin:hover, .odnoklassnikislogin:hover {
     opacity: 1;
+}
+
+input.button {
+    cursor: pointer;
+}
+
+input.button:hover {
+    background: #53b5de;
 }
