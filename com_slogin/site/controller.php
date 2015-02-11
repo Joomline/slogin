@@ -227,6 +227,11 @@ class SLoginController extends SLoginControllerParent
         return $name;
     }
 
+    public function setVars($varname, $value)
+    {
+        $this->$varname = $value;
+    }
+
     private function CheckUniqueName($username)
     {
         $db = JFactory::getDbo();
