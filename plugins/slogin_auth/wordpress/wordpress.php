@@ -138,5 +138,6 @@ class plgSlogin_authWordpress extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=wordpress' . $add;
         $links[$i]['class'] = 'wordpressslogin';
         $links[$i]['plugin_name'] = 'wordpress';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_WP');
     }
 }

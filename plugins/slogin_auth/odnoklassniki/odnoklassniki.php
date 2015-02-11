@@ -140,5 +140,6 @@ class plgSlogin_authOdnoklassniki extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=odnoklassniki' . $add;
         $links[$i]['class'] = 'odnoklassnikislogin';
         $links[$i]['plugin_name'] = 'odnoklassniki';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_ODNOKLASSNIKI');
     }
 }

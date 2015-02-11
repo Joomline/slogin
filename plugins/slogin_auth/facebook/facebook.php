@@ -137,5 +137,6 @@ class plgSlogin_authFacebook extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;
         $links[$i]['class'] = 'facebookslogin';
         $links[$i]['plugin_name'] = $this->provider;
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_FACEBOOK');
     }
 }

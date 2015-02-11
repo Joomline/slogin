@@ -90,5 +90,6 @@ class plgSlogin_authUlogin extends JPlugin
            'id'=>'uLogin',
            'data-ulogin'=>'display=window;fields=first_name,last_name,email,photo,sex;redirect_uri=' . $redirect
         );
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_ULOGIN');
     }
 }

@@ -87,5 +87,6 @@ class plgSlogin_authYahoo extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yahoo' . $add;
         $links[$i]['class'] = 'yahooslogin';
         $links[$i]['plugin_name'] = 'yahoo';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_YAHOO');
     }
 }

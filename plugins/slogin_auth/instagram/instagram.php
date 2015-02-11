@@ -132,5 +132,6 @@ class plgSlogin_authInstagram extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=instagram' . $add;
         $links[$i]['class'] = 'instagramslogin';
         $links[$i]['plugin_name'] = $this->provider;
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_INSTAGRAM');
     }
 }

@@ -147,5 +147,6 @@ class plgSlogin_authVkontakte extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte' . $add;
         $links[$i]['class'] = 'vkontakteslogin';
         $links[$i]['plugin_name'] = $this->provider;
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_VK');
     }
 }

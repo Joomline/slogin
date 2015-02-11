@@ -116,5 +116,6 @@ class plgSlogin_authGoogle extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=google' . $add;
         $links[$i]['class'] = 'googleslogin';
         $links[$i]['plugin_name'] = 'google';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_GOOGLE');
     }
 }

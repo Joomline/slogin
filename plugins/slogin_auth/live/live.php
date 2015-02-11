@@ -131,5 +131,6 @@ class plgSlogin_authLive extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=live' . $add;
         $links[$i]['class'] = 'liveslogin';
         $links[$i]['plugin_name'] = 'live';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_LIVE');
     }
 }

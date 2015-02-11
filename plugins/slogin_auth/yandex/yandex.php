@@ -106,5 +106,6 @@ class plgSlogin_authYandex extends JPlugin
        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yandex' . $add;
        $links[$i]['class'] = 'yandexslogin';
        $links[$i]['plugin_name'] = 'yandex';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_YANDEX');
     }
 }

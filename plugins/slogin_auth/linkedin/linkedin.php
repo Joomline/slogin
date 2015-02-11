@@ -116,5 +116,6 @@ class plgSlogin_authLinkedin extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=linkedin' . $add;
         $links[$i]['class'] = 'linkedinslogin';
         $links[$i]['plugin_name'] = 'linkedin';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_LINKEDIN');
     }
 }

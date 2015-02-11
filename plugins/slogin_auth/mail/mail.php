@@ -160,6 +160,7 @@ class plgSlogin_authMail extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=mail' . $add;
         $links[$i]['class'] = 'mailslogin';
         $links[$i]['plugin_name'] = 'mail';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_MAIL');
     }
 
     protected function get_server_params(array $request_params) {
