@@ -323,7 +323,7 @@ class SLoginController extends SLoginControllerParent
         $secret = $this->config->get('secret', '');
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $secret);
 
-        JModel::addIncludePath(JPATH_SITE.'/components/com_users/models');
+        JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
         $model	= $this->getModel('Registration', 'UsersModel');
 
         $userId	= $model->register(
