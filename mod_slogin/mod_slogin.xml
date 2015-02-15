@@ -62,7 +62,7 @@
 					type="list"
 					default="1"
 					label="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_LABEL"
-					description="MOD_SLOGIN_FIELD_EDIT_AUCH_DESC">
+					description="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
