@@ -90,8 +90,11 @@ class plgSlogin_authGoogle extends JPlugin
                 echo 'Error - empty user data';
                 exit;
             }
-            else if(!empty($request->error)){
-                echo 'Error - '. $request->error;
+            else if(!empty($request->error))
+			{
+                echo '<pre>';
+				var_dump($request->error);
+				echo '</pre>';
                 exit;
             }
 
