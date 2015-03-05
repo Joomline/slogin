@@ -26,6 +26,15 @@ class plgSlogin_authYahoo extends JPlugin
 	}
     public function onSloginAuth()
     {
+        if($this->params->get('allow_remote_check', 1))
+        {
+            $remotelUrl = JURI::getInstance($_SERVER['HTTP_REFERER'])->toString(array('host'));
+            $localUrl = JURI::getInstance()->toString(array('host'));
+            if($remotelUrl != $localUrl){
+                die('Remote authorization not allowed');
+            }
+        }
+
         $oauthapp      = new YahooOAuthApplication($this->key, $this->secret, $this->app_id, $this->callback);
         # Fetch request token
         $request_token = $oauthapp->getRequestToken($this->callback);

@@ -15,6 +15,15 @@ class plgSlogin_authGoogle extends JPlugin
 {
     public function onSloginAuth()
     {
+        if($this->params->get('allow_remote_check', 1))
+        {
+            $remotelUrl = JURI::getInstance($_SERVER['HTTP_REFERER'])->toString(array('host'));
+            $localUrl = JURI::getInstance()->toString(array('host'));
+            if($remotelUrl != $localUrl){
+                die('Remote authorization not allowed');
+            }
+        }
+
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin=google';
 
         $scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');

@@ -13,6 +13,16 @@
 			required="true"
 			/>
 		<field
+			name="allow_remote_check"
+			type="list"
+			label="COM_SLOGIN_ALLOW_REMOTE_CHECK"
+			description="COM_SLOGIN_ALLOW_REMOTE_CHECK_DESC"
+			default="1"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="remember_user"
 			type="list"
 			label="COM_SLOGIN_REMEMBER_USER"
