@@ -328,10 +328,12 @@ class SLoginController extends SLoginControllerParent
         JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
         $model	= $this->getModel('Registration', 'UsersModel');
 
+		$username = $this->CheckUniqueName($this->username);
+
         $userId	= (int)$model->register(
             array(
                 "name" => $this->realName,
-                "username" => $this->CheckUniqueName($this->username),
+                "username" => $username,
                 "password1" => $password,
                 "password2" => $password,
                 "email1" => $this->email,
