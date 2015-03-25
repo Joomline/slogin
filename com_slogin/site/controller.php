@@ -328,7 +328,7 @@ class SLoginController extends SLoginControllerParent
         JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
         $model	= $this->getModel('Registration', 'UsersModel');
 
-        $userId	= $model->register(
+        $userId	= (int)$model->register(
             array(
                 "name" => $this->realName,
                 "username" => $this->CheckUniqueName($this->username),
@@ -339,7 +339,19 @@ class SLoginController extends SLoginControllerParent
             )
         );
 
-        if ($userId === false)
+        if ($userId == 0)
+        {
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true);
+            $query->select('`id`')
+                ->from('`#__users`')
+                ->where('`username` = '.$db->quote($username))
+                ->where('`email` = '.$db->quote($this->email))
+            ;
+            $userId	= (int)$db->setQuery($query,0,1)->loadResult();
+        }
+
+        if ($userId == 0)
         {
             return false;
         }
