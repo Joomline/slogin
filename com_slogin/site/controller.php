@@ -811,10 +811,12 @@ class SLoginController extends SLoginControllerParent
             }
 
             //логин пользователя
-            $this->username = $this->setUserUserName();
+            if(empty($this->username))
+                $this->username = $this->setUserUserName();
 
             //имя пользователя
-            $this->realName = $this->setUserName();
+            if(empty($this->realName))
+                $this->realName = $this->setUserName();
 
             //записываем пользователя в таблицу джумлы и компонента
             $joomlaUserId = $this->storeUser();
@@ -1021,7 +1023,7 @@ class SLoginController extends SLoginControllerParent
         JPluginHelper::importPlugin('slogin_auth');
         $dispatcher	= JDispatcher::getInstance();
         $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
-		
+
         $jll = (!modSLoginHelper::getalw($params))
             ? '<div style="text-align: right;"><a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a></div>'
             : '';
@@ -1043,7 +1045,7 @@ class SLoginController extends SLoginControllerParent
             }
             $profileLink = isset($path['profile']) ? $path['profile'] : '';
         }
-		
+
         require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
         die;
     }
