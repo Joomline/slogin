@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('@-_-@');
 
 jimport('joomla.form.formfield');
+jimport( 'joomla.application.router' );
+require_once (JPATH_ROOT . '/includes/router.php');
 
 class JFormFieldCallbackUrl extends JFormField
 {
@@ -31,15 +33,14 @@ class JFormFieldCallbackUrl extends JFormField
 	 */
 	protected function getInput()
 	{
-		$task = !empty($this->element['value']) ? '?option=com_slogin&task=check&plugin=' . (string) $this->element['value'] : '';
+
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-		$CallbackUrl = JURI::root().$task;
+        $router = new JRouterSite(array('mode' => 1));
 
-        if(substr($CallbackUrl, -1, 1) == '/'){
-             $CallbackUrl = substr($CallbackUrl, 0, -1);
-        }
+        $route = $router->build('index.php?option=com_slogin&task=check&plugin=' . (string) $this->element['value']);
+        $CallbackUrl = JURI::root().str_replace('/administrator/', '', $route);
 		
 		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
 		

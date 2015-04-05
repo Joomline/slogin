@@ -31,6 +31,12 @@ function SLoginBuildRoute(& $query)
 				$segments[] = 'redirect';
 				break;
 
+            case 'check':
+                $segments[] = 'callback';
+                $segments[] = $query['plugin'];
+                unset($query['plugin']);
+                break;
+
 			case 'check_mail':
 				$segments[] = 'mail';
 				$segments[] = 'check';
@@ -153,6 +159,11 @@ function SLoginParseRoute($segments)
 		switch($segments[0]) {
 			case 'redirect':
 				$vars['task'] = 'sredirect';
+				break;
+
+			case 'callback':
+                $vars['task'] = 'check';
+                $vars['plugin'] = $segments[1];
 				break;
 
 			case 'user':
