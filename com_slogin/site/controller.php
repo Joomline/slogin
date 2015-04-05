@@ -212,13 +212,9 @@ class SLoginController extends SLoginControllerParent
     public function setUserUserName()
     {
         $confName = $this->config->get('user_user_name', 1);
-        if ($confName == 1)
+        if ($confName == 1 || empty($this->email))
         {
             $name = $this->transliterate($this->first_name.'-'.$this->last_name.'-'.$this->provider);
-            if(!empty($this->network))
-            {
-                $name .= '-'.$this->network;
-            }
         }
         else
         {
