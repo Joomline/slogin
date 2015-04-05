@@ -73,7 +73,7 @@ class SLoginController extends SLoginControllerParent
 
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
-        $app->setUserState('com_slogin.return_url', $input->getString('return', ''));
+        $app->setUserState('com_slogin.return_url', $app->getUserStateFromRequest('com_slogin.return', 'return', ''));
 
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin='.$plugin;
 
@@ -622,8 +622,9 @@ class SLoginController extends SLoginControllerParent
             }
 
             $app->redirect(JRoute::_($return, false), $msg);
-        } else {
-            $app->setUserState('com_slogin.return_url', $appRedirect);
+        }
+        else
+        {
             $app->setUserState('com_slogin.comparison_user.data', $UserState);
             $app->redirect(JRoute::_('index.php?option=com_slogin&view=linking_user', false));
         }
@@ -1015,8 +1016,8 @@ class SLoginController extends SLoginControllerParent
         JFactory::getLanguage()->load('mod_slogin');
 
         $type	= modLoginHelper::getType();
-        $return	= base64_decode($input->getBase64('return', ''));
-        $callbackUrl = '&return=' . $return;
+
+        $callbackUrl = '';
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
         $plugins = array();

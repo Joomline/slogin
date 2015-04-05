@@ -33,6 +33,8 @@ $return	= modLoginHelper::getReturnURL($params, $type);
 
 $allow = modSLoginHelper::getalw($params);
 
+JFactory::getApplication()->setUserState('com_slogin.return', $return);
+
 if($loadAfter == 1 && $type != 'logout'){
     ?>
     <div id="mod_slogin">
@@ -50,7 +52,7 @@ else{
     $user = JFactory::getUser();
     $input = new JInput;
 
-    $callbackUrl = '&return=' . $return;
+    $callbackUrl = '';
 
     $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
