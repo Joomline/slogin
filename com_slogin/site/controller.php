@@ -459,7 +459,7 @@ class SLoginController extends SLoginControllerParent
         $session = JFactory::getSession();
         $app = JFactory::getApplication();
 
-        $redirect = JRoute::_(base64_decode($session->get('slogin_return', '')));
+        $redirect = JRoute::_(base64_decode($session->get('slogin_return', '')), false);
         $session->clear('slogin_return');
         if ($error = $session->get('slogin_errors', null)) {
             $session->clear('slogin_errors');
