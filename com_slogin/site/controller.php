@@ -1026,9 +1026,27 @@ class SLoginController extends SLoginControllerParent
         $dispatcher	= JDispatcher::getInstance();
         $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
 		
-		$allow = modSLoginHelper::getalw($params);
-        $jll = '';
-        if($allow){$jll = '<div style="text-align: right;"><a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a></div>';}
+        $jll = (!modSLoginHelper::getalw($params))
+            ? '<div style="text-align: right;"><a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a></div>'
+            : '';
+
+        $profileLink = $avatar = '';
+        if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
+            require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';
+            $profile = plgProfileHelper::getProfile($user->id);
+            $avatar = isset($profile->avatar) ? $profile->avatar : '';
+            $profileLink = isset($profile->social_profile_link) ? $profile->social_profile_link : '';
+        }
+        else if(JPluginHelper::isEnabled('slogin_integration', 'slogin_avatar') && $user->id > 0){
+            require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/helper.php';
+            $path = Slogin_avatarHelper::getavatar($user->id);
+            if(!empty($path['photo_src'])){
+                $avatar = $path['photo_src'];
+                if(JString::strpos($avatar, '/') !== 0)
+                    $avatar = '/'.$avatar;
+            }
+            $profileLink = isset($path['profile']) ? $path['profile'] : '';
+        }
 		
         require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
         die;

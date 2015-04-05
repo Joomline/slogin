@@ -61,8 +61,9 @@ else{
     $plugins = array();
 
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
-    $jll = '';
-    if($allow){$jll = '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>';}
+    $jll = (!modSLoginHelper::getalw($params))
+        ? '<div style="text-align: right;"><a style="text-decoration:none; color: #c0c0c0; font-family: arial,helvetica,sans-serif; font-size: 5pt; " target="_blank" href="http://joomclub.net/">joomclub.net</a></div>'
+        : '';
     $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
         require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';
