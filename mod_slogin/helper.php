@@ -71,7 +71,6 @@ class modSLoginHelper
 
 	foreach($allowedHost as $allowed){
 		$allowed = modSLoginHelper::gethk($allowed, true);
-
 		if(!empty($allowed)){
 			$allowed = explode('|', $allowed);
 			$site = (!empty($allowed[0])) ? $allowed[0] : 'localhost';
@@ -84,10 +83,8 @@ class modSLoginHelper
 				break;
 			}
 		}
-
 	}
-	if(!$allow){return true;} else {return false;}
-	
+	return $allow;
  }
 
 
