@@ -63,7 +63,7 @@ else{
     $plugins = array();
 
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
-    $jll = (!modSLoginHelper::getalw($params))
+    $jll = (modSLoginHelper::getalw($params))
         ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'
         : '';
     $profileLink = $avatar = '';
