@@ -13,7 +13,10 @@ defined('_JEXEC') or die('@-_-@');
 
 jimport('joomla.form.formfield');
 jimport( 'joomla.application.router' );
-require_once (JPATH_ROOT . '/includes/router.php');
+if(is_file(JPATH_ROOT . '/includes/router.php'))
+	require_once (JPATH_ROOT . '/includes/router.php');
+else if(is_file(JPATH_ROOT . '/libraries/cms/router/site.php'))
+	require_once (JPATH_ROOT . '/libraries/cms/router/site.php');
 
 class JFormFieldCallbackUrl extends JFormField
 {
