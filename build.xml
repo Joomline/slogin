@@ -1,21 +1,12 @@
 <project name="slogin" default="dist" basedir=".">
-	<property name="build" location="build" />
-	<property name="dist" location="dist" />
-	<property name="filename" value="pkg_slogin_v1.9_j2.5_j3.zip" />
+	<property name="build" value="build" />
+	<property name="dist" value="dist" />
+	<property name="filename" value="pkg_slogin_v2.2_j2.5_j3.zip" />
 
-	<description>
-        Build slogin.
-    </description>
 
 	<target name="init" depends="clean">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
-	</target>
-
-	<target name="dist" depends="init, pack-plugins">
-		<zip destfile="${dist}/${filename}">
-			<fileset file="${build}/**" />
-		</zip>
 	</target>
 
 	<target name="pack-plugins">
@@ -28,6 +19,9 @@
 		<zip destfile="${build}/lib_slogin_oauth.zip" description="lib_slogin_oauth">
 			<fileset dir="libraries/slogin" />
 		</zip>
+		<zip destfile="${build}/lib_amcharts.zip" description="lib_amcharts">
+			<fileset dir="libraries/amcharts" />
+		</zip>
 
 		<!-- Plugins -->
 		<zip destfile="${build}/plg_slogin.zip" description="plg_slogin">
@@ -37,16 +31,11 @@
 		<zip destfile="${build}/plg_slogin_profile.zip" description="plg_slogin_profile">
 			<fileset dir="plugins/slogin_integration/profile" />
 		</zip>
-		<zip destfile="${build}/plg_slogin_integration_avatar.zip" description="plg_slogin_integration_avatar">
-			<fileset dir="plugins/slogin_integration/plg_slogin_integration_avatar" />
+		<zip destfile="${build}/plg_authentication_slogin.zip" description="plg_authentication_slogin">
+			<fileset dir="plugins/authentication/slogin" />
 		</zip>
-		<zip destfile="${build}/plg_slogin_integration_combuilder.zip" description="plg_slogin_integration_combuilder">
-			<fileset dir="plugins/slogin_integration/plg_slogin_integration_combuilder" />
-		</zip>
-		<zip destfile="${build}/plg_slogin_integration_easyblog.zip" description="plg_slogin_integration_easyblog">
-			<fileset dir="plugins/slogin_integration/plg_slogin_integration_easyblog" />
-		</zip>
-
+		
+		<!-- Plugins auch -->
 		<zip destfile="${build}/plg_SL_facebook.zip" description="facebook">
 			<fileset dir="plugins/slogin_auth/facebook" />
 		</zip>
@@ -88,6 +77,15 @@
 		</zip>
 
 		<copy file="pkg_slogin.xml" todir="${build}" />
+		<copy file="script.php" todir="${build}" />
+	</target>
+	
+	<target name="dist" depends="init, pack-plugins">
+		<zip destfile="${dist}/${filename}">
+			<fileset dir="${build}/" >
+				<include name="**/**" />
+			</fileset>
+		</zip>
 	</target>
 
 	<target name="clean" description="clean up">
