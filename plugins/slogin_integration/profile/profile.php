@@ -525,9 +525,20 @@ class plgSlogin_integrationProfile extends JPlugin
 
         if ($uploaded)
         {
+            $info = getimagesize($tmp_name);
+            if($info !== false)
+            {//ограничение размеров в случае если исходник меньше требуемого.
+                $imageWidth = $info[0];
+                $imageHeight = $info[1];
+                if($imageWidth < $width || $imageHeight < $height)
+                {
+                    $width = $imageWidth;
+                    $height = $imageHeight;
+                }
             $image = new JImage($tmp_name);
             $image->resize($width, $height, false, JImage::SCALE_INSIDE);
             $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
+            }
             unlink($tmp_name);
         }
 
