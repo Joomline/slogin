@@ -104,7 +104,7 @@ var SLogin = SLogin || {
     },
 
     loadModuleAjax:function () {
-        SLogin.getUrl('/index.php?option=com_slogin&task=load_module_ajax&return='+sloginReturnUri);
+        SLogin.getUrl('/index.php?option=com_slogin&task=load_module_ajax');
 
     },
 

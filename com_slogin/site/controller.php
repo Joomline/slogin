@@ -73,8 +73,6 @@ class SLoginController extends SLoginControllerParent
 
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
-        $app->setUserState('com_slogin.return_url', $app->getUserStateFromRequest('com_slogin.return', 'return', ''));
-
         $redirect = JURI::base().'?option=com_slogin&task=check&plugin='.$plugin;
 
         $this->localAuthDebug($redirect);
