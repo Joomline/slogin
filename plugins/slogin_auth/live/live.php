@@ -23,8 +23,9 @@ class plgSlogin_authLive extends JPlugin
                 die('Remote authorization not allowed');
             }
         }
-
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=live';
+        $uri = JRoute::_('index.php?option=com_slogin&task=check&plugin=live');
+        $uri = JString::substr($uri, 1);
+        $redirect = JURI::base().$uri;
 
         $scope = urlencode('wl.signin wl.basic wl.emails wl.photos');
 
@@ -39,7 +40,7 @@ class plgSlogin_authLive extends JPlugin
         $params = implode('&', $params);
 
         $url = 'https://login.live.com/oauth20_authorize.srf?'.$params;
-
+//echo '<pre>'; var_dump($url); echo '</pre>'; die;
         return $url;
     }
 
@@ -58,7 +59,10 @@ class plgSlogin_authLive extends JPlugin
         if ($code) {
 
             // get access_token for google API
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=live');
+            $uri = JRoute::_('index.php?option=com_slogin&task=check&plugin=live');
+            $uri = JString::substr($uri, 1);
+            $redirect = urlencode(JURI::base().$uri);
+
 
             $params = array(
                 'client_id=' . $this->params->get('id'),
@@ -74,6 +78,15 @@ class plgSlogin_authLive extends JPlugin
 
             if(empty($request)){
                 echo 'Error - empty access tocken';
+                exit;
+            }
+
+            if(!empty($request->error))
+            {
+                echo '<pre>'; $request->error; echo '</pre>';
+                if(!empty($request->error_description)){
+                    echo '<pre>'; $request->error_description; echo '</pre>';
+                }
                 exit;
             }
 
