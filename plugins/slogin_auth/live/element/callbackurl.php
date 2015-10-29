@@ -40,7 +40,7 @@ class JFormFieldCallbackUrl extends JFormField
 
 		$router = new JRouterSite(array('mode' => 1));
 
-		$route = $router->build('index.php?option=com_slogin&task=check&plugin=' . (string) $this->element['value']);
+		$route = $router->build('index.php?option=com_slogin&task=check&plugin=live');
 		$CallbackUrl = JURI::root().str_replace('/administrator/', '', $route);
 		
 		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
