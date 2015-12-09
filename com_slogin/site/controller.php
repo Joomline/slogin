@@ -77,7 +77,25 @@ class SLoginController extends SLoginControllerParent
 
         $this->localAuthDebug($redirect);
 
-        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        if($this->config->get('service_auth', 0))
+        {
+            $service_site_id = $this->config->get('service_site_id', 0);
+            $service_password = $this->config->get('service_password', '');
+
+            if(empty($service_site_id))
+            {
+                echo 'Empty Service Site ID';
+                exit;
+            }
+            if(empty($service_password))
+            {
+                echo 'Empty Service Password';
+                exit;
+            }
+
+            $url = 'http://api.slogin.info/index.php?action=token&site='.$service_site_id.'&pass='.$service_password.'&provider='.$plugin;
+        }
+        else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
             $dispatcher	= JDispatcher::getInstance();
 
@@ -104,14 +122,52 @@ class SLoginController extends SLoginControllerParent
     {
         $this->cache->clean();
         $this->cache->remove($this->cache->makeId(), 'page');
-        
+        $ok = false;
         $input = JFactory::getApplication()->input;
 
         $plugin = $input->getString('plugin', '');
 
         $this->localCheckDebug($plugin);
 
-        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        if($this->config->get('service_auth', 0))
+        {
+            $token = $input->getString('token', '');
+            $service_site_id = $this->config->get('service_site_id', 0);
+            $service_password = $this->config->get('service_password', '');
+
+            if(empty($service_site_id))
+            {
+                echo 'Empty Service Site ID';
+                exit;
+            }
+            if(empty($service_password))
+            {
+                echo 'Empty Service Password';
+                exit;
+            }
+            if(empty($token))
+            {
+                echo 'Empty Service token';
+                exit;
+            }
+
+            $url = 'http://api.slogin.info/index.php?action=get_user_data&site='.$service_site_id.'&pass='.$service_password.'&token='.$token;
+            $request = json_decode($this->open_http($url));
+
+            if(empty($request) || empty($request->provider_id)){
+               echo 'Empty user data';
+               exit;
+            }
+
+            $this->first_name   = !empty($request->f_name) ? $request->f_name : '';
+            $this->last_name    = !empty($request->l_name) ? $request->l_name : '';
+            $this->email        = !empty($request->email) ? $request->email : '';
+            $this->slogin_id    = !empty($request->provider_id) ? $request->provider_id : '';
+            $this->provider     = !empty($request->provider) ? $request->provider : '';
+            $this->rawRequest   = $request;
+            $ok = true;
+        }
+        else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
             $dispatcher	= JDispatcher::getInstance();
 
@@ -119,6 +175,19 @@ class SLoginController extends SLoginControllerParent
 
             $request = $dispatcher->trigger('onSloginCheck');
             $request = $request[0];
+
+            if (isset($request->first_name))
+            {
+                $this->realName     = !empty($request->real_name) ? $request->real_name : '';
+                $this->first_name   = !empty($request->first_name) ? $request->first_name : '';
+                $this->last_name    = !empty($request->last_name) ? $request->last_name : '';
+                $this->email        = !empty($request->email) ? $request->email : '';
+                $this->slogin_id    = !empty($request->id) ? $request->id : '';
+                $this->provider     = $plugin;
+                $this->rawRequest   = $request->all_request;
+                $this->network      = !empty($request->network) ? $request->network : '';
+                $ok = true;
+            }
         }
         else{
             echo 'Plugin ' . $plugin . ' not published or not installed.';
@@ -130,19 +199,13 @@ class SLoginController extends SLoginControllerParent
         $app->setUserState('com_slogin.popup', 'yes');
         $popup = ($popup == 'none') ? false : true;
 
-        if (isset($request->first_name))
+        if ($ok == true)
         {
-            $this->realName     = !empty($request->real_name) ? $request->real_name : '';
-            //$this->username     = !empty($request->real_name) ? $request->real_name : '';
-            $this->first_name   = !empty($request->first_name) ? $request->first_name : '';
-            $this->last_name    = !empty($request->last_name) ? $request->last_name : '';
-            $this->email        = !empty($request->email) ? $request->email : '';
-            $this->slogin_id    = !empty($request->id) ? $request->id : '';
-            $this->provider     = $plugin;
-            $this->rawRequest   = $request->all_request;
-            $this->network      = !empty($request->network) ? $request->network : '';
-
             $this->storeOrLogin($popup);
+        }
+        else{
+            echo 'Empty user data';
+            exit;
         }
     }
 
@@ -1019,9 +1082,15 @@ class SLoginController extends SLoginControllerParent
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
         $plugins = array();
+
+        if($this->config->get('service_auth', 0)){
+            modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
+        }
+        else{
         JPluginHelper::importPlugin('slogin_auth');
         $dispatcher	= JDispatcher::getInstance();
         $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
+        }
 
         $jll = (!modSLoginHelper::getalw($params))
             ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'

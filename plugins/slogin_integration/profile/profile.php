@@ -29,11 +29,22 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onAfterSloginLoginUser($user, $provider, $info)
     {
-        if(!method_exists($this, $provider."GetData")) return;
+        $conf = JComponentHelper::getParams('com_slogin');
+        $serviceAuth = $conf->get('service_auth', 0);
+
+        if(!$serviceAuth && !method_exists($this, $provider."GetData")) return;
 
         if($this->issetProfile($user, $provider))
         {
-            $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
+            if($serviceAuth)
+            {
+                $data = $this->sloginServiceGetData($user, $provider, $info);
+            }
+            else
+            {
+                $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
+            }
+
             $this->updateAvatar($user, $provider, $data->picture, $info);
             $this->updateCurrentProfile($user, $provider);
         }
@@ -94,6 +105,29 @@ class plgSlogin_integrationProfile extends JPlugin
         $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
         $db->setQuery($query);
         $db->query();
+    }
+
+    private function sloginServiceGetData($user, $provider, $info){
+
+        $data = new StdClass();
+        $data->user_id =            $user->id;
+        $data->slogin_id =          $info->provider_id;
+        $data->provider =           $info->provider;
+        $data->gender =             $info->gender;
+        $data->f_name =             $info->f_name;
+        $data->l_name =             $info->l_name ;
+        $data->phone =              $info->phone ;
+        $data->mobil_phone =        $info->mobil_phone ;
+        $data->email =              $info->email;
+        $data->social_profile_link = $info->social_profile_link;
+        $data->birthday =           $info->birthday;
+        $data->country =            $info->country;
+        $data->region =             $info->region;
+        $data->city =               $info->city;
+        $data->lat =                $info->lat;
+        $data->lng =                $info->lng;
+        $data->picture =            $info->avatar;
+        return $data;
     }
 
     private function googleGetData($user, $provider, $info){
@@ -382,10 +416,24 @@ class plgSlogin_integrationProfile extends JPlugin
 
     private function createProfile($user, $provider, $info)
     {
-        if (!$provider) return;
-        if(!method_exists($this, $provider."GetData")) return;
 
-        $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
+
+        $conf = JComponentHelper::getParams('com_slogin');
+        $serviceAuth = $conf->get('service_auth', 0);
+
+        if (!$serviceAuth && !$provider) return;
+
+        if(!$serviceAuth && !method_exists($this, $provider."GetData")) return;
+
+        if($serviceAuth)
+        {
+            $data = $this->sloginServiceGetData($user, $provider, $info);
+        }
+        else
+        {
+            $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
+        }
+
         if (isset($data->picture)){
             $origimage = $data->picture;
             $new_image = $provider . '_' . $data->slogin_id . '.jpg';
@@ -535,9 +583,9 @@ class plgSlogin_integrationProfile extends JPlugin
                     $width = $imageWidth;
                     $height = $imageHeight;
                 }
-            $image = new JImage($tmp_name);
-            $image->resize($width, $height, false, JImage::SCALE_INSIDE);
-            $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
+                $image = new JImage($tmp_name);
+                $image->resize($width, $height, false, JImage::SCALE_INSIDE);
+                $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
             }
             unlink($tmp_name);
         }

@@ -14,6 +14,32 @@ defined('_JEXEC') or die;
 class modSLoginHelper
 {
 
+    static function loadLinks(&$plugins, $add, $params){
+        $providers = array(
+            'facebook',
+            'google',
+            'instagram',
+            'linkedin',
+            'live',
+            'mail',
+            'odnoklassniki',
+            'twitter',
+            'vkontakte',
+            'wordpress',
+            'yahoo',
+            'yandex'
+            );
+        foreach($providers as $provider){
+            if($params->get($provider, 0)){
+                $plugins[$provider] = array(
+                    'link' => 'index.php?option=com_slogin&task=auth&plugin=' . $provider . $add,
+                    'class' => $provider.'slogin',
+                    'plugin_name' => $provider,
+                    'plugin_title' => JText::_('COM_SLOGIN_PROVIDER_'.strtoupper($provider))
+                );
+            }
+        }
+    }
 
  static function gethk($input,$decrypt=false){
      $o = $s1 = $s2 = array(); // Arrays for: Output, Square1, Square2

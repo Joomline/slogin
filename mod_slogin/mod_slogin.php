@@ -68,8 +68,14 @@ else{
     JPluginHelper::importPlugin('slogin_auth');
 
     $plugins = array();
-
+    $config = JComponentHelper::getParams('com_slogin');
+    if($config->get('service_auth', 0)){
+        modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
+    }
+    else{
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
+    }
+
     $jll = (!modSLoginHelper::getalw($params))
         ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'
         : '';
