@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
 	<name>Social Login Yahoo auth</name>
 	<author>Arkadiy, Joomline</author>
-	<creationDate>21.09.2012</creationDate>
+	<creationDate>23.12.2015</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://joomline.ru</authorUrl>
-	<version>1.0</version>
+	<version>1.1</version>
 	<description>Yahoo auth</description>
 	<files>
 		<filename plugin="yahoo">yahoo.php</filename>
@@ -18,10 +18,7 @@
     <config>
         <fields name="params">
             <fieldset name="basic" addfieldpath="plugins/slogin_auth/yahoo/element">
-                <field name="app_id" type="text" default=""
-                       description="Application ID"
-                       label="Application ID"
-                        />
+
                 <field name="key" type="text" default=""
                        description="Consumer Key"
                        label="Consumer Key"

@@ -21,7 +21,7 @@ class plgSlogin_authYahoo extends JPlugin
 		parent::__construct( $subject, $params );
 		$this->key = $this->params->get('key');
 		$this->secret = $this->params->get('secret');
-		$this->app_id = $this->params->get('app_id');
+		$this->app_id = '';
 		$this->callback = JURI::base().'?option=com_slogin&task=check&plugin=yahoo';
 	}
     public function onSloginAuth()

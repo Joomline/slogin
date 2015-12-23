@@ -35,11 +35,7 @@ class JFormFieldCallbackUrl extends JFormField
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-		$CallbackUrl = JURI::root().$task;
-
-        if(substr($CallbackUrl, -1, 1) == '/'){
-             $CallbackUrl = substr($CallbackUrl, 0, -1);
-        }
+		$CallbackUrl = JURI::root();
 		
 		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
 		
