@@ -26,14 +26,6 @@
                        description="Secret Key"
                        label="Secret Key"
                         />
-                <field name="oauth_token" type="text" default=""
-                       description="OAuth User Token"
-                       label="OAuth User Token"
-                        />
-                <field name="oauth_secret" type="text" default=""
-                       description="OAuth User Secret"
-                       label="OAuth User Secret"
-                        />
             </fieldset>
         </fields>
     </config>
