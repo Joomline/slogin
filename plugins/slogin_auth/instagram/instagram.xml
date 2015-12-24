@@ -33,7 +33,7 @@
                         label="Callback URI"
                         description="Callback URI"
                         filter="unset"
-                        value=""
+                        value="instagram"
                         readonly="true"
                         class="readonly"
                         />
