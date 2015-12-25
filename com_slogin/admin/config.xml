@@ -137,6 +137,7 @@
     <fieldset name="service"
               label="COM_SLOGIN_FIELDSET_SERVICE"
               description="COM_SLOGIN_FIELDSET_SERVICE_DESC"
+			  addfieldpath="administrator/components/com_slogin/models/fields"
             >
 		<field
 				name="service_auth"
@@ -161,6 +162,16 @@
 				label="COM_SLOGIN_SERVICE_PASSWORD"
 				description="COM_SLOGIN_SERVICE_PASSWORD_DESC"
 				default=""
+		/>
+
+		<field
+				name="callbackurl"
+				type="callbackurl"
+				label="COM_SLOGIN_SERVICE_CALLBACK"
+				description="COM_SLOGIN_SERVICE_CALLBACK_DESC"
+				value="service"
+				readonly="true"
+				plugin="service"
 		/>
 
 		<field

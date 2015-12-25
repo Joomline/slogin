@@ -31,7 +31,9 @@ class JFormFieldCallbackUrl extends JFormField
 	 */
 	protected function getInput()
 	{
-		$task = $this->element['task'] ? '?option=com_slogin&task=' . (string) $this->element['task'] . '.check' : '';
+		$plugin = $this->element['plugin'] ? '&plugin=' . (string) $this->element['plugin'] : '';
+		$task = 'index.php?option=com_slogin&task=check'.$plugin;
+
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
@@ -41,7 +43,7 @@ class JFormFieldCallbackUrl extends JFormField
              $CallbackUrl = substr($CallbackUrl, 0, -1);
         }
 		
-		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
+		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" style="width: 550px" '. $class . $readonly .' />';
 		
 		return $html;
 	}
