@@ -4,46 +4,25 @@
  *
  * @version 	1.7
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012. All rights reserved.
+ * @copyright	пїЅ 2012. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
  
 // no direct access
 defined('_JEXEC') or die;
 
+require_once JPATH_ROOT.'/components/com_slogin/helpers/providers.php';
+
 class modSLoginHelper
 {
 
     static function loadLinks(&$plugins, $add, $params){
-        $providers = array(
-            'facebook',
-            'google',
-            'instagram',
-            'linkedin',
-            'live',
-            'mail',
-            'odnoklassniki',
-            'twitter',
-            'vkontakte',
-            'wordpress',
-            'yahoo',
-            'yandex'
-            );
-        foreach($providers as $provider){
-            if($params->get($provider, 0)){
-                $plugins[$provider] = array(
-                    'link' => 'index.php?option=com_slogin&task=auth&plugin=' . $provider . $add,
-                    'class' => $provider.'slogin',
-                    'plugin_name' => $provider,
-                    'plugin_title' => JText::_('COM_SLOGIN_PROVIDER_'.strtoupper($provider))
-                );
-            }
-        }
+        $plugins = SloginProvidersHelper::loadProviderLinks($add);
     }
 
  static function gethk($input,$decrypt=false){
      $o = $s1 = $s2 = array(); // Arrays for: Output, Square1, Square2
-    // формируем базовый массив с набором символов
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     $basea = array('?','(','@',';','$','#',"]","&",'*');  // base symbol set
 	$basea = array_merge($basea, range('a','z'), range('A','Z'), range(0,9) );
 	$basea = array_merge($basea, array('!',')','_','+','|','%','/','[','.',' ') );

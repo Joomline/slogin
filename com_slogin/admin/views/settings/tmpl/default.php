@@ -120,7 +120,7 @@ $sess = JFactory::getSession();
                     <tr>
                         <td><?php echo $i ?></td>
                         <td><?php echo $plugin->name ?></td>
-                        <td><?php echo $plugin->enabled ? JText::_('JYES') : JText::_('JNO'); ?></td>
+                        <td><?php echo !empty($plugin->enabled) ? JText::_('JYES') : JText::_('JNO'); ?></td>
                         <td>
                             <a target="_blank" href="<?php echo $plugin->link; ?>">
                                 <?php echo JText::_('COM_SLOGIN_PLUGIN_BUY'); ?>

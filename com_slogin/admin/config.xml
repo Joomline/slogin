@@ -162,14 +162,290 @@
 				description="COM_SLOGIN_SERVICE_PASSWORD_DESC"
 				default=""
 		/>
-    </fieldset>
 
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_FACEBOOK"
+		/>
+		<field
+				name="facebook_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="facebook_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="1"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_GOOGLE"
+		/>
+		<field
+				name="google_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="google_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="2"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_INSTAGRAM"
+		/>
+		<field
+				name="instagram_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="instagram_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="3"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_LINKEDIN"
+		/>
+		<field
+				name="linkedin_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="linkedin_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="4"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_LIVE"
+		/>
+		<field
+				name="live_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="live_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="5"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_MAIL"
+		/>
+		<field
+				name="mail_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="mail_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="6"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_ODNOKLASSNIKI"
+		/>
+		<field
+				name="odnoklassniki_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="odnoklassniki_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="7"
+				required="true"
+				filter="integer"
+		/>
+
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_TWITTER"
+		/>
+		<field
+				name="twitter_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="twitter_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="8"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_VK"
+		/>
+		<field
+				name="vkontakte_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="vkontakte_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="9"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_WP"
+		/>
+		<field
+				name="wordpress_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="wordpress_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="10"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_YAHOO"
+		/>
+		<field
+				name="yahoo_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="yahoo_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="11"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
+				label="COM_SLOGIN_PROVIDER_YANDEX"
+		/>
+		<field
+				name="yandex_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="yandex_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="12"
+				required="true"
+				filter="integer"
+		/>
+	</fieldset>
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"
 		>
-
 		<field
 			name="rules"
 			type="rules"

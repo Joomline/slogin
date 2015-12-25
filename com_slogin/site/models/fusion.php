@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modelform');
 jimport('joomla.event.dispatcher');
 jimport('joomla.plugin.helper');
+require_once JPATH_ROOT.'/components/com_slogin/helpers/providers.php';
 /**
  * Rest model class for Users.
  *
@@ -60,13 +61,21 @@ class SloginModelFusion extends JModelForm
 
     public function getProviders()
 	{
-        $dispatcher	= JDispatcher::getInstance();
-        JPluginHelper::importPlugin('slogin_auth');
-
+		$config = JComponentHelper::getParams('com_slogin');
         $action = (JFactory::getUser()->id == 0) ? '' : '&action=fusion';
-
         $plugins = array();
-        $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $action));
+
+		if($config->get('service_auth', 0))
+		{
+			$plugins = SloginProvidersHelper::loadProviderLinks($action);
+		}
+		else
+		{
+			$dispatcher	= JDispatcher::getInstance();
+			JPluginHelper::importPlugin('slogin_auth');
+			$dispatcher->trigger('onCreateSloginLink', array(&$plugins, $action));
+		}
+
         return $plugins;
 	}
 

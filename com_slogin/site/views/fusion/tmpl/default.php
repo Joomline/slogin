@@ -67,7 +67,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
                 }
             }
             ?>
-        <a <?php echo $linkParams;?> href="<?php echo JRoute::_($provider['link']);?>">
+        <a <?php echo $linkParams;?> href="<?php echo JRoute::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
             <span class="<?php echo $provider['class'];?>">&nbsp;</span>
         </a>
         <?php endforeach; ?>
@@ -76,7 +76,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
     <h2><?php echo JText::_('COM_SLOGIN_DETACH_PROVIDERS')?></h2>
     <div id="slogin-buttons" class="slogin-buttons">
         <?php foreach($this->unattachedProviders as $provider) : ?>
-        <a href="<?php echo JRoute::_('index.php?option=com_slogin&task=detach_provider&plugin='.$provider['plugin_name']);?>">
+        <a href="<?php echo JRoute::_('index.php?option=com_slogin&task=detach_provider&plugin='.$provider['plugin_name']);?>" title="<?php echo $provider['plugin_title'];?>">
             <span class="<?php echo $provider['class'];?>">&nbsp;</span>
         </a>
         <?php endforeach; ?>
