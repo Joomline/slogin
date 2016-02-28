@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('(@)|(@)');
 ?>
 <noindex>
+<div class="jlslogin">
 <?php if ($type == 'logout') : ?>
 
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form">
@@ -128,5 +129,6 @@ defined('_JEXEC') or die('(@)|(@)');
     </form>
     <?php endif; ?>
 <?php endif; ?>
+</div>
 </noindex>
 <?php echo $jll; ?>

@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('(@)|(@)');
 ?>
 <noindex>
+<div class="jlslogin">
 <?php if ($type == 'logout') : ?>
-
 <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form">
 
     <?php if (!empty($avatar)) : ?>
@@ -25,7 +25,7 @@ defined('_JEXEC') or die('(@)|(@)');
     <?php endif; ?>
 
     <div class="login-greeting">
-		<?php echo JText::sprintf('MOD_SLOGIN_HINAME', htmlspecialchars($user->get('name')));	 ?>
+	<?php echo JText::sprintf('MOD_SLOGIN_HINAME', htmlspecialchars($user->get('name')));	 ?>
 	</div>
 		<ul class="ul-jlslogin">
 			<?php	if ($params->get('slogin_link_auch_edit', 1) == 1) {?>
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('(@)|(@)');
             }
 			$title = (!empty($link['plugin_title'])) ? ' title="'.$link['plugin_title'].'"' : '';
             ?>
-            <a  rel="nofollow" <?php echo $linkParams.$title;?> href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?>">&nbsp;</span></a>
+            <a  rel="nofollow" class="link<?php echo $link['class'];?>" <?php echo $linkParams.$title;?> href="<?php echo JRoute::_($link['link']);?>"><span class="<?php echo $link['class'];?> slogin-ico">&nbsp;</span><span class="text-socbtn"><?php echo $link['plugin_title'];?></span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 
@@ -125,5 +125,6 @@ defined('_JEXEC') or die('(@)|(@)');
 </form>
 <?php endif; ?>
 <?php endif; ?>
+</div>
 </noindex>
 <?php echo $jll; ?>
