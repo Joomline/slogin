@@ -83,3 +83,13 @@ padding: 5px;
 	background-color: #00A8E6;
     color: #FFFFFF
 }
+
+.login #slogin-buttons a {
+    width: 49px;
+    height: 49px;
+}
+
+.login #slogin-buttons span {
+    width: 49px;
+    height: 49px;
+}
