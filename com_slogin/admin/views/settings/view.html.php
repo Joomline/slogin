@@ -81,6 +81,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
         }
 
         $this->comPlugins = $comPlugins;
+		$this->config = JComponentHelper::getParams('com_slogin');
 
         $app->setUserState('com_plugins.edit.plugin.id', $pIds);
 

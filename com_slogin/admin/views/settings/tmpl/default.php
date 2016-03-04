@@ -12,6 +12,7 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 $sess = JFactory::getSession();
+$class = ( version_compare( JVERSION, '3.0', '<' ) == 1) ? 'width-50 fltlft' : 'span6';
 ?>
 <script type="text/javascript">
     Joomla.submitbutton = function(task) {
@@ -57,11 +58,9 @@ $sess = JFactory::getSession();
         </div>
     </div>
     <div class="row">
-        	<?php	if ( version_compare( JVERSION, '3.0', '<' ) == 1) { ?>	
-				<div class="width-50 fltlft">
-			<?php } else{ ?>
-				<div class="span6">
-			<?php } ?>
+	<?php if($this->config->get('service_auth', 0) == 0){ ?>
+		
+		<div class="<?php echo $class; ?>">
             <h2><?php echo JText::_('COM_SLOGIN_AUTH_PLUGINS'); ?></h2>
             <table class="table">
                 <thead>
@@ -88,11 +87,9 @@ $sess = JFactory::getSession();
                 </tbody>
             </table>
         </div>
-        	<?php	if ( version_compare( JVERSION, '3.0', '<' ) == 1) { ?>	
-				<div class="width-50 fltlft">
-			<?php } else{ ?>
-				<div class="span6">
-			<?php } ?>
+	<?php } ?>
+
+		<div class="<?php echo $class; ?>">
             <h2><?php echo JText::_('COM_SLOGIN_INTEGRATION_PLUGINS'); ?></h2>
             <table class="table">
                 <thead>
