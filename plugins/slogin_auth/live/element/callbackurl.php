@@ -35,8 +35,6 @@ class JFormFieldCallbackUrl extends JFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		jimport( 'joomla.application.router' );
-		require_once (JPATH_ROOT . '/includes/router.php');
-		require_once (JPATH_ROOT . '/includes/application.php');
 
 		$router = new JRouterSite(array('mode' => 1));
 
