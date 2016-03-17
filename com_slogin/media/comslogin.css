@@ -196,3 +196,26 @@ background-image: url("data:image/svg+xml,%3Csvg viewBox='-2 -2 20 20' xmlns='ht
 .login .slogin-buttons .twitterslogin:hover, .login .slogin-buttons .mailslogin:hover, .login .slogin-buttons .facebookslogin:hover, .login .slogin-buttons .vkontakteslogin:hover, .login .slogin-buttons .googleslogin:hover, .login .slogin-buttons .yandexslogin:hover, .login .slogin-buttons .linkedinslogin:hover, .login .slogin-buttons .liveslogin:hover, .login .slogin-buttons .uloginslogin:hover, .login .slogin-buttons .yahooslogin:hover, .login .slogin-buttons .wordpressslogin:hover, .login .slogin-buttons .instagramslogin:hover, .login .slogin-buttons .odnoklassnikislogin:hover {
     opacity: 1;
 }
+
+.login .login .button
+{
+    background: #EEEEEE;
+    border: medium none;
+    color: #444444;
+    display: inline-block;
+    letter-spacing: normal;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
+	  background-color: #00A8E6;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.login #remember-lbl, .login #remember {
+    cursor: pointer;
+}
+
+div.slogin-clear{
+    clear: both;
+}
