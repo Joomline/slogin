@@ -56,7 +56,7 @@ class SloginViewFusion extends SloginViewFusionParent
         }
 
         $document = JFactory::getDocument();
-        $document->addStyleSheet( JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css');
+     //   $document->addStyleSheet( JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css');
         $document->addScript(JURI::root().'modules/mod_slogin/media/slogin.js');
 		// Display the view
 		parent::display($tpl);

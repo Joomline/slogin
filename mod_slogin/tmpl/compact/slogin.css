@@ -89,6 +89,7 @@ div.slogin-clear{
     width: 49px;
     display:block;
     border-radius: 1px;
+	line-height: 49px;
 }
 .jlslogin .slogin-buttons a, .jlslogin .slogin-buttons a:hover {
     -webkit-border-radius: 10px;
