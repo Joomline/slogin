@@ -39,12 +39,13 @@ class plgSlogin_authFacebook extends JPlugin
         $params = array(
             'client_id=' . $this->params->get('id'),
             'redirect_uri=' . urlencode($redirect),
-            'scope=' . $scope
+            'scope=' . $scope,
+            'response_type=code'
         );
 
         $params = implode('&', $params);
 
-        $url = 'http://www.facebook.com/dialog/oauth?' . $params;
+        $url = 'https://www.facebook.com/dialog/oauth?' . $params;
         return $url;
     }
 
