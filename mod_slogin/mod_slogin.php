@@ -2,9 +2,9 @@
 /**
  * Social Login
  *
- * @version 	1.9.0
+ * @version 	2.1.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012. All rights reserved.
+ * @copyright	© 2012-2016. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -17,7 +17,7 @@ require_once dirname(__FILE__).'/helper.php';
 
 $doc = JFactory::getDocument();
 
-$loadAfter = $params->get('load_after', 0);
+//$loadAfter = $params->get('load_after', 0);
 
 $layout = $params->get('layout', 'default');
 
@@ -25,7 +25,7 @@ $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
 if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js'); }
 
-if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/'.$layout.'/slogin.css'); }
+if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css'); }
 
 $type	= modLoginHelper::getType();
 
@@ -43,7 +43,7 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 }
 
 
-if($loadAfter == 1 && $type != 'logout'){
+/*if($loadAfter == 1 && $type != 'logout'){
     ?>
     <div id="mod_slogin">
         <img src="/modules/mod_slogin/media/ajax-loader.gif" alt="Loader"/>
@@ -54,8 +54,8 @@ if($loadAfter == 1 && $type != 'logout'){
         });
     </script>
     <?php
-}
-else{
+}*/
+//else{
     $user = JFactory::getUser();
     $input = new JInput;
 
@@ -98,4 +98,4 @@ else{
     }
 
     require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
-}
+//}

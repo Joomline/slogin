@@ -49,7 +49,7 @@ defined('_JEXEC') or die('(@)|(@)');
 	<p><?php echo $params->get('inittext'); ?></p>
 	</div>
 <?php endif; ?>
-<div id="slogin-buttons" class="slogin-buttons <?php echo $moduleclass_sfx?>">
+<div id="slogin-buttons" class="slogin-buttons slogin-default<?php echo $moduleclass_sfx?>">
 
     <?php if (count($plugins)): ?>
     <?php
