@@ -52,7 +52,7 @@ defined('_JEXEC') or die('(@)|(@)');
     </div>
     <?php endif; ?>
 
-<div id="slogin-buttons" class="slogin-buttons slogin-compact<?php echo $moduleclass_sfx?>">
+<div id="slogin-buttons" class="slogin-buttons slogin-compact">
     <?php if (count($plugins)): ?>
         <?php
         foreach($plugins as $link):
