@@ -66,8 +66,9 @@ class SLoginController extends SLoginControllerParent
         $this->cache->remove($this->cache->makeId(), 'page');
 
         $app	= JFactory::getApplication();
-
         $input = $app->input;
+        
+        JFactory::getSession()->set( 'socialConnectData', 'slogin' );
 
         $plugin = $input->getString('plugin', '');
 
