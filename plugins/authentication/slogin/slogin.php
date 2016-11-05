@@ -11,8 +11,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-require_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
-
 class plgAuthenticationSlogin extends JPlugin
 {
 	/**
@@ -27,6 +25,15 @@ class plgAuthenticationSlogin extends JPlugin
 	 */
 	function onUserAuthenticate($credentials, $options, &$response)
 	{
+        if(is_file(JPATH_ROOT . '/components/com_slogin/helpers/password.php')){
+            include_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
+        }
+        else{
+            $response->status = JAuthentication::STATUS_FAILURE;
+            $response->error_message = JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', 'plgAuthenticationSlogin');
+            return false;
+        }
+
 		$response->type = 'Slogin';
 
 		// Joomla does not like blank passwords
