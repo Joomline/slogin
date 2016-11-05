@@ -44,20 +44,20 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
             <div class="slogin-buttons-linking">
 
                 <div>
-                    <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
+                    <button type="submit" class="button btn btnslogin"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
                 </div>
                 <div>
-                    <input type="button" class="button"
+                    <input type="button" class="button btn btnslogin"
                            onclick="document.location.href='<?php echo JRoute::_($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>'"
                            value="<?php echo JText::_('COM_SLOGIN_CREATE_NEW_USER'); ?>"/>
                 </div>
                 <div>
-                    <input type="button" class="button"
+                    <input type="button" class="button btn btnslogin"
                            onclick="document.location.href='<?php echo JRoute::_('index.php?option=com_slogin&task=recallpass'); ?>'"
                            value="<?php echo JText::_('COM_SLOGIN_LOST_PASS_LOGIN'); ?>"/>
                 </div>
                 <div>
-                    <input type="button" class="button"
+                    <input type="button" class="button btn btnslogin"
                            onclick="document.slogin_logout_form.submit();"
                            value="<?php echo JText::_('COM_SLOGIN_NO_LOGIN'); ?>"/>
                 </div>

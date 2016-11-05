@@ -50,7 +50,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
                            value="<?php echo $this->email; ?>" class="validate-email required" size="25">
                 </div>
 
-                <input type="submit" class="button validate" value="<?php echo JText::_('COM_SLOGIN_SUBMIT'); ?>"/>
+                <input type="submit" class="button validate btn btnslogin" value="<?php echo JText::_('COM_SLOGIN_SUBMIT'); ?>"/>
 
                 <?php echo JHtml::_('form.token'); ?>
             </fieldset>

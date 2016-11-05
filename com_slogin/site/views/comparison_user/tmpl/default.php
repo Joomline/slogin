@@ -41,7 +41,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
                 <input type="password" name="password" id="password" value=""
                        class="validate-password required" size="25">
             </div>
-            <button type="submit" class="button"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
+            <button type="submit" class="button btn btnslogin"><?php echo JText::_('COM_SLOGIN_JOIN'); ?></button>
             <input type="hidden" name="return"
                    value="<?php echo base64_encode($this->params->get('login_redirect_url', $this->form->getValue('return'))); ?>"/>
             <input type="hidden" name="user_id" value="<?php echo $this->id; ?>"/>
@@ -59,7 +59,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
         <fieldset>
             <input type="text" name="jform[email]" id="jform_email" value="<?php echo $this->email ?>" readonly="readonly" class="validate-email required invalid" size="30" aria-required="true" required="required" aria-invalid="true" />
         </fieldset>
-        <button type="submit" class="validate"><?php echo JText::_('COM_SLOGIN_SUBMIT'); ?></button>
+        <button type="submit" class="validate btn btnslogin"><?php echo JText::_('COM_SLOGIN_SUBMIT'); ?></button>
         <?php echo JHtml::_('form.token'); ?>
     </form>
 </div>

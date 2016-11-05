@@ -201,7 +201,6 @@ background-image: url("data:image/svg+xml,%3Csvg viewBox='-2 -2 20 20' xmlns='ht
 {
     background: #EEEEEE;
     border: medium none;
-    color: #444444;
     display: inline-block;
     letter-spacing: normal;
     line-height: 30px;
@@ -218,4 +217,21 @@ background-image: url("data:image/svg+xml,%3Csvg viewBox='-2 -2 20 20' xmlns='ht
 
 div.slogin-clear{
     clear: both;
+}
+
+.btnslogin {
+    background: #EEE;
+    border: none;
+    display: inline-block;
+    letter-spacing: normal;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
+    background-color: #00A8E6;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+.login fieldset {
+    margin: 10px 0 10px 0;
 }

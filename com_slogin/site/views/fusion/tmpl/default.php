@@ -43,7 +43,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
                     <input id="remember" type="checkbox" name="remember" class="inputbox" value="yes"  alt="<?php echo JText::_('JGLOBAL_REMEMBER_ME') ?>" />
                 </div>
                 <?php endif; ?>
-                <button type="submit" class="button"><?php echo JText::_('JLOGIN'); ?></button>
+                <button type="submit" class="button btn btnslogin"><?php echo JText::_('JLOGIN'); ?></button>
                 <input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option=com_slogin&view=fusion')); ?>" />
                 <?php echo JHtml::_('form.token'); ?>
             </fieldset>
