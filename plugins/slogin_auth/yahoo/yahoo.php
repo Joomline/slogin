@@ -9,7 +9,7 @@
  */
 // No direct access
 defined('_JEXEC') or die;
-require_once JPATH_BASE.'/plugins/slogin_auth/yahoo/assets/yahoo-yos-social/lib/Yahoo/YahooOAuthApplication.class.php';
+
 class plgSlogin_authYahoo extends JPlugin
 {
     var $key,
@@ -35,61 +35,79 @@ class plgSlogin_authYahoo extends JPlugin
             }
         }
 
-        $oauthapp      = new YahooOAuthApplication($this->key, $this->secret, $this->app_id, $this->callback);
-        # Fetch request token
-        $request_token = $oauthapp->getRequestToken($this->callback);
-        $session = JFactory::getSession();
-        $session->set('request_token', serialize($request_token));
-        # Redirect user to authorization url
-        $redirect_url  = $oauthapp->getAuthorizationUrl($request_token);
-        return $redirect_url;
+        $params = array(
+            'client_id=' . $this->key,
+            'redirect_uri=' . urlencode($this->callback),
+            'response_type=code'
+        );
+
+        $params = implode('&', $params);
+
+        $url = 'https://api.login.yahoo.com/oauth2/request_auth?' . $params;
+        return $url;
     }
+
     public function onSloginCheck()
     {
-        //получение значений из сессии
-        $session = JFactory::getSession();
-        $request_token = unserialize($session->get('request_token'));
-        $oauthapp = new YahooOAuthApplication($this->key, $this->secret, $this->app_id, $this->callback);
         $input = JFactory::getApplication()->input;
-        $oauth_verifier = $input->getString('oauth_verifier', '');
-        # Exchange request token for authorized access token
-        $access_token  = $oauthapp->getAccessToken($request_token, $oauth_verifier);
-        # update access token
-        $oauthapp->token = $access_token;
-        # fetch user profile
-        $profile = $oauthapp->getProfile();
-        if (empty($profile)) {
-            die('Error: profile empty');
-        } 
-		
-		//var_dump($profile);
-		/*
-		object(stdClass)#594 (1) { 
-		["profile"]=> object(stdClass)#593 (10) { 
-			["guid"]=> string(26) "YHDVXZ4H4LBJKT6NGXU5JQ537E" 
-			["ageCategory"]=> string(1) "A" 
-			["created"]=> string(20) "2014-11-24T05:48:59Z" 
-			["image"]=> object(stdClass)#592 (4) { ["height"]=> string(3) "192" 
-			["imageUrl"]=> string(56) "https://s.yimg.com/dh/ap/social/profile/profile_b192.png" 
-			["size"]=> string(7) "192x192" ["width"]=> string(3) "192" } 
-			["lang"]=> string(5) "en-US" 
-			["memberSince"]=> string(20) "2014-09-30T12:10:41Z" 
-			["nickname"]=> string(7) "Arkadiy" 
-			["profileUrl"]=> string(51) "http://profile.yahoo.com/YHDVXZ4H4LBJKT6NGXU5JQ537E" 
-			["isConnected"]=> string(5) "false" 
-			["bdRestricted"]=> string(4) "true" } } 
-		*/
-        $returnRequest = new SloginRequest();
-        $returnRequest->first_name  = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
-        $returnRequest->last_name   = isset($profile->profile->familyName) ? $profile->profile->familyName : '';
-        $returnRequest->email       = isset($profile->profile->emails->handle) ? $profile->profile->emails->handle : '';
-        $returnRequest->id          = isset($profile->profile->guid) ? $profile->profile->guid : '';
-        $returnRequest->real_name   = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
-        $returnRequest->sex         = isset($profile->profile->gender) ? $profile->profile->gender : '';
-        $returnRequest->display_name = $profile->profile->nickname;
-        $returnRequest->all_request  = $profile->profile;
-        return $returnRequest; 
+        $code = $input->getString('code', null);
+
+
+        if($code)
+        {
+            include_once JPATH_BASE.'/components/com_slogin/controller.php';
+            $controller = new SLoginController();
+
+            $params = array(
+                'client_id=' . $this->key,
+                'client_secret=' . $this->secret,
+                'redirect_uri=' . urlencode($this->callback),
+                'code=' . $code,
+                'grant_type=authorization_code'
+            );
+
+            $params = implode('&', $params);
+
+            $url = 'https://api.login.yahoo.com/oauth2/get_token';
+            $token = $controller->open_http($url, true, $params);
+            $token = json_decode($token, true);
+
+            if(empty($token['access_token'])){
+                echo 'Error - empty access tocken';
+                exit;
+            }
+            if(empty($token["xoauth_yahoo_guid"])){
+                echo 'Error - empty yahoo guid';
+                exit;
+            }
+
+            $profile = $this->getUserData($token);
+            $profile = json_decode($profile);
+
+            if (empty($profile->profile)) {
+                die('Error: profile empty');
+            }
+
+            $returnRequest = new SloginRequest();
+            $returnRequest->first_name  = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
+            $returnRequest->last_name   = isset($profile->profile->familyName) ? $profile->profile->familyName : '';
+            $returnRequest->email       = isset($profile->profile->emails)
+                && isset($profile->profile->emails[0])
+                && isset($profile->profile->emails[0]->handle)
+                ? $profile->profile->emails[0]->handle : '';
+            $returnRequest->id          = isset($profile->profile->guid) ? $profile->profile->guid : '';
+            $returnRequest->real_name   = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
+            $returnRequest->sex         = isset($profile->profile->gender) ? $profile->profile->gender : '';
+            $returnRequest->display_name = $profile->profile->nickname;
+            $returnRequest->all_request  = $profile->profile;
+            return $returnRequest;
+        }
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
+
     public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
@@ -97,5 +115,23 @@ class plgSlogin_authYahoo extends JPlugin
         $links[$i]['class'] = 'yahooslogin';
         $links[$i]['plugin_name'] = 'yahoo';
         $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_YAHOO');
+    }
+
+    private function getUserData($token)
+    {
+        if (!function_exists('curl_init')) {
+            die('ERROR: CURL library not found!');
+        }
+        $url = 'https://social.yahooapis.com/v1/user/'.$token["xoauth_yahoo_guid"].'/profile?format=json';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, false);
+        curl_setopt($ch,  CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer '. $token["access_token"]
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
     }
 }

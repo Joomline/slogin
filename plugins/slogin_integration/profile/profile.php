@@ -155,22 +155,26 @@ class plgSlogin_integrationProfile extends JPlugin
     }
 
     private function yahooGetData($user, $provider, $info){
-        $data = new StdClass();
+        $data = new stdClass();
         $data->user_id = $user->id;
         $data->slogin_id = $info->guid;
         $data->provider = $provider;
-        $data->social_profile_link = $info->profileUrl;
-        $data->f_name = $info->givenName;
-        $data->l_name = $info->familyName ;
-        $data->email = $info->emails->handle;
-        if($info->gender == 'M')
+        $data->social_profile_link = isset($info->profileUrl) ? $info->profileUrl : '';
+        $data->f_name = isset($info->givenName) ? $info->givenName : '';
+        $data->l_name = isset($info->familyName) ? $info->familyName : '';
+        $data->email = isset($info->emails)
+        && isset($info->emails[0])
+        && isset($info->emails[0]->handle)
+            ? $info->emails[0]->handle : '';
+
+        if(isset($info->gender) && $info->gender == 'M')
             $data->gender = 1;
-        elseif($info->gender == 'F')
+        elseif(isset($info->gender) && $info->gender == 'F')
             $data->gender = 2;
         else
             $data->gender = 0;
         $this->getGeoInfo($data);
-        $data->picture = isset($info->image->imageUrl) ? $info->image->imageUrl : '';
+        $data->picture = isset($info->image) && isset($info->image->imageUrl) ? $info->image->imageUrl : '';
         return $data;
     }
 
