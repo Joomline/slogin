@@ -378,7 +378,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->f_name = $info->real_name;
         $data->email = $info->default_email;
         $this->getGeoInfo($data);
-        $data->picture = '';
+        $data->picture = !empty($info->default_avatar_id) && empty($info->is_avatar_empty)
+            ? 'https://avatars.yandex.net/get-yapic/'.$info->default_avatar_id.'/islands-200' : '';
         return $data;
     }
 

@@ -83,14 +83,14 @@ class plgSlogin_authYandex extends JPlugin
 
             $name = explode(' ', $request->real_name);
 
-            $returnRequest->first_name = (isset($name[1])) ? $name[1] : '';
-            $returnRequest->last_name = (isset($name[0])) ? $name[0] : '';
-            $returnRequest->email = $request->default_email;
+            $returnRequest->first_name = isset($request->first_name) ? $request->first_name : (isset($name[1])) ? $name[1] : '';
+            $returnRequest->last_name = isset($request->last_name) ? $request->last_name : (isset($name[0])) ? $name[0] : '';
+            $returnRequest->email = isset($request->default_email) ? $request->default_email : '';
             $returnRequest->id = $request->id;
             $returnRequest->real_name = $request->real_name;
             $returnRequest->sex = $request->sex;
             $returnRequest->display_name = $request->display_name;
-            $returnRequest->birthday = $request->birthday;
+            $returnRequest->birthday = isset($request->birthday) ? $request->birthday : '';
             $returnRequest->all_request  = $request;
             return $returnRequest;
         }
