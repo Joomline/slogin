@@ -10,13 +10,18 @@
 
 // No direct access
 defined('_JEXEC') or die;
-
-include_once JPATH_ROOT."/plugins/slogin_auth/linkedin/assets/oauth/linkedin.php";
 include_once JPATH_ROOT."/components/com_slogin/controller.php";
 
 
 class plgSlogin_authLinkedin extends JPlugin
 {
+    private $redirect;
+    function __construct(&$subject, $config = array())
+    {
+        parent::__construct($subject, $config);
+        $this->redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
+    }
+
     public function onSloginAuth()
     {
         if($this->params->get('allow_remote_check', 1))
@@ -28,96 +33,102 @@ class plgSlogin_authLinkedin extends JPlugin
             }
         }
 
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
-
+        $redirect = urlencode($this->redirect);
+        $state = md5(time().'slogin');
+        $scope = urlencode('r_basicprofile r_emailaddress');
+        $url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id='
+            .$this->params->get('api_key').'&redirect_uri='.$redirect.'&state='.$state.'&scope='.$scope;
         $app = JFactory::getApplication('site');
-
-        # First step is to initialize with your consumer key and secret. We'll use an out-of-band oauth_callback
-        $linkedin = new LinkedIn($this->params->get('api_key'), $this->params->get('secret_key'), $redirect);
-        //$linkedin->debug = true;
-
-        # Now we retrieve a request token. It will be set as $linkedin->request_token
-        $linkedin->getRequestToken();
-
-        if(empty($linkedin->request_token)){
-            echo 'Error - empty access tocken';
-            exit;
-        }
-
-        $app->setUserState('requestToken', serialize($linkedin->request_token));
-
-        $url = $linkedin->generateAuthorizeUrl();
-
+        $app->setUserState('linkedInState', $state);
         return $url;
     }
 
     public function onSloginCheck()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=linkedin';
+        $redirect = urlencode($this->redirect);
 
         $app = JFactory::getApplication();
         $input = $app->input;
+        $code = $input->getString('code', '');
+        $state = $input->getString('state', '');
 
-        $oauth_problem = $input->getString('oauth_problem', '');
-        if($oauth_problem == 'user_refused'){
-            $config = JComponentHelper::getParams('com_slogin');
+        if($code)
+        {
+            $app = JFactory::getApplication('site');
+            $linkedInState = $app->getUserState('linkedInState', '');
+            if($state != $linkedInState){
+                die('Error: wrong state');
+            }
 
-            JModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModel::getInstance('Linking_user', 'SloginModel');
+            $oauth_problem = $input->getString('oauth_problem', '');
+            if($oauth_problem == 'user_refused'){
+                $config = JComponentHelper::getParams('com_slogin');
 
-            $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
+                JModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+                $model = JModel::getInstance('Linking_user', 'SloginModel');
 
-            $controller = JControllerLegacy::getInstance('SLogin');
-            $controller->displayRedirect($redirect, true);
-        }
+                $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
 
-        # First step is to initialize with your consumer key and secret. We'll use an out-of-band oauth_callback
-        $linkedin = new LinkedIn($this->params->get('api_key'), $this->params->get('secret_key'), $redirect);
-        //$linkedin->debug = true;
+                $controller = JControllerLegacy::getInstance('SLogin');
+                $controller->displayRedirect($redirect, true);
+            }
 
-        $oauth_verifier  = $input->getString('oauth_verifier', '');
+            include_once JPATH_BASE.'/components/com_slogin/controller.php';
+            $controller = new SLoginController();
 
-        $requestToken = unserialize($app->getUserState('requestToken'));
-        $linkedin->request_token    =   $requestToken;
-        $linkedin->oauth_verifier   =   $app->getUserState('oauth_verifier');
+            $params = array(
+                'grant_type=authorization_code',
+                'code=' . $code,
+                'redirect_uri=' . urlencode($this->redirect),
+                'client_id=' . $this->params->get('api_key', ''),
+                'client_secret=' . $this->params->get('secret_key', '')
+            );
 
-        if (!empty($oauth_verifier)){
-            $app->setUserState('oauth_verifier', $oauth_verifier);
-            $linkedin->getAccessToken($oauth_verifier);
-            $app->setUserState('oauth_access_token', serialize($linkedin->access_token));
-            header("Location: " . $redirect);
-            exit;
-        }
-        else{
-            $linkedin->access_token = unserialize($app->getUserState('oauth_access_token'));
-        }
+            $params = implode('&', $params);
 
+            $url = 'https://www.linkedin.com/oauth/v2/accessToken';
+            $token = $controller->open_http($url, true, $params);
+            $token = json_decode($token, true);
 
-        # You now have a $linkedin->access_token and can make calls on behalf of the current member
-        //$request = $linkedin->getProfile("~:(id,first-name,last-name,headline,picture-url)");
-        $request = $linkedin->getProfile("~:(id,first-name,last-name,headline,picture-url,email-address)?format=json");
-        $request = json_decode($request);
+            if(empty($token['access_token'])){
+                echo 'Error - empty access tocken';
+                exit;
+            }
 
-        if(empty($request)){
-            echo 'Error - empty user data';
-            exit;
-        }
-        else if(!empty($request->errorCode)){
-            echo 'Error - '.$request->message;
-            exit;
-        }
+            $profile = $this->getUserData($token['access_token']);
+            $request = json_decode($profile);
 
-        $returnRequest = new SloginRequest();
+            if (empty($request->id)) {
+                die('Error: profile empty');
+            }
 
-            $returnRequest->first_name  = $request->firstName;
-            $returnRequest->last_name   = $request->lastName;
-//            $returnRequest->email       = $request->email;
+            $returnRequest = new SloginRequest();
+
+            $firstName = isset($request->firstName) ? $request->firstName : '';
+            $lastName = isset($request->lastName) ? $request->lastName : '';
+            $emailAddress = isset($request->emailAddress) ? $request->emailAddress : '';
+            $display_name = '';
+            if(!empty($firstName)){
+                $display_name .= $firstName;
+            }
+            if(!empty($lastName)){
+                $display_name .= !empty($firstName) ? ' ' : '';
+                $display_name .= $lastName;
+            }
+            $returnRequest->first_name  = $firstName;
+            $returnRequest->last_name   = $lastName;
+            $returnRequest->email       = $emailAddress;
             $returnRequest->id          = $request->id;
-            $returnRequest->real_name   = $request->firstName.' '.$request->lastName;
-            $returnRequest->display_name = $request->firstName;
+            $returnRequest->real_name   = $display_name;
+            $returnRequest->display_name = $firstName;
             $returnRequest->all_request  = $request;
 
-        return $returnRequest;
+            return $returnRequest;
+        }
+        else{
+            echo 'Error - empty code';
+            exit;
+        }
     }
     public function onCreateSloginLink(&$links, $add = '')
     {
@@ -126,5 +137,23 @@ class plgSlogin_authLinkedin extends JPlugin
         $links[$i]['class'] = 'linkedinslogin';
         $links[$i]['plugin_name'] = 'linkedin';
         $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_LINKEDIN');
+    }
+
+    private function getUserData($token)
+    {
+        if (!function_exists('curl_init')) {
+            die('ERROR: CURL library not found!');
+        }
+        $url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,picture-url,email-address)?format=json';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, false);
+        curl_setopt($ch,  CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer '. $token
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
     }
 }

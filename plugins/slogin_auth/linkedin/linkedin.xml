@@ -26,6 +26,16 @@
                        description="Secret Key"
                        label="Secret Key"
                         />
+				<field
+						name="callback_url"
+						type="callbackurl"
+						label="Callback URI"
+						description="Callback URI"
+						filter="unset"
+						value="linkedin"
+						readonly="true"
+						class="readonly"
+				/>
             </fieldset>
         </fields>
     </config>
