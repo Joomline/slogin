@@ -76,7 +76,7 @@ var SLogin = SLogin || {
                 size = {width:900, height:550};
                 break;
             case 'linkedinslogin':
-                size = {width:350, height:450};
+                size = {width:350, height:550};
                 break;
             case 'odnoklassnikislogin':
                 size = {width:550, height:250};
