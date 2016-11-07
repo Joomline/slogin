@@ -15,14 +15,6 @@ class plgSlogin_authLive extends JPlugin
 {
     public function onSloginAuth()
     {
-        if($this->params->get('allow_remote_check', 1))
-        {
-            $remotelUrl = JURI::getInstance($_SERVER['HTTP_REFERER'])->toString(array('host'));
-            $localUrl = JURI::getInstance()->toString(array('host'));
-            if($remotelUrl != $localUrl){
-                die('Remote authorization not allowed');
-            }
-        }
         $uri = JRoute::_('index.php?option=com_slogin&task=check&plugin=live');
         $uri = JString::substr($uri, 1);
         $redirect = JURI::base().$uri;

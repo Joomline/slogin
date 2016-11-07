@@ -19,15 +19,6 @@ class plgSlogin_authTwitter extends JPlugin
 
     public function onSloginAuth()
     {
-        if($this->params->get('allow_remote_check', 1))
-        {
-            $remotelUrl = JURI::getInstance($_SERVER['HTTP_REFERER'])->toString(array('host'));
-            $localUrl = JURI::getInstance()->toString(array('host'));
-            if($remotelUrl != $localUrl){
-                die('Remote authorization not allowed');
-            }
-        }
-
         $twitauth = new SloginTwitterOAuth($this->params->get('id'), $this->params->get('password'));
 
         $request_token = $twitauth->getRequestToken('');

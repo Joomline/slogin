@@ -24,15 +24,6 @@ class plgSlogin_authLinkedin extends JPlugin
 
     public function onSloginAuth()
     {
-        if($this->params->get('allow_remote_check', 1))
-        {
-            $remotelUrl = JURI::getInstance($_SERVER['HTTP_REFERER'])->toString(array('host'));
-            $localUrl = JURI::getInstance()->toString(array('host'));
-            if($remotelUrl != $localUrl){
-                die('Remote authorization not allowed');
-            }
-        }
-
         $redirect = urlencode($this->redirect);
         $state = md5(time().'slogin');
         $scope = urlencode('r_basicprofile r_emailaddress');
