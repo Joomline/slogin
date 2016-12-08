@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
 	<name>Plugin profile Slogin</name>
-	<author>Arkadiy Sedelnikov</author>
 	<creationDate>20.11.2014</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
-	<authorEmail></authorEmail>
-	<authorUrl>http://argens.ru</authorUrl>
+    <author>Arkadiy Sedelnikov, Joomline</author>
+    <authorUrl>http://joomline.ru</authorUrl>
+    <authorEmail>a.sedelnikov@gmail.com</authorEmail>
 	<version>1.0.2</version>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
     <!-- Runs on install/uninstall/update; New in 1.6 -->
