@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5" method="upgrade">
-    <name>com_slogin</name>
+    <name>Pkg Slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
 	<packagename>slogin</packagename>
     <creationDate>07.11.2016</creationDate>
@@ -12,25 +12,25 @@
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
 	<scriptfile>script.php</scriptfile>
 	<files>
-	    <file type="component" method="upgrade" client="site">com_slogin.zip</file>
-	    <file type="module" method="upgrade" client="site">mod_slogin.zip</file>
-	    <file type="library" method="upgrade" client="site">lib_slogin_oauth.zip</file>
-		<file type="library" client="site" method="upgrade">lib_amcharts.zip</file>
-	    <file type="plugin" method="upgrade" client="site">plg_slogin.zip</file>
-	    <file type="plugin" method="upgrade" client="site">plg_slogin_profile.zip</file> 
-		<file type="plugin" method="upgrade" client="site">plg_SL_facebook.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_google.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_mail.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_odnoklassniki.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_twitter.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_vkontakte.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_yandex.zip</file>	
-		<file type="plugin" method="upgrade" client="site">plg_SL_linkedin.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_ulogin.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_live.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_yahoo.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_wordpress.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_SL_instagram.zip</file>
-		<file type="plugin" method="upgrade" client="site">plg_authentication_slogin.zip</file>
+	    <file type="component" method="upgrade" id="com_slogin" client="site">com_slogin.zip</file>
+	    <file type="module" method="upgrade" id="mod_slogin" client="site">mod_slogin.zip</file>
+	    <file type="library" method="upgrade" id="slogin_oauth" client="site">lib_slogin_oauth.zip</file>
+		<file type="library" client="site" id="amcharts" method="upgrade">lib_amcharts.zip</file>
+	    <file type="plugin" method="upgrade" id="slogin" group="user" client="site">plg_slogin.zip</file>
+	    <file type="plugin" method="upgrade" id="profile" group="slogin_integration" client="site">plg_slogin_profile.zip</file> 
+		<file type="plugin" method="upgrade" id="facebook" group="slogin_auth"  client="site">plg_SL_facebook.zip</file>	
+		<file type="plugin" method="upgrade" id="google" group="slogin_auth" client="site">plg_SL_google.zip</file>	
+		<file type="plugin" method="upgrade" id="mail" group="slogin_auth" client="site">plg_SL_mail.zip</file>	
+		<file type="plugin" method="upgrade" id="odnoklassniki" group="slogin_auth" client="site">plg_SL_odnoklassniki.zip</file>	
+		<file type="plugin" method="upgrade" id="twitter" group="slogin_auth" client="site">plg_SL_twitter.zip</file>	
+		<file type="plugin" method="upgrade" id="vkontakte" group="slogin_auth" client="site">plg_SL_vkontakte.zip</file>	
+		<file type="plugin" method="upgrade" id="yandex" group="slogin_auth" client="site">plg_SL_yandex.zip</file>	
+		<file type="plugin" method="upgrade" id="linkedin" group="slogin_auth" client="site">plg_SL_linkedin.zip</file>
+		<file type="plugin" method="upgrade" id="ulogin" group="slogin_auth" client="site">plg_SL_ulogin.zip</file>
+		<file type="plugin" method="upgrade" id="live" group="slogin_auth" client="site">plg_SL_live.zip</file>
+		<file type="plugin" method="upgrade" id="yahoo" group="slogin_auth" client="site">plg_SL_yahoo.zip</file>
+		<file type="plugin" method="upgrade" id="wordpress" group="slogin_auth" client="site">plg_SL_wordpress.zip</file>
+		<file type="plugin" method="upgrade" id="instagram" group="slogin_auth" client="site">plg_SL_instagram.zip</file>
+		<file type="plugin" method="upgrade" id="slogin" group="authentication" client="site">plg_authentication_slogin.zip</file>
 	</files>
 </extension>
