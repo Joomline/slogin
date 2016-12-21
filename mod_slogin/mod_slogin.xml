@@ -48,6 +48,13 @@
                         value="1"
                         label="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM"
                         description="MOD_SLOGIN_FIELD_SHOW_LOGIN_FORM_DESC" />
+                <field
+                        name="show_fusion_form"
+                        type="checkbox"
+                        filter="int"
+                        value="1"
+                        label="MOD_SLOGIN_FIELD_SHOW_FUSION_FORM"
+                        description="MOD_SLOGIN_FIELD_SHOW_FUSION_FORM_DESC" />
 				<field
 					name="slogin_link_profile"
 					type="list"

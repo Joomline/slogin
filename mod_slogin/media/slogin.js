@@ -1,9 +1,17 @@
 var SLogin = SLogin || {
 
     initialize:function () {
-        var block = document.getElementById('slogin-buttons');
-        if (block === null) return;
-        var elements = block.getElementsByTagName('a');
+        var elements, block, identifiers;
+        identifiers = ['slogin-buttons', 'slogin-buttons-attach', 'slogin-buttons-attach-component'];
+        for(i=0;i<identifiers.length;i++){
+            block = document.getElementById(identifiers[i]);
+            if (block !== null){
+                elements = block.getElementsByTagName('a');
+                SLogin.initializeButtons(elements);
+            }
+        }
+    },
+    initializeButtons:function (elements) {
         var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes";
         for (var i = 0; i < elements.length; i++) {
             if(elements[i].getAttribute('id') == 'uLogin'){
@@ -22,19 +30,17 @@ var SLogin = SLogin || {
                     this.href,
                     'LoginPopUp',
                     'width=' + size.width
-                        + ',height=' + size.height
-                        + ',left=' + centerWidth
-                        + ',top=' + centerHeight
-                        + ',' + params
+                    + ',height=' + size.height
+                    + ',left=' + centerWidth
+                    + ',top=' + centerHeight
+                    + ',' + params
                 );
                 PopUpWindow.focus();
                 return false;
             }
 
         }
-
     },
-
     WindowSize:function () {
         var myWidth = 0, myHeight = 0, size = {width:0, height:0};
         if (typeof( window.innerWidth ) == 'number') {

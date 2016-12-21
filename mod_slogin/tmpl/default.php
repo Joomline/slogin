@@ -34,6 +34,41 @@ defined('_JEXEC') or die('(@)|(@)');
 			<?php	if ($params->get('slogin_link_profile', 1) == 1) {?>
 			<li><a href="<?php echo JRoute::_('index.php?option=com_slogin&view=fusion'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
 			<?php }	?>
+
+            <?php if ($params->get('show_fusion_form', 1) == 1) {?>
+                <li>
+                    <h4><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h4>
+                    <div id="slogin-buttons-attach" class="slogin-buttons slogin-compact">
+                        <?php
+                        foreach($attachedProviders as $provider) :
+
+                            if($provider['plugin_name'] == 'ulogin')
+                                continue;
+
+                            $linkParams = '';
+                            if(isset($provider['params'])){
+                                foreach($provider['params'] as $k => $v){
+                                    $linkParams .= ' ' . $k . '="' . $v . '"';
+                                }
+                            }
+                            ?>
+                            <a <?php echo $linkParams;?> href="<?php echo JRoute::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
+                                <span class="<?php echo $provider['class'];?>">&nbsp;</span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="slogin-clear"></div>
+                    <h4><?php echo JText::_('COM_SLOGIN_DETACH_PROVIDERS')?></h4>
+                    <div id="slogin-buttons-unattach" class="slogin-buttons slogin-compact">
+                        <?php foreach($unattachedProviders as $provider) : ?>
+                            <a href="<?php echo JRoute::_('index.php?option=com_slogin&task=detach_provider&plugin='.$provider['plugin_name']);?>" title="<?php echo $provider['plugin_title'];?>">
+                                <span class="<?php echo $provider['class'];?>">&nbsp;</span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="slogin-clear"></div>
+                </li>
+            <?php }	?>
 		</ul>
 	<div class="logout-button">
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGOUT'); ?>" />

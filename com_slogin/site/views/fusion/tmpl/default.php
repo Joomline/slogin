@@ -53,7 +53,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
     <?php else : ?>
 
     <h2><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h2>
-    <div id="slogin-buttons" class="slogin-buttons">
+    <div id="slogin-buttons-attach-component" class="slogin-buttons">
         <?php
         foreach($this->attachedProviders as $provider) :
 
@@ -74,7 +74,7 @@ $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
     </div>
     <div class="slogin-clear"></div>
     <h2><?php echo JText::_('COM_SLOGIN_DETACH_PROVIDERS')?></h2>
-    <div id="slogin-buttons" class="slogin-buttons">
+    <div id="slogin-buttons-unattach-component" class="slogin-buttons">
         <?php foreach($this->unattachedProviders as $provider) : ?>
         <a href="<?php echo JRoute::_('index.php?option=com_slogin&task=detach_provider&plugin='.$provider['plugin_name']);?>" title="<?php echo $provider['plugin_title'];?>">
             <span class="<?php echo $provider['class'];?>">&nbsp;</span>

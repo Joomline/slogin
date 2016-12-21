@@ -84,12 +84,12 @@ padding: 5px;
     color: #FFFFFF
 }
 
-.login #slogin-buttons a {
+.login #slogin-buttons a, .login #slogin-buttons-attach-component a, .login #slogin-buttons-unattach-component a {
     width: 49px;
     height: 49px;
 }
 
-.login #slogin-buttons span {
+.login #slogin-buttons span, .login #slogin-buttons-attach-component span, .login #slogin-buttons-unattach-component span {
     height: 49px;
     width: 49px;
     display:block;

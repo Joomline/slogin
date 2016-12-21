@@ -23,7 +23,7 @@ $layout = $params->get('layout', 'default');
 
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
-if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js'); }
+if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.js?v=1'); }
 
 if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css'); }
 
@@ -36,6 +36,13 @@ $allow = modSLoginHelper::getalw($params);
 $input = JFactory::getApplication()->input;
 $task = $input->getCmd('task', '');
 $option = $input->getCmd('option', '');
+
+$fusionProviders = null;
+if($params->get('show_fusion_form'))
+{
+    list($attachedProviders, $unattachedProviders) = modSLoginHelper::getFusionProviders();
+    JFactory::getLanguage()->load('com_slogin');
+}
 
 if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 {
