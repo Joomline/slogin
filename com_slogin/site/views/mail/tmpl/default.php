@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 JHTML::_('behavior.formvalidation');
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.css')
+$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css')
 ?>
 <div class="login">
 
