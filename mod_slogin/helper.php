@@ -108,6 +108,7 @@ class modSLoginHelper
                 $attachedProviders[] = $v;
             }
             else{
+                $v['link'] = 'index.php?option=com_slogin&task=detach_provider&plugin='.$v['plugin_name'];
                 $unattachedProviders[] = $v;
             }
         }
