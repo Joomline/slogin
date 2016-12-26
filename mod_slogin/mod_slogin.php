@@ -38,7 +38,8 @@ $task = $input->getCmd('task', '');
 $option = $input->getCmd('option', '');
 
 $fusionProviders = null;
-if($params->get('show_fusion_form'))
+$show_fusion_form = $params->get('show_fusion_form', 0);
+if($show_fusion_form)
 {
     list($attachedProviders, $unattachedProviders) = modSLoginHelper::getFusionProviders();
     JFactory::getLanguage()->load('com_slogin');

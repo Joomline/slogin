@@ -36,7 +36,7 @@ defined('_JEXEC') or die('(@)|(@)');
 			<li><a href="<?php echo JRoute::_('index.php?option=com_slogin&view=fusion'); ?>"><?php echo JText::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
 			<?php }	?>
 
-            <?php if ($params->get('show_fusion_form', 1) == 1) {?>
+            <?php if ($show_fusion_form == 1) {?>
                 <li>
                     <h4><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h4>
                     <div id="slogin-buttons-attach" class="slogin-buttons slogin-compact">
