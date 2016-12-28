@@ -941,7 +941,10 @@ class SLoginController extends SLoginControllerParent
         $store = $this->storeSloginUser($user_id, $slogin_id, $provider);
 
         $link = 'index.php?option=com_slogin&view=fusion';
-
+        $redirect = JFactory::getApplication()->getUserState('com_slogin.return_url', '');
+        if(!empty($redirect)){
+            $link = base64_decode($redirect);
+        }
         $this->displayRedirect($link, $popup);
     }
 
@@ -953,6 +956,10 @@ class SLoginController extends SLoginControllerParent
         $user_id = JFactory::getUser()->id;
 
         $link = 'index.php?option=com_slogin&view=fusion';
+        $redirect = JFactory::getApplication()->getUserState('com_slogin.return_url', '');
+        if(!empty($redirect)){
+            $link = base64_decode($redirect);
+        }
 
         if((int)$user_id == 0 ){
             $this->displayRedirect($link);
