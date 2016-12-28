@@ -37,8 +37,17 @@ defined('_JEXEC') or die('(@)|(@)');
 			<?php }	?>
 
             <?php if ($show_fusion_form == 1) {?>
-                <li>
-                    <h4><?php echo JText::_('COM_SLOGIN_ATTACH_PROVIDERS')?></h4>
+                <li>                    
+                    <p><?php echo JText::_('MOD_SLOGIN_DETACH_PROVIDERS_MODULE')?></p>
+                    <div id="slogin-buttons-unattach" class="slogin-buttons slogin-compact">
+                        <?php foreach($unattachedProviders as $provider) : ?>
+                            <a href="<?php echo JRoute::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
+                                <span class="<?php echo $provider['class'];?>">&nbsp;</span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="slogin-clear"></div>
+					<p><?php echo JText::_('MOD_SLOGIN_ATTACH_PROVIDERS_MODULE')?></p>
                     <div id="slogin-buttons-attach" class="slogin-buttons slogin-compact">
                         <?php
                         foreach($attachedProviders as $provider) :
@@ -54,15 +63,6 @@ defined('_JEXEC') or die('(@)|(@)');
                             }
                             ?>
                             <a <?php echo $linkParams;?> href="<?php echo JRoute::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
-                                <span class="<?php echo $provider['class'];?>">&nbsp;</span>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
-                    <div class="slogin-clear"></div>
-                    <h4><?php echo JText::_('COM_SLOGIN_DETACH_PROVIDERS')?></h4>
-                    <div id="slogin-buttons-unattach" class="slogin-buttons slogin-compact">
-                        <?php foreach($unattachedProviders as $provider) : ?>
-                            <a href="<?php echo JRoute::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
                                 <span class="<?php echo $provider['class'];?>">&nbsp;</span>
                             </a>
                         <?php endforeach; ?>
