@@ -387,6 +387,8 @@ class SLoginController extends SLoginControllerParent
         $model	= $this->getModel('Registration', 'UsersModel');
 
 		$username = $this->CheckUniqueName($this->username);
+		// добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
+		JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
 
         $userId	= (int)$model->register(
             array(
