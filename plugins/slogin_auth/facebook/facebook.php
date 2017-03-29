@@ -126,7 +126,7 @@ class plgSlogin_authFacebook extends JPlugin
 
         $url = 'https://graph.facebook.com/oauth/access_token?' . $params;
         $data = $controller->open_http($url);
-        parse_str($data, $data_array);
+        $data_array = json_decode($data,true);
 
         if(empty($data_array['access_token'])){
             echo 'Error - empty access tocken';
