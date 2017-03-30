@@ -14,7 +14,7 @@ defined('_JEXEC') or die('(@)|(@)');
 <noindex>
 <div class="jlslogin">
 <?php if ($type == 'logout') : ?>
-<form action="<?php echo JRoute::_('/', true, $params->get('usesecure')); ?>" method="post" id="login-form">
+<form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form">
 
     <?php if (!empty($avatar)) : ?>
         <div class="slogin-avatar">
