@@ -79,7 +79,7 @@ class plgSlogin_authFacebook extends JPlugin
             JFactory::getApplication()->setUserState('slogin.token', array(
                 'provider' => $this->provider,
                 'token' => $token['access_token'],
-                'expire' => (time() + $token['expires']),
+                'expire' => (time() + $token['expires_in']),
                 'repost_comments' => $this->params->get('repost_comments', 0),
                 'slogin_user' => $request->id,
                 'app_id' => $this->params->get('id', 0),
