@@ -102,7 +102,7 @@ class plgSlogin_authBitBucket extends JPlugin
                 exit;
             }
 
-            $returnRequest->id              = $request->account_id;
+            $returnRequest->id              = preg_replace("/\W/", "", $request->uuid);
             $returnRequest->display_name    = $request->username;
             $returnRequest->first_name      = $request->display_name;
             $returnRequest->last_name       = '';

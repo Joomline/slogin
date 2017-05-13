@@ -133,7 +133,7 @@ class plgSlogin_integrationProfile extends JPlugin
     private function bitbucketGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
-        $data->slogin_id = $info->account_id;
+        $data->slogin_id = preg_replace("/\W/", "", $info->uuid);
         $data->provider = $provider;
         $data->social_profile_link = $info->links->html->href;
         $data->f_name = $info->first_name;
@@ -533,9 +533,13 @@ class plgSlogin_integrationProfile extends JPlugin
         if(empty($file_input)) return false;
 
         $this->params->set('enable_geo', 0);
-        $id = isset($info->id) ? $info->id : $info->uid;
-        $file_output = $provider . '_' . $id . '.jpg';
 
+        if (isset($info->id)) $id = $info->id;
+        else if (isset($info->uid)) $id = $info->uid;
+        else if (isset($info->uuid)) $id = preg_replace("/\W/", "", $info->uuid);
+        else $id = rand(1000,9999).time();
+
+        $file_output = $provider . '_' . $id . '.jpg';
 
         $time = time();
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
@@ -670,7 +674,7 @@ class plgSlogin_integrationProfile extends JPlugin
         return false;
     }
 
-    function openHttp($url, $method = false, $params = null) {
+    function openHttp($url, $method = false, $params = null, $follow = true) {
 
         if (!function_exists('curl_init')) {
             die('ERROR: CURL library not found!');
@@ -690,7 +694,7 @@ class plgSlogin_integrationProfile extends JPlugin
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow);
 
         $result = curl_exec($ch);
         curl_close($ch);
