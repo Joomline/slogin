@@ -9,7 +9,7 @@ authorization plugins
 integration plugins
 authorization module
 
-The following providers: Vkontakte, Ulogin, Twitter, FaceBook, LinkedIn, Live.com, Odnoklassniki, Yandex, Instagram, WordPress, Yahoo, GitHub, Google, and Mail.ru.
+The following providers: Vkontakte, Ulogin, Twitter, FaceBook, LinkedIn, Live.com, Odnoklassniki, Yandex, Instagram, WordPress, Yahoo, BitBucket, GitHub, Google, and Mail.ru.
 
 Component supported Joomline
 

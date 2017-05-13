@@ -16,6 +16,7 @@ class SloginProvidersHelper
     static function getServiceProviders()
     {
         return array(
+            'bitbucket',
             'facebook',
             'github',
             'google',

@@ -130,6 +130,21 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function bitbucketGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->account_id;
+        $data->provider = $provider;
+        $data->social_profile_link = $info->links->html->href;
+        $data->f_name = $info->first_name;
+        $data->l_name = $info->last_name;
+        $data->email = $info->email;
+        $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->links->avatar->href) ? preg_replace("/\/\d+\/?$/", "/128/", $info->links->avatar->href) : '';
+        return $data;
+    }
+
     private function githubGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
@@ -675,6 +690,7 @@ class plgSlogin_integrationProfile extends JPlugin
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         $result = curl_exec($ch);
         curl_close($ch);
