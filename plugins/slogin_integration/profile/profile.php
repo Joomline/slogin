@@ -130,6 +130,21 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function githubGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->id;
+        $data->provider = $provider;
+        $data->social_profile_link = $info->html_url;
+        $data->f_name = $info->first_name;
+        $data->l_name = $info->last_name;
+        $data->email = $info->email;
+        $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->avatar_url) ? $info->avatar_url : '';
+        return $data;
+    }
+
     private function googleGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;

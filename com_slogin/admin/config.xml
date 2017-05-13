@@ -199,6 +199,29 @@
 		/>
 		<field
 				type="spacer"
+				label="COM_SLOGIN_PROVIDER_GITHUB"
+		/>
+		<field
+				name="github_enabled"
+				type="list"
+				label="COM_SLOGIN_ENABLED"
+				description="COM_SLOGIN_ENABLED_DESC"
+				default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+				name="github_order"
+				type="text"
+				label="COM_SLOGIN_ORDER"
+				description="COM_SLOGIN_ORDER_DESC"
+				default="13"
+				required="true"
+				filter="integer"
+		/>
+		<field
+				type="spacer"
 				label="COM_SLOGIN_PROVIDER_GOOGLE"
 		/>
 		<field

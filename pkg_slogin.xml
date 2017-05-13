@@ -19,6 +19,7 @@
 	    <file type="plugin" method="upgrade" id="slogin" group="user" client="site">plg_slogin.zip</file>
 	    <file type="plugin" method="upgrade" id="profile" group="slogin_integration" client="site">plg_slogin_profile.zip</file> 
 		<file type="plugin" method="upgrade" id="facebook" group="slogin_auth"  client="site">plg_SL_facebook.zip</file>	
+		<file type="plugin" method="upgrade" id="github" group="slogin_auth" client="site">plg_SL_github.zip</file>
 		<file type="plugin" method="upgrade" id="google" group="slogin_auth" client="site">plg_SL_google.zip</file>	
 		<file type="plugin" method="upgrade" id="mail" group="slogin_auth" client="site">plg_SL_mail.zip</file>	
 		<file type="plugin" method="upgrade" id="odnoklassniki" group="slogin_auth" client="site">plg_SL_odnoklassniki.zip</file>	

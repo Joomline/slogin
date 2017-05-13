@@ -17,6 +17,7 @@ class SloginProvidersHelper
     {
         return array(
             'facebook',
+            'github',
             'google',
             'instagram',
             'linkedin',
