@@ -71,8 +71,6 @@ class plgSlogin_authBitBucket extends JPlugin
 
             $secret = json_decode($auth);
 
-            file_put_contents("debug", print_r($secret,TRUE)."\n");
-
             if(empty($secret)){
                 echo 'Error - empty access token';
                 exit;
@@ -93,11 +91,7 @@ class plgSlogin_authBitBucket extends JPlugin
             $auth = curl_exec( $curl );
             curl_close($curl);
 
-            file_put_contents("debug", print_r($auth,TRUE)."\n", FILE_APPEND);
-
             $request = json_decode($auth);
-
-            file_put_contents("debug", print_r($request,TRUE)."\n", FILE_APPEND);
 
             if(empty($request)){
                 echo 'Error - empty user data';
