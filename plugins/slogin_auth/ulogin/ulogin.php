@@ -70,8 +70,8 @@ class plgSlogin_authUlogin extends JPlugin
         }
         else{
             $config = JComponentHelper::getParams('com_slogin');
-            JModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModel::getInstance('Linking_user', 'SloginModel');
+            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
             $controller = JControllerLegacy::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
