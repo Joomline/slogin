@@ -462,7 +462,68 @@ class plgSlogin_integrationProfile extends JPlugin
         $table->load();
         $table->bind($data);
         $table->store();
+
+        if($this->params->get('enable_userfields_integration', 0)){
+        	$this->createUserFields($user->id, $data);
+        }
     }
+
+    private function createUserFields($userId, $data){
+	    $userfields = $this->params->get('userfields');
+	    if(is_object($userfields)){
+		    $userfields = (array)$userfields;
+	    }
+	    if(is_string($userfields)){
+		    $userfields = json_decode($userfields, true);
+	    }
+	    if(!is_array($userfields) || !count($userfields)){
+	    	return;
+	    }
+
+	    if(is_object($data)){
+		    $data = (array)$data;
+	    }
+
+	    foreach ($userfields as $key => $fieldId){
+		    $fieldId = (int)$fieldId;
+		    if($fieldId == 0 || empty($data[$key])){
+		    	continue;
+		    }
+		    $value = $data[$key];
+		    if($key == 'avatar'){
+			    $rootfolder = $this->params->get('rootfolder', 'images/avatar');
+		    	$value = $rootfolder.'/'.$value;
+		    }
+		    $this->insertUserFieldData($fieldId, $userId, $value);
+	    }
+	}
+
+	private function insertUserFieldData($fieldId, $userId, $value){
+    	$db = JFactory::getDbo();
+    	$query = $db->getQuery(true);
+    	$query->select('COUNT(*)')
+	          ->from('#__fields_values')
+	          ->where('field_id = '.(int)$fieldId)
+	          ->where('item_id = '.(int)$userId)
+	    ;
+    	$count = $db->setQuery($query,0,1)->loadResult();
+    	if($count){
+		    $query->clear()
+		          ->update('#__fields_values')
+		          ->set('value = '.$db->quote($value))
+			      ->where('field_id = '.(int)$fieldId)
+			      ->where('item_id = '.(int)$userId)
+			    ;
+		    return $db->setQuery($query)->execute();
+	    }
+	    else{
+    		$ob = new stdClass();
+		    $ob->field_id = (int)$fieldId;
+		    $ob->item_id = (int)$userId;
+		    $ob->value = $value;
+		    return $db->insertObject('#__fields_values', $ob);
+	    }
+	}
 
     private function updateCurrentProfile($user, $provider)
     {
