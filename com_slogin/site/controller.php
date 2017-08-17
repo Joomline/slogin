@@ -803,6 +803,8 @@ class SLoginController extends SLoginControllerParent
             $this->fusion($this->slogin_id, $this->provider, $popup);
         }
 
+	    $collate_users = $this->config->get('collate_users', 0);
+
         //проверяем существует ли пользователь с таким уидом и провайдером
         $sloginUserId = $this->GetUserId();
 
@@ -810,7 +812,19 @@ class SLoginController extends SLoginControllerParent
         $appReturn = $app->getUserState('com_slogin.return_url');
         $return = base64_decode($appReturn);
         //если такого пользователя нет, то создаем
-        if (!$sloginUserId){
+        if (!$sloginUserId)
+        {
+	        if($collate_users == 2){
+		        $userId = $this->getUserIdByMail($this->email);
+		        if($userId){
+			        $store = $this->storeSloginUser($userId, $this->slogin_id, $this->provider);
+			        if($store){
+			        	$this->storeOrLogin($popup);
+			        	return;
+			        }
+		        }
+	        }
+
             //если разрешено редактирование данных пользователем
             $reg_fields_edited = $app->getUserState('com_slogin.reg_fields_edited', 0);
             if($this->config->get('enable_edit_reg_fields', 0) && !$reg_fields_edited){
@@ -831,7 +845,8 @@ class SLoginController extends SLoginControllerParent
                 }
                 else if(!$validator->checkUniqueEmail($this->email)){
                     $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
-                    if($this->config->get('collate_users', 0) == 1)
+
+                    if($collate_users == 1)
                     {
                         $data = array(
                             'email' => $this->email,
@@ -858,7 +873,7 @@ class SLoginController extends SLoginControllerParent
             //если мыло занято
             if($freeEmail != $this->email){
                 //если в настройках установлено подтверждать права на почту и почта есть в базе пользователей
-                if($this->config->get('collate_users', 0) == 1){
+                if($collate_users == 1){
                     $data = array(
                         'email' => $this->email,
                         'id' => $this->getUserIdByMail($this->email),
