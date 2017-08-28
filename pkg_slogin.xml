@@ -3,12 +3,12 @@
     <name>Pkg Slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
 	<packagename>slogin</packagename>
-    <creationDate>26.05.2017</creationDate>
+    <creationDate>28.08.2017</creationDate>
     <copyright>© 2012 - 2017. All rights reserved.</copyright>
     <license>GNU/GPL v.3 or later.</license>
 	<packager>JoomLine</packager>
 	<packagerurl>http://joomline.ru</packagerurl>
-    <version>2.5.3</version>
+    <version>2.6.0</version>
     <description>Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.</description>
 	<scriptfile>script.php</scriptfile>
 	<files>
