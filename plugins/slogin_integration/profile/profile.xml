@@ -12,11 +12,12 @@
     <!-- Runs on install/uninstall/update; New in 1.6 -->
     <scriptfile>script.php</scriptfile>
 	<files>
-		<filename plugin="profile">profile.php</filename>
-		<filename>index.html</filename>
-		<filename>helper.php</filename>
-		<folder>sql</folder>
+		<folder>elements</folder>
 		<folder>lib</folder>
+		<folder>sql</folder>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename plugin="profile">profile.php</filename>
 	</files>
 	<languages folder="language">
         <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_profile.sys.ini</language>
