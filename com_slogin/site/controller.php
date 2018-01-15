@@ -125,6 +125,7 @@ class SLoginController extends SLoginControllerParent
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
         $input = JFactory::getApplication()->input;
+	    $dispatcher	= JDispatcher::getInstance();
 
         $plugin = $input->getString('plugin', '');
 
@@ -170,7 +171,7 @@ class SLoginController extends SLoginControllerParent
         }
         else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            $dispatcher	= JDispatcher::getInstance();
+
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
@@ -202,6 +203,17 @@ class SLoginController extends SLoginControllerParent
 
         if ($ok == true)
         {
+	        JPluginHelper::importPlugin('slogin_integration');
+
+	        $dispatcher->trigger('onSloginBeforeStoreOrLogin', array(
+		        $request->provider,
+		        &$this->first_name,
+		        &$this->last_name,
+		        &$this->email,
+		        &$this->slogin_id,
+		        &$this->rawRequest
+	        ));
+
             $this->storeOrLogin($popup);
         }
         else{
