@@ -83,7 +83,8 @@ class plgSlogin_authVkontakte extends JPlugin
 // 			По умолчанию nom.
 
             $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big,bdate&v=5.73';
-            $request = json_decode($controller->open_http($ResponseUrl))->response[0];
+            $request = json_decode($controller->open_http($ResponseUrl));
+
 
             if(empty($request)){
                 echo 'Error - empty user data';
@@ -97,7 +98,9 @@ class plgSlogin_authVkontakte extends JPlugin
 	            echo 'Error - request error.'));
 	            exit;
             }
-
+            
+            $request = $request->response[0];
+            
             //сохраняем данные токена в сессию
             //expire - время устаревания скрипта, метка времени Unix
             JFactory::getApplication()->setUserState('slogin.token', array(
