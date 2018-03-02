@@ -95,7 +95,7 @@ class plgSlogin_authVkontakte extends JPlugin
 		            echo 'Error - '.$request->error->error_msg;
 		            exit;
 	            }
-	            echo 'Error - request error.'));
+	            echo 'Error - request error.';
 	            exit;
             }
             
