@@ -82,7 +82,7 @@ class plgSlogin_authVkontakte extends JPlugin
 // 			предложный – abl.
 // 			По умолчанию nom.
 
-            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big,bdate';
+            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big,bdate&v=5.73';
             $request = json_decode($controller->open_http($ResponseUrl))->response[0];
 
             if(empty($request)){
@@ -90,8 +90,12 @@ class plgSlogin_authVkontakte extends JPlugin
                 exit;
             }
             else if(!empty($request->error)){
-                echo 'Error - '. $request->error;
-                exit;
+                if(!empty($request->error->error_msg)){
+		            echo 'Error - '.$request->error->error_msg;
+		            exit;
+	            }
+	            echo 'Error - request error.'));
+	            exit;
             }
 
             //сохраняем данные токена в сессию
@@ -108,7 +112,7 @@ class plgSlogin_authVkontakte extends JPlugin
 
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
-            $returnRequest->id          = $request->uid;
+            $returnRequest->id          = $request->id;
             $returnRequest->real_name   = $request->first_name.' '.$request->last_name;
             $returnRequest->display_name = $request->nickname;
             $returnRequest->all_request  = $request;
