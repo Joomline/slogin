@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
+	<name>PLG_SLOGIN_UNACCEPTABLE_EMAILS</name>
+	<creationDate>15.01.2018</creationDate>
+	<copyright>(C) 2018. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+    <author>Arkadiy Sedelnikov, Joomline</author>
+    <authorUrl>http://joomline.ru</authorUrl>
+    <authorEmail>a.sedelnikov@gmail.com</authorEmail>
+	<version>1.0.0</version>
+	<description>PLG_SLOGIN_UNACCEPTABLE_EMAILS_DESC</description>
+	<files>
+		<filename>index.html</filename>
+		<filename plugin="unacceptable_emails">unacceptable_emails.php</filename>
+	</files>
+	<languages folder="language">
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_unacceptable_emails.sys.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_integration_unacceptable_emails.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_slogin_integration_unacceptable_emails.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_slogin_integration_unacceptable_emails.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+			<fieldset name="basic">
+
+				<field
+                        name="emails"
+                        type="textarea"
+						cols="100"
+						rows="10"
+						label="PLG_SLOGIN_UNACCEPTABLE_EMAILS_EMAILS"
+                        description="PLG_SLOGIN_UNACCEPTABLE_EMAILS_EMAILS_DESC"
+                        default="@facebook.com"/>
+				<field
+                        name="providers"
+                        type="list"
+						label="PLG_SLOGIN_UNACCEPTABLE_EMAILS_PROVIDERS"
+                        description="PLG_SLOGIN_UNACCEPTABLE_EMAILS_PROVIDERS_DESC"
+						multiple="true"
+                        default="">
+					<option value="facebook">Facebook</option>
+					<option value="google">Google</option>
+					<option value="instagram">Instagram</option>
+					<option value="linkedin">Linkedin</option>
+					<option value="live">Live</option>
+					<option value="mail">Mail</option>
+					<option value="odnoklassniki">Odnoklassniki</option>
+					<option value="twitter">Twitter</option>
+					<option value="ulogin">Ulogin</option>
+					<option value="vkontakte">Vkontakte</option>
+					<option value="wordpress">Wordpress</option>
+					<option value="yahoo">Yahoo</option>
+					<option value="yandex">Yandex</option>
+				</field>
+			</fieldset>
+		</fields>
+    </config>
+</extension>

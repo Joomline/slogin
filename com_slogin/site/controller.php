@@ -125,6 +125,7 @@ class SLoginController extends SLoginControllerParent
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
         $input = JFactory::getApplication()->input;
+	    $dispatcher	= JDispatcher::getInstance();
 
         $plugin = $input->getString('plugin', '');
 
@@ -170,7 +171,7 @@ class SLoginController extends SLoginControllerParent
         }
         else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            $dispatcher	= JDispatcher::getInstance();
+
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
@@ -202,6 +203,17 @@ class SLoginController extends SLoginControllerParent
 
         if ($ok == true)
         {
+	        JPluginHelper::importPlugin('slogin_integration');
+
+	        $dispatcher->trigger('onSloginBeforeStoreOrLogin', array(
+		        $request->provider,
+		        &$this->first_name,
+		        &$this->last_name,
+		        &$this->email,
+		        &$this->slogin_id,
+		        &$this->rawRequest
+	        ));
+
             $this->storeOrLogin($popup);
         }
         else{
@@ -390,16 +402,28 @@ class SLoginController extends SLoginControllerParent
 		// добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
 		JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
 
-        $userId	= (int)$model->register(
-            array(
-                "name" => $this->realName,
-                "username" => $username,
-                "password1" => $password,
-                "password2" => $password,
-                "email1" => $this->email,
-                "email2" => $this->email
-            )
-        );
+	    // Добвавляем валидацию joomla и тригер onUserBeforeDataValidation
+	    $form = $model->getForm();
+	    if (!$form)
+	    {
+		    return false;
+	    }
+
+	    $data = $model->validate($form, array(
+		    "name"      => $this->realName,
+		    "username"  => $username,
+		    "password1" => $password,
+		    "password2" => $password,
+		    "email1"    => $this->email,
+		    "email2"    => $this->email
+	    ));
+
+	    if ($data === false)
+	    {
+		    return false;
+	    }
+
+	    $userId	= (int)$model->register($data);
 
         if ($userId == 0)
         {
