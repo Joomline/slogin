@@ -402,28 +402,16 @@ class SLoginController extends SLoginControllerParent
 		// добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
 		JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
 
-	    // Добвавляем валидацию joomla и тригер onUserBeforeDataValidation
-	    $form = $model->getForm();
-	    if (!$form)
-	    {
-		    return false;
-	    }
-
-	    $data = $model->validate($form, array(
-		    "name"      => $this->realName,
-		    "username"  => $username,
-		    "password1" => $password,
-		    "password2" => $password,
-		    "email1"    => $this->email,
-		    "email2"    => $this->email
-	    ));
-
-	    if ($data === false)
-	    {
-		    return false;
-	    }
-
-	    $userId	= (int)$model->register($data);
+        $userId	= (int)$model->register(
+            array(
+                "name" => $this->realName,
+                "username" => $username,
+                "password1" => $password,
+                "password2" => $password,
+                "email1" => $this->email,
+                "email2" => $this->email
+            )
+        );
 
         if ($userId == 0)
         {
