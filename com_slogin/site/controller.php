@@ -408,6 +408,8 @@ class SLoginController extends SLoginControllerParent
 	    {
 		    return false;
 	    }
+	    // Удаляем поле  captcha из формы
+	    $form->removeField('captcha');
 
 	    $data = $model->validate($form, array(
 		    "name"      => $this->realName,
