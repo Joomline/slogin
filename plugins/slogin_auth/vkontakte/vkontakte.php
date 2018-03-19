@@ -56,7 +56,7 @@ class plgSlogin_authVkontakte extends JPlugin
         if ($code) {
             $data = $this->getToken($code);
 
-            if (empty($data->access_token) || $data->error) {
+            if (empty($data->access_token) || isset($data->error)) {
                 echo '<pre>';
 				var_dump($data);
                 echo '</pre>';
