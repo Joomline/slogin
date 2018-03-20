@@ -32,6 +32,7 @@ jimport('joomla.application.component.controller');
  */
 class SloginViewMail extends SloginViewMailParent
 {
+	protected $name, $username, $email, $action, $user;
 	// Overwriting JView display method
 	function display($tpl = null) 
 	{
@@ -64,7 +65,7 @@ class SloginViewMail extends SloginViewMailParent
         $this->name = $controller->setUserName();
         $this->username = $controller->setUserUserName();
         $this->email = $data['email'];
-
+		$this->user = JFactory::getUser();
         $this->action = JRoute::_('index.php?option=com_slogin&task=check_mail');
 
 		// Display the view
