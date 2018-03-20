@@ -113,6 +113,7 @@ class plgSlogin_authVkontakte extends JPlugin
                 'app_secret' => $this->params->get('password', 0)
             ));
 
+	        $returnRequest->provider = $this->provider;
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
             $returnRequest->id          = $request->id;

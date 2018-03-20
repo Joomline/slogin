@@ -232,22 +232,20 @@ class plgSlogin_integrationProfile extends JPlugin
         $controller = new SLoginController();
         $data = new StdClass();
         $data->user_id = $user->id;
-        $data->slogin_id = $info->uid;
+        $data->slogin_id = $info->id;
         $data->provider = $provider;
         $data->gender = 0;
         $data->f_name = $info->first_name;
         $data->l_name = $info->last_name ;
         $data->phone = $info->home_phone;
         $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
-        $data->social_profile_link = 'http://vk.com/id'.$info->uid;
+        $data->social_profile_link = 'http://vk.com/id'.$info->id;
         if(!empty($info->bdate)){
 			$date = new JDate($info->bdate);
 			$data->birthday = $date->toSql();
 		}
         $this->getGeoInfo($data);
-        $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid=' . $info->uid . '&fields=photo_medium';
-        $request = json_decode($controller->open_http($ResponseUrl))->response[0];
-        $data->picture = (empty($request->error) && substr($request->photo_medium, -12, 10000) != 'camera_b.gif') ? $request->photo_medium : '';
+        $data->picture = (!empty($info->photo_big) && substr($info->photo_big, -12, 10000) != 'camera_b.gif') ? $info->photo_big : '';
         return $data;
     }
 

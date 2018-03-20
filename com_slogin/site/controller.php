@@ -731,7 +731,7 @@ class SLoginController extends SLoginControllerParent
             return false;
         }
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-        $SloginUser = &JTable::getInstance('slogin_users', 'SloginTable');
+        $SloginUser = JTable::getInstance('slogin_users', 'SloginTable');
         $SloginUser->user_id = $user_id;
         $SloginUser->slogin_id = $slogin_id;
         $SloginUser->provider = $provider;
