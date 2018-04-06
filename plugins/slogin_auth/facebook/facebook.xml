@@ -27,19 +27,12 @@
                        label="Secret"
                         />
                 <field
-                        name="repost_comments"
-                        type="checkbox"
-                        label="Repost Comments"
-                        description="Repost Comments"
-                        value="1"
-                        />
-                <field
                         name="callback_url"
                         type="callbackurl"
                         label="Callback URI"
                         description="Callback URI"
                         filter="unset"
-                        value=""
+                        value="facebook"
                         readonly="true"
                         class="readonly"
                         />
