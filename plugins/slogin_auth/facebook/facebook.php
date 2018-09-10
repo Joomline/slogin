@@ -53,7 +53,7 @@ class plgSlogin_authFacebook extends JPlugin
 // 			id, name, first_name, last_name, link, gender, timezone, locale, verified, updated_time
 // 			email смотреть параметр scope в методе auth()!
 
-            $ResponseUrl = 'https://graph.facebook.com/v2.12/me?access_token='.$token['access_token'].'&fields=id,name,first_name,last_name,link,gender,email,birthday';
+            $ResponseUrl = 'https://graph.facebook.com/v2.12/me?access_token='.$token['access_token'].'&fields=id,name,first_name,last_name,link,email';
             $request = json_decode($controller->open_http($ResponseUrl));
 
             if(empty($request)){
