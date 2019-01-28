@@ -25,7 +25,7 @@ $class = ( version_compare( JVERSION, '3.0', '<' ) == 1) ? 'width-50 fltlft' : '
 </script>
 <div class="row">
     <div class="span12">
-        <div class="row">
+        <div class="">
             <div class="span7">
                 <h2 class="text-center"><?php echo JText::_('COM_SLOGIN_USER_STRUCTURE'); ?></h2>
                 <div id="pie_chartdiv" style="width:100%; height:350px;"></div>
