@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
-	<name>Social Login Wordpress auth</name>
+	<name>Social Login Twitch auth</name>
 	<author>Arkadiy, Joomline</author>
 	<creationDate>28.01.2019</creationDate>
 	<copyright>(C) 2012-2019. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
-	<authorUrl>http://joomline.ru</authorUrl>
-	<version>1.2.0</version>
-	<description>Wordpress auth</description>
+	<authorUrl>https://joomline.ru</authorUrl>
+	<version>1.0.0</version>
+	<description>Twitch auth</description>
 	<files>
-		<filename plugin="wordpress">wordpress.php</filename>
+		<filename plugin="twitch">twitch.php</filename>
 		<filename>index.html</filename>
 		<folder>assets</folder>
 		<folder>element</folder>
 	</files>
     <config>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="plugins/slogin_auth/wordpress/element">
+            <fieldset name="basic" addfieldpath="plugins/slogin_auth/twitch/element">
                 <field name="id" type="text" default=""
-                       description="Client ID"
-                       label="Client ID"
+                       description="Twitch Client Id"
+                       label="Client Id"
                         />
                 <field name="password" type="text" default=""
-                       description="Client secret"
-                       label="Client secret"
+                       description="Twitch Client Secret"
+                       label="Client Secret"
                         />
+
                 <field
                         name="callback_url"
                         type="callbackurl"
-                        label="Callback URL"
-                        description="Callback URL"
+                        label="Callback URI"
+                        description="Callback URI"
                         filter="unset"
-                        value="wordpress"
+                        value="twitch"
                         readonly="true"
                         class="readonly"
                         />
+
             </fieldset>
         </fields>
     </config>

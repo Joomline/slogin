@@ -1,7 +1,7 @@
 <project name="slogin" default="dist" basedir=".">
 	<property name="build" value="build" />
 	<property name="dist" value="dist" />
-	<property name="filename" value="pkg_slogin_v2.7.3_j2.5_j3.zip" />
+	<property name="filename" value="pkg_slogin_v2.8.0_j2.5_j3.zip" />
 
 
 	<target name="init" depends="clean">
@@ -74,6 +74,9 @@
 		</zip>
 		<zip destfile="${build}/plg_SL_yandex.zip" description="yandex">
 			<fileset dir="plugins/slogin_auth/yandex" />
+		</zip>
+		<zip destfile="${build}/plg_SL_twitch.zip" description="twitch">
+			<fileset dir="plugins/slogin_auth/twitch" />
 		</zip>
 
 		<copy file="pkg_slogin.xml" todir="${build}" />

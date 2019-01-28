@@ -11,20 +11,24 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authWordpress extends JPlugin
+class plgSlogin_authTwitch extends JPlugin
 {
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=wordpress';
+        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=twitch';
+
+        $scope = 'user_read';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
             'redirect_uri=' . urlencode($redirect),
-            'response_type=code'
+            'response_type=code',
+            'scope=' . $scope
         );
+
         $params = implode('&', $params);
 
-        $url = 'https://public-api.wordpress.com/oauth2/authorize?'.$params;
+        $url = 'https://id.twitch.tv/oauth2/authorize?'.$params;
 
         return $url;
     }
@@ -49,18 +53,17 @@ class plgSlogin_authWordpress extends JPlugin
                 die('ERROR: CURL library not found!');
             }
 
-            // get access_token for google API
-            $redirect = JURI::base().'?option=com_slogin&task=check&plugin=wordpress';
+            $redirect = JURI::base().'?option=com_slogin&task=check&plugin=twitch';
 
             $params = array(
                 'client_id' => $this->params->get('id'),
-                'redirect_uri' => $redirect,
                 'client_secret' => $this->params->get('password'),
-                'code' => $code, // The code from the previous request
-                'grant_type' => 'authorization_code'
+                'code' => $code,
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => $redirect
             );
 
-            $curl = curl_init( "https://public-api.wordpress.com/oauth2/token" );
+            $curl = curl_init( "https://id.twitch.tv/oauth2/token?" );
             curl_setopt( $curl, CURLOPT_POST, true );
             curl_setopt( $curl, CURLOPT_POSTFIELDS, $params);
             curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -83,8 +86,9 @@ class plgSlogin_authWordpress extends JPlugin
             $access_key = $secret->access_token;
 
 
-            $curl = curl_init( "https://public-api.wordpress.com/rest/v1/me/?raw=1" );
-            curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Authorization: Bearer ' . $access_key ) );
+            $curl = curl_init( "https://api.twitch.tv/kraken/user" );
+            $header = ['Client-ID: u84mjtwyz3rid5rni5iqayofht4nxt', 'Authorization: OAuth ' . $access_key, 'Accept: application/vnd.twitchtv.v5+json'];
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_exec( $curl );
             $request = curl_exec($curl);
@@ -99,29 +103,10 @@ class plgSlogin_authWordpress extends JPlugin
                 echo 'Error - '. $request->error_description;
                 exit;
             }
-            /*
-        object(stdClass)#387 (10) {
-            ["ID"]=> int(45759137)
-            ["display_name"]=> string(11) "asd"
-            ["username"]=> string(11) "asd"
-            ["email"]=> string(22) "asd@gmail.com"
-            ["primary_blog"]=> int(123)
-            ["token_site_id"]=> int(123)
-            ["avatar_URL"]=> string(83) "https://0.gravatar.com/avatar/9f3ceeb379f3db5f82bcdc4c5a0a51c7?s=96&d=identicon&r=G"
-            ["profile_URL"]=> string(34) "http://en.gravatar.com/asedelnikov" ["verified"]=> bool(true)
-            ["meta"]=> object(stdClass)#386 (1) {
-                ["links"]=> object(stdClass)#385 (3) {
-                    ["self"]=> string(43) "https://public-api.wordpress.com/rest/v1/me"
-                    ["help"]=> string(48) "https://public-api.wordpress.com/rest/v1/me/help"
-                    ["site"]=> string(55) "https://public-api.wordpress.com/rest/v1/sites/46631777"
-                }
-            }
-        }
-            */
 
-            $returnRequest->id              = $request->ID;
-            $returnRequest->display_name    = $request->username;
-            $returnRequest->first_name      = $request->display_name;
+            $returnRequest->id              = $request->_id;
+            $returnRequest->display_name    = $request->display_name;
+            $returnRequest->first_name      = $request->name;
             $returnRequest->email           = $request->email;
             $returnRequest->all_request     = $request;
             return $returnRequest;
@@ -139,9 +124,9 @@ class plgSlogin_authWordpress extends JPlugin
     public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
-        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=wordpress' . $add;
-        $links[$i]['class'] = 'wordpressslogin';
-        $links[$i]['plugin_name'] = 'wordpress';
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_WP');
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitch' . $add;
+        $links[$i]['class'] = 'twitchslogin';
+        $links[$i]['plugin_name'] = 'twitch';
+        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_TWITCH');
     }
 }

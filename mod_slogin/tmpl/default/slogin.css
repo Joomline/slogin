@@ -296,6 +296,13 @@ div.slogin-clear {
     background-color: #125688;
 }
 
+.slogin-buttons .twitchslogin {
+	background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='-50 -50 592 592' xml:space='preserve'%3E%3Cg%3E%3Cpath style='fill:%23FFF;' d='M48,0L16,96v352h128v64h64l64-64h96l128-136.32V0H48z M464,288l-89.6,96H260.928L192,434.144V384H80 V32h384V288z'/%3E%3Crect x='240' y='128' style='fill:%23FFF;' width='32' height='128'/%3E%3Crect x='336' y='128' style='fill:%23FFF;' width='32' height='128'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    background-color: #673AB7;
+}
+
 .slogin-avatar {
     text-align: center;
 }
@@ -321,7 +328,8 @@ div.slogin-clear {
 .yahooslogin:hover,
 .wordpressslogin:hover,
 .instagramslogin:hover,
-.odnoklassnikislogin:hover {
+.odnoklassnikislogin:hover,
+.twitchslogin:hover {
     opacity: 1;
 }
 

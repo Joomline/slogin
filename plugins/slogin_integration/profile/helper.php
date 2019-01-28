@@ -2,7 +2,7 @@
 /**
  * Social Login Integration Plugin Profile
  *
- * @version 	1.0
+ * @version 	2.8.0
  * @author		Arkadiy, Joomline
  * @copyright	© 2013. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
