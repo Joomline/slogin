@@ -2,9 +2,9 @@
 /**
  * Social Login
  *
- * @version 	1.0
+ * @version 	2.8.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012. All rights reserved.
+ * @copyright	© 2012-2019. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 

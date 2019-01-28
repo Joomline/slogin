@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
 	<name>Social Login Yandex auth</name>
 	<author>Arkadiy, Joomline</author>
-	<creationDate>26.05.2017</creationDate>
+	<creationDate>28.01.2019</creationDate>
 	<copyright>(C) 2012. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
