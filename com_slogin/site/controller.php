@@ -408,8 +408,36 @@ class SLoginController extends SLoginControllerParent
 	    {
 		    return false;
 	    }
-	    // Удаляем поле  captcha из формы
-	    $form->removeField('captcha');
+
+
+        $needleFields = array(
+            "jform_name",
+            "jform_username",
+            "jform_password1",
+            "jform_password2",
+            "jform_email1",
+            "jform_email2"
+        );
+
+        // Удаляем ненужные поля из формы
+        $fieldsets = $form->getFieldsets();
+        if(is_array($fieldsets)){
+            foreach ($fieldsets as $fieldsetKey => $item) {
+                foreach ($form->getFieldset($fieldsetKey) as $fieldKey => $field){
+
+                    if(!in_array($fieldKey, $needleFields)){
+                        $fieldName = str_replace(array('jform_com_fields_', 'jform_profile_', 'jform_'), '', $fieldKey);
+
+                        if($fieldsetKey == 'default'){
+                            $form->removeField($fieldName);
+                        }
+                        else{
+                            $form->removeField($fieldName, $fieldsetKey);
+                        }
+                    }
+                }
+            }
+        }
 
 	    $data = $model->validate($form, array(
 		    "name"      => $this->realName,
