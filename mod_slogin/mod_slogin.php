@@ -23,15 +23,14 @@ $layout = $params->get('layout', 'default');
 
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
-if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.min.js?v=1'); }
+if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'modules/mod_slogin/media/slogin.min.js?v=2'); }
 
-if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/default/slogin.min.css?v=1'); }
+if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'modules/mod_slogin/tmpl/default/slogin.min.css?v=2'); }
 
 $type	= modLoginHelper::getType();
 
 $return	= modLoginHelper::getReturnURL($params, $type);
 
-$allow = modSLoginHelper::getalw($params);
 
 $input = JFactory::getApplication()->input;
 $task = $input->getCmd('task', '');
@@ -84,9 +83,6 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
     $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
     }
 
-    $jll = (!modSLoginHelper::getalw($params))
-        ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'
-        : '';
     $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
         require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';

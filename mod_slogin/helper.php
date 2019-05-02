@@ -67,31 +67,6 @@ class modSLoginHelper
         return implode('', $o);
     }
 
-    static function getalw(&$params)
-    {
-        $allowedHost = $params->def('secretkey', '');
-        $allowedHost = (empty($allowedHost)) ? 'localhost' : $allowedHost;
-
-        $allowedHost = explode('::', $allowedHost);
-        $allow = false;
-
-        foreach ($allowedHost as $allowed) {
-            $allowed = modSLoginHelper::gethk($allowed, true);
-            if (!empty($allowed)) {
-                $allowed = explode('|', $allowed);
-                $site = (!empty($allowed[0])) ? $allowed[0] : 'localhost';
-                $extension = (!empty($allowed[1])) ? $allowed[1] : '';
-                $expireDate = (!empty($allowed[2])) ? $allowed[2] : '';
-
-                if (strpos($_SERVER['HTTP_HOST'], $site) !== false && $extension == 'slogin') {
-                    $allow = true;
-                    break;
-                }
-            }
-        }
-        return $allow;
-    }
-
     static function getFusionProviders()
     {
         JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_slogin/models', 'SloginModel');

@@ -166,4 +166,3 @@ defined('_JEXEC') or die('(@)|(@)');
 <?php endif; ?>
 </div>
 </noindex>
-<?php echo $jll; ?>
