@@ -425,7 +425,7 @@ class SLoginController extends SLoginControllerParent
             foreach ($fieldsets as $fieldsetKey => $item) {
                 foreach ($form->getFieldset($fieldsetKey) as $fieldKey => $field){
                     if(!in_array($fieldKey, $needleFields)){
-                        $fieldName = str_replace(array('jform_com_fields_', 'jform_profile_', 'jform_'), '', $fieldKey);
+                        $fieldName = str_replace(array('jform_privacyconsent_', 'jform_com_fields_', 'jform_profile_', 'jform_'), '', $fieldKey);
                         if($fieldsetKey == 'default'){
                             $form->removeField($fieldName);
                         }
