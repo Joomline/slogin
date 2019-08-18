@@ -36,8 +36,14 @@
 		</zip>
 		
 		<!-- Plugins auch -->
+		<zip destfile="${build}/plg_SL_bitbucket.zip" description="bitbucket">
+			<fileset dir="plugins/slogin_auth/bitbucket" />
+		</zip>
 		<zip destfile="${build}/plg_SL_facebook.zip" description="facebook">
 			<fileset dir="plugins/slogin_auth/facebook" />
+		</zip>
+		<zip destfile="${build}/plg_SL_github.zip" description="github">
+			<fileset dir="plugins/slogin_auth/github" />
 		</zip>
 		<zip destfile="${build}/plg_SL_google.zip" description="google">
 			<fileset dir="plugins/slogin_auth/google" />
