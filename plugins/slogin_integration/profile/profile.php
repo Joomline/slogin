@@ -130,6 +130,36 @@ class plgSlogin_integrationProfile extends JPlugin
         return $data;
     }
 
+    private function bitbucketGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = preg_replace("/\W/", "", $info->uuid);
+        $data->provider = $provider;
+        $data->social_profile_link = $info->links->html->href;
+        $data->f_name = $info->first_name;
+        $data->l_name = $info->last_name;
+        $data->email = $info->email;
+        $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->links->avatar->href) ? preg_replace("/\/\d+\/?$/", "/128/", $info->links->avatar->href) : '';
+        return $data;
+    }
+
+    private function githubGetData($user, $provider, $info){
+        $data = new StdClass();
+        $data->user_id = $user->id;
+        $data->slogin_id = $info->id;
+        $data->provider = $provider;
+        $data->social_profile_link = $info->html_url;
+        $data->f_name = $info->first_name;
+        $data->l_name = $info->last_name;
+        $data->email = $info->email;
+        $data->gender = 0;
+        $this->getGeoInfo($data);
+        $data->picture = isset($info->avatar_url) ? $info->avatar_url : '';
+        return $data;
+    }
+
     private function googleGetData($user, $provider, $info){
         $data = new StdClass();
         $data->user_id = $user->id;
@@ -562,9 +592,13 @@ class plgSlogin_integrationProfile extends JPlugin
         if(empty($file_input)) return false;
 
         $this->params->set('enable_geo', 0);
-        $id = isset($info->id) ? $info->id : $info->uid;
-        $file_output = $provider . '_' . $id . '.jpg';
 
+        if (isset($info->id)) $id = $info->id;
+        else if (isset($info->uid)) $id = $info->uid;
+        else if (isset($info->uuid)) $id = preg_replace("/\W/", "", $info->uuid);
+        else $id = rand(1000,9999).time();
+
+        $file_output = $provider . '_' . $id . '.jpg';
 
         $time = time();
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
@@ -699,7 +733,7 @@ class plgSlogin_integrationProfile extends JPlugin
         return false;
     }
 
-    function openHttp($url, $method = false, $params = null) {
+    function openHttp($url, $method = false, $params = null, $follow = true) {
 
         if (!function_exists('curl_init')) {
             die('ERROR: CURL library not found!');
@@ -719,6 +753,7 @@ class plgSlogin_integrationProfile extends JPlugin
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow);
 
         $result = curl_exec($ch);
         curl_close($ch);
