@@ -11,11 +11,18 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
+// for debug purposes: popup window shows all seance output.
+// set this to false, prevent it fron autoclose and redirect,
+// and allow to see slogin output
+$autoclose = true;
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
+
+<?php if ($autoclose) { ?>
 <script type="text/javascript">
 
 if (window.opener) {
@@ -26,14 +33,20 @@ if (window.opener) {
 }
 
 </script>
+<?php } ?>
+
+
 </head>
 <body>
 <h2 id="title" style="display:none;">Redirecting back to the application...</h2>
 <h3 id="link"><a href="<?php echo $this->url; ?>">Click here to return to the application.</a></h3>
+
+<?php if ($autoclose) { ?>
 <script type="text/javascript">
 document.getElementById('title').style.display = '';
 document.getElementById('link').style.display = 'none';
 </script>
+<?php } ?>
 </body>
 </html>
 
