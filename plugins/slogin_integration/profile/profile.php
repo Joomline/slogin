@@ -165,7 +165,11 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->user_id = $user->id;
         $data->slogin_id = $info->id;
         $data->provider = $provider;
-        $data->social_profile_link = $info->link;
+        if (isset($info->link))
+            $data->social_profile_link = $info->link;
+        else{
+            $data->social_profile_link = '';;
+        }
         $data->f_name = $info->given_name;
         $data->l_name = $info->family_name ;
         $data->email = $info->email;
@@ -173,7 +177,9 @@ class plgSlogin_integrationProfile extends JPlugin
 			$date = new JDate($info->birthday);
 			$data->birthday = $date->toSql();
 		}
-        if($info->gender == 'male')
+		if (!isset($info->gender))
+		    $data->gender = 0;
+		elseif($info->gender == 'male')
             $data->gender = 1;
         elseif($info->gender == 'female')
             $data->gender = 2;
