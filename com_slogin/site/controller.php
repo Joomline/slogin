@@ -206,7 +206,7 @@ class SLoginController extends SLoginControllerParent
 	        JPluginHelper::importPlugin('slogin_integration');
 
 	        $dispatcher->trigger('onSloginBeforeStoreOrLogin', array(
-		        $request->provider,
+	            $this->provider,
 		        &$this->first_name,
 		        &$this->last_name,
 		        &$this->email,
