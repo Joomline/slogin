@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
 	<name>Social Login GitHub auth</name>
 	<author>Arkadiy, Joomline</author>
-	<creationDate>21.09.2012</creationDate>
+	<creationDate>17.04.2020</creationDate>
 	<copyright>© 2012 - 2020. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
