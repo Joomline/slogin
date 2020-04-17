@@ -9,7 +9,7 @@
 	<packager>JoomLine</packager>
 	<packagerurl>http://joomline.ru</packagerurl>
     <version>2.9.0</version>
-    <description><![CDATA[Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.<iframe frameborder='0' allowtransparency='true' scrolling='no' src='https://joomline.ru/donateen.html' width='100%' height='700'>]]></description>
+    <description><![CDATA[Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.<iframe frameborder='0' allowtransparency='true' scrolling='no' src='https://joomline.org/donatenewen.html' width='100%' height='700'>]]></description>
 	<scriptfile>script.php</scriptfile>
 	<files>
 	    <file type="component" method="upgrade" id="com_slogin" client="site">com_slogin.zip</file>
