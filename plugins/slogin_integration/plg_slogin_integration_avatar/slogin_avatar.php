@@ -1,6 +1,6 @@
 <?php
 /**
- * Social Login Avatar
+ * SLogin Avatar
  *
  * @version    1.5
  * @author        Andrew Zahalski

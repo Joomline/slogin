@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * SLogin
+ *
+ * @version 	2.9.0
+ * @author		Arkadiy, Joomline
+ * @copyright	© 2012-2020. All rights reserved.
+ * @license 	GNU/GPL v.3 or later.
+ */
+
 // no direct access
 defined('_JEXEC') or die ;
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * Social Login Avatar
+ * SLogin Avatar
  *
  * @version 	1.4
  * @author		Andrew Zahalski
- * @copyright	© 2013. All rights reserved.
+ * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 

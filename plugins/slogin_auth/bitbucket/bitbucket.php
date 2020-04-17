@@ -1,6 +1,6 @@
 <?php
 /**
- * Social Login
+ * SLogin
  *
  * @version 	1.0
  * @author		Arkadiy, Joomline

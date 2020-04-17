@@ -1,8 +1,8 @@
 <?php
 /**
- * Social Login
+ * SLogin
  *
- * @version 	1.7
+ * @version 	2.9.0
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	2012-2016. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
