@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" group="authentication" method="upgrade">
 	<name>Social Login Auth</name>
 	<author>Arkadiy, Joomline</author>
-	<creationDate>17.04.2020</creationDate>
+	<creationDate>18.04.2020</creationDate>
 	<copyright>© 2012 - 2020. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>

@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.0
+ * @version 	2.9.1
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 JHTML::_('behavior.formvalidation');
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css');
+$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=3');
 if($this->user->id == 0){
 ?>
 <div class="login">
