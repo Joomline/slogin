@@ -25,7 +25,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
         );
         $params = implode('&', $params);
 
-        $url = 'http://www.odnoklassniki.ru/oauth/authorize?'.$params;
+        $url = 'https://connect.ok.ru/oauth/authorize?'.$params;
 
         return $url;
     }
@@ -59,7 +59,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
             );
             $params = implode('&', $params);
 
-            $url = 'http://api.odnoklassniki.ru/oauth/token.do';
+            $url = 'https://api.ok.ru/oauth/token.do';
             $request = json_decode($controller->open_http($url, true, $params));
 
             if (empty($request)) {
@@ -99,7 +99,7 @@ class plgSlogin_authOdnoklassniki extends JPlugin
 
             $params = implode('&', $request_params);
 
-            $url = 'http://api.odnoklassniki.ru/fb.do?'.$params;
+            $url = 'https://api.ok.ru/fb.do?'.$params;
             $request = json_decode($controller->open_http($url));
 
             if (empty($request)) {

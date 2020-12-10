@@ -254,7 +254,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->user_id = $user->id;
         $data->slogin_id = $info->id;
         $data->provider = $provider;
-        $data->social_profile_link = 'http://www.linkedin.com/profile/view?id='.$info->id ;
+        $data->social_profile_link = 'https://www.linkedin.com/profile/view?id='.$info->id ;
         $data->gender = 0;
         $data->f_name = $info->firstName;
         $data->l_name = $info->lastName;
@@ -275,7 +275,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name ;
         $data->phone = $info->home_phone;
         $data->mobil_phone = isset($info->mobile_phone) ? $info->mobile_phone : '';
-        $data->social_profile_link = 'http://vk.com/id'.$info->id;
+        $data->social_profile_link = 'https://vk.com/id'.$info->id;
         if(!empty($info->bdate)){
 			$date = new JDate($info->bdate);
 			$data->birthday = $date->toSql();
@@ -307,7 +307,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->last_name;
         $data->email = $info->email;
         $this->getGeoInfo($data);
-        $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=large&redirect=false';
+        $foto_url = 'https://graph.facebook.com/' . $info->id . '/picture?type=large&redirect=false';
         $request_foto = json_decode($controller->open_http($foto_url));
         $data->picture = '';
         if (empty($request_foto->error)){
@@ -325,7 +325,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->user_id = $user->id;
         $data->slogin_id = $info->user->id;
         $data->provider = $provider;
-        $data->social_profile_link = 'http://instagram.com/' . $info->user->username;
+        $data->social_profile_link = 'https://instagram.com/' . $info->user->username;
         $data->gender = 0;
         $data->f_name = $info->user->full_name;
         $data->l_name = '';
@@ -356,7 +356,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->user_id = $user->id;
         $data->slogin_id = $info->uid;
         $data->provider = $provider;
-        $data->social_profile_link = 'http://www.odnoklassniki.ru/profile/'.$info->uid;
+        $data->social_profile_link = 'https://ok.ru/profile/'.$info->uid;
         if($info->gender == 'male')
             $data->gender = 1;
         elseif($info->gender == 'female')

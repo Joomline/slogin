@@ -36,7 +36,7 @@ class plgSlogin_authVkontakte extends JPlugin
         );
         $params = implode('&', $params);
 
-        $url = 'http://oauth.vk.com/authorize?' . $params;
+        $url = 'https://oauth.vk.com/authorize?' . $params;
 
         return $url;
     }

@@ -57,7 +57,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                 if ($info->pictureUrl) {
                     $origimage = $info->pictureUrl;
                     $new_image = $provider . '_' . $info->id . '.jpg';
-                    $profileLink = 'http://www.linkedin.com/profile/view?id='.$info->id ;
+                    $profileLink = 'https://www.linkedin.com/profile/view?id='.$info->id ;
                 }
                 break;
             //vkontakte
@@ -71,11 +71,11 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     $origimage = $request->photo_medium;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
-                $profileLink = 'http://vk.com/id'.$info->uid;
+                $profileLink = 'https://vk.com/id'.$info->uid;
                 break;
             //facebook
             case 'facebook':
-                $foto_url = 'http://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
+                $foto_url = 'https://graph.facebook.com/' . $info->id . '/picture?type=square&redirect=false';
                 $request_foto = json_decode($controller->open_http($foto_url));
 
                 if (!empty($request_foto->error)) {
@@ -106,7 +106,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
                     $origimage = $info->pic_1;
                     $new_image = $provider . '_' . $info->uid . '.jpg';
                 }
-                $profileLink = 'http://www.odnoklassniki.ru/profile/'.$info->uid;
+                $profileLink = 'https://ok.ru/profile/'.$info->uid;
                 break;
             //mail
             case 'mail':
