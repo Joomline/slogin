@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
+	<name>Social Login Telegram auth</name>
+	<author>Arkadiy, Joomline</author>
+	<creationDate>28.01.2019</creationDate>
+	<copyright>(C) 2012-2019. All rights reserved.</copyright>
+	<license>GNU/GPL v.3 or later.</license>
+	<authorEmail></authorEmail>
+	<authorUrl>https://joomline.ru</authorUrl>
+	<version>1.2.0</version>
+	<description>Telegram auth</description>
+	<files>
+		<filename plugin="telegram">telegram.php</filename>
+		<filename>index.html</filename>
+		<folder>assets</folder>
+		<folder>element</folder>
+	</files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="id" type="text" default=""
+                       description="Telegram Bot Id"
+                       label="Telegram Bot Id"
+                        />
+                <field name="token" type="text" default=""
+                       description="Telegram Bot Token"
+                       label="Telegram Bot Token"
+                        />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

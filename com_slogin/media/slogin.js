@@ -14,8 +14,11 @@ var SLogin = SLogin || {
     },
     initializeButtons: function(elements) {
         var params = "resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=yes";
+        var id, onclick;
         for (var i = 0; i < elements.length; i++) {
-            if (elements[i].getAttribute('id') == 'uLogin') {
+            id = elements[i].getAttribute('id');
+            onclick = elements[i].getAttribute('onclick');
+            if (id == 'uLogin' || onclick !== null) {
                 continue;
             }
             elements[i].onclick = function(e) {
