@@ -18,19 +18,34 @@ class plgSlogin_authTelegram extends JPlugin
 
     public function onCreateSloginLink(&$links, $add = '')
     {
-        $url = JURI::root().'?option=com_slogin&task=check&plugin=telegram';
-        $js = '
-            TWidgetLogin.init("twidget_login", '.$this->params->get('id').', {"origin":"'.JURI::base().'","embed":1}, false, "ru");
-            SloginTelegram.url = "'.$url.'";
-        ';
-
+        $action = '';
         $doc = JFactory::getDocument();
-        $doc->addScriptDeclaration($js);
+        $app	= JFactory::getApplication('site');
+
+        if(!empty($add)){
+            $parts = explode('&', $add);
+            $part = end($parts);
+            $parts = explode('=', $part);
+            if($parts[0] == 'action' && count($parts) == 2){
+                $action = end($parts);
+
+                $app->setUserState('com_slogin.action.data', $action);
+            }
+        }
+        if(!defined('TWIDGETLOGINLOADED')){
+            define('TWIDGETLOGINLOADED', 1);
+            $url = JURI::root().'?option=com_slogin&task=check&plugin=telegram';
+            $js = '
+                TWidgetLogin.init("twidget_login", '.$this->params->get('id').', {"origin":"'.JURI::base().'","embed":1}, false, "ru");
+                SloginTelegram.url = "'.$url.'";
+            ';
+            $doc->addScriptDeclaration($js);
+        }
         $doc->addScript('plugins/slogin_auth/telegram/assets/widget-frame.js', array('version' => 'auto'));
         $doc->addScript('plugins/slogin_auth/telegram/assets/script.js', array('version' => 'auto'));
 
         $i = count($links);
-        $links[$i]['link'] = '#';
+        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=' . $this->provider . $add;
         $links[$i]['class'] = 'telegramslogin';
         $links[$i]['plugin_name'] = $this->provider;
         $links[$i]['params'] = array(
