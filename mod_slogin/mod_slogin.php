@@ -23,9 +23,9 @@ $layout = $params->get('layout', 'default');
 
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
-if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'media/com_slogin/slogin.min.js?v=3'); }
+if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'media/com_slogin/slogin.min.js?v=4'); }
 
-if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=3'); }
+if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=4'); }
 
 $type	= modLoginHelper::getType();
 
