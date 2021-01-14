@@ -34,6 +34,7 @@
 		<file type="plugin" method="upgrade" id="wordpress" group="slogin_auth" client="site">plg_SL_wordpress.zip</file>
 		<file type="plugin" method="upgrade" id="instagram" group="slogin_auth" client="site">plg_SL_instagram.zip</file>
 		<file type="plugin" method="upgrade" id="twitch" group="slogin_auth" client="site">plg_SL_twitch.zip</file>
+		<file type="plugin" method="upgrade" id="telegram" group="slogin_auth" client="site">plg_SL_telegram.zip</file>
 		<file type="plugin" method="upgrade" id="slogin" group="authentication" client="site">plg_authentication_slogin.zip</file>
 	</files>
 </extension>

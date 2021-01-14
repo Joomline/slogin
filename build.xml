@@ -90,6 +90,9 @@
 		<zip destfile="${build}/plg_SL_bitbucket.zip" description="bitbucket">
 			<fileset dir="plugins/slogin_auth/bitbucket" />
 		</zip>
+		<zip destfile="${build}/plg_SL_telegram.zip" description="telegram">
+			<fileset dir="plugins/slogin_auth/telegram" />
+		</zip>
 
 		<copy file="pkg_slogin.xml" todir="${build}" />
 		<copy file="script.php" todir="${build}" />

@@ -13,7 +13,6 @@
 		<filename plugin="telegram">telegram.php</filename>
 		<filename>index.html</filename>
 		<folder>assets</folder>
-		<folder>element</folder>
 	</files>
     <config>
         <fields name="params">
