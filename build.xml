@@ -96,6 +96,10 @@
 
 		<copy file="pkg_slogin.xml" todir="${build}" />
 		<copy file="script.php" todir="${build}" />
+		
+		<copy todir="${build}/language" >
+			<fileset dir="language" />
+		</copy>
 	</target>
 	
 	<target name="dist" depends="init, pack-plugins">

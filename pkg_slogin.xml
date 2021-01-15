@@ -3,13 +3,13 @@
     <name>Pkg Slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
 	<packagename>slogin</packagename>
-    <creationDate>18.04.2020</creationDate>
-    <copyright>© 2012 - 2020. All rights reserved.</copyright>
+    <creationDate>14.01.2021</creationDate>
+    <copyright>© 2012 - 2021. All rights reserved.</copyright>
     <license>GNU/GPL v.3 or later.</license>
 	<packager>JoomLine</packager>
 	<packagerurl>https://joomline.ru</packagerurl>
-    <version>2.9.1</version>
-    <description><![CDATA[Packet authentication via social networking joomla. The package: plugin, module, component. After installing the plugin activate Social Login.<iframe frameborder='0' allowtransparency='true' scrolling='no' src='https://joomline.org/donatenewen.html' width='100%' height='700'>]]></description>
+    <version>2.10.0</version>
+    <description>PLG_SLOGIN_DESC_ALL</description>
 	<scriptfile>script.php</scriptfile>
 	<files>
 	    <file type="component" method="upgrade" id="com_slogin" client="site">com_slogin.zip</file>
