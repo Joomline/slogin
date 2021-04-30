@@ -26,7 +26,7 @@ class plgSlogin_authLinkedin extends JPlugin
     {
         $redirect = urlencode($this->redirect);
         $state = md5(time().'slogin');
-        $scope = urlencode('r_basicprofile r_emailaddress');
+        $scope = urlencode('r_liteprofile r_emailaddress');
         $url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id='
             .$this->params->get('api_key').'&redirect_uri='.$redirect.'&state='.$state.'&scope='.$scope;
         $app = JFactory::getApplication('site');
@@ -95,8 +95,8 @@ class plgSlogin_authLinkedin extends JPlugin
 
             $returnRequest = new SloginRequest();
 
-            $firstName = isset($request->firstName) ? $request->firstName : '';
-            $lastName = isset($request->lastName) ? $request->lastName : '';
+            $firstName = isset($request->localizedFirstName) ? $request->localizedFirstName : '';
+            $lastName = isset($request->localizedLastName) ? $request->localizedLastName : '';
             $emailAddress = isset($request->emailAddress) ? $request->emailAddress : '';
             $display_name = '';
             if(!empty($firstName)){
@@ -139,7 +139,7 @@ class plgSlogin_authLinkedin extends JPlugin
         if (!function_exists('curl_init')) {
             die('ERROR: CURL library not found!');
         }
-        $url = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,headline,picture-url,email-address)?format=json';
+        $url = 'https://api.linkedin.com/v2/me/';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, false);
