@@ -82,7 +82,7 @@ class plgSlogin_authVkontakte extends JPlugin
 // 			предложный – abl.
 // 			По умолчанию nom.
 
-            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big,bdate&v=5.73';
+            $ResponseUrl = 'https://api.vk.com/method/getProfiles?uid='.$data->user_id.'&access_token='.$data->access_token.'&fields=nickname,contacts,photo_big,bdate&v=5.131';
             $request = json_decode($controller->open_http($ResponseUrl));
 
 
