@@ -23,3 +23,5 @@ Donate - https://joomline.org/donation.html
 Voting on JED - https://extensions.joomla.org/extensions/access-a-security/site-access/authentication-cloud-based/22343
 
 Localization component - https://opentranslators.transifex.com/projects/p/slogin/
+
+![GitHub all releases](https://img.shields.io/github/downloads/joomline/slogin/total?style=for-the-badge&color=blue)  ![GitHub release (latest by SemVer)](https://img.shields.io/github/downloads/Joomline/slogin/latest/total?style=for-the-badge&color=blue)
