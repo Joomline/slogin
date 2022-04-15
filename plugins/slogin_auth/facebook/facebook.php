@@ -27,7 +27,7 @@ class plgSlogin_authFacebook extends JPlugin
 
         $params = implode('&', $params);
 
-        $url = 'https://www.facebook.com/v2.12/dialog/oauth?' . $params;
+        $url = 'https://www.facebook.com/v13.0/dialog/oauth?' . $params;
         return $url;
     }
 
