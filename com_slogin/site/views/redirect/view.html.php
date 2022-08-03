@@ -13,22 +13,12 @@ defined('_JEXEC') or die('@-_-@');
 
 jimport( 'joomla.application.component.view');
 
-//костыль для поддержки 2 и  3 джумлы
-if(!class_exists('SLoginViewRedirectParent')){
-    if(class_exists('JViewLegacy')){
-        class SLoginViewRedirectParent extends JViewLegacy{}
-    }
-    else{
-        class SLoginViewRedirectParent extends JView{}
-    }
-}
-
 /**
  * Вид для редиректа и закрытия popup окна
  * @author Николай
  *
  */
-class SLoginViewRedirect extends SLoginViewRedirectParent
+class SLoginViewRedirect extends JViewLegacy
 {
 
 	/**

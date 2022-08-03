@@ -14,23 +14,13 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla view library
 jimport('joomla.application.component.view');
 
-//костыль для поддержки 2 и  3 джумлы
-if(!class_exists('SloginViewMailParent')){
-    if(class_exists('JViewLegacy')){
-        class SloginViewMailParent extends JViewLegacy{}
-    }
-    else{
-        class SloginViewMailParent extends JView{}
-    }
-}
-
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
 /**
  * HTML View class for the HelloWorld Component
  */
-class SloginViewMail extends SloginViewMailParent
+class SloginViewMail extends JViewLegacy
 {
 	protected $name, $username, $email, $action, $user;
 	// Overwriting JView display method

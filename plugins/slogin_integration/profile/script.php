@@ -87,7 +87,7 @@ class plgSlogin_integrationProfileInstallerScript
                         ->where('`folder` = "slogin_integration"')
                         ->where('`type` = "plugin"');
                     $db->setQuery($q);
-                    $db->query();
+                    $db->execute();
                 }
                 $q = $db->getQuery(true);
                 $q->update('#__extensions')
@@ -96,7 +96,7 @@ class plgSlogin_integrationProfileInstallerScript
                     ->where('`folder` = "slogin_integration"')
                     ->where('`type` = "plugin"');
                 $db->setQuery($q);
-                $db->query();
+                $db->execute();
                 break;
             default :
                 break;

@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 //подключаем helper стандартного модуля авторизации, для ридеректа
-require_once JPATH_BASE.'/modules/mod_login/helper.php';
+require_once JPATH_BASE.'/modules/mod_login/src/Helper/LoginHelper.php';
 require_once dirname(__FILE__).'/helper.php';
 
 $doc = JFactory::getDocument();
@@ -27,9 +27,9 @@ if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'media/com_sl
 
 if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=4'); }
 
-$type	= modLoginHelper::getType();
+$type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
 
-$return	= modLoginHelper::getReturnURL($params, $type);
+$return	= Joomla\Module\Login\Site\Helper\LoginHelper::getReturnURL($params, $type);
 
 
 $input = JFactory::getApplication()->input;
@@ -70,8 +70,6 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 
     $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-    $dispatcher	= JDispatcher::getInstance();
-
     JPluginHelper::importPlugin('slogin_auth');
 
     $plugins = array();
@@ -80,7 +78,7 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
         modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
     }
     else{
-    $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
     }
 
     $profileLink = $avatar = '';
@@ -95,7 +93,7 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
         $path = Slogin_avatarHelper::getavatar($user->id);
         if(!empty($path['photo_src'])){
             $avatar = $path['photo_src'];
-            if(JString::strpos($avatar, '/') !== 0)
+            if(mb_strpos($avatar, '/') !== 0)
                 $avatar = '/'.$avatar;
         }
 		$profileLink = isset($path['profile']) ? $path['profile'] : '';

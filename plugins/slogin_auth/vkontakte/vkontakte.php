@@ -17,7 +17,7 @@ class plgSlogin_authVkontakte extends JPlugin
 
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=vkontakte';
+        $redirect = JURI::base().'index.php?option=com_slogin&task=check&plugin=vkontakte';
 
         $scope = 'offline';
 		$scope .= ',email';
@@ -137,7 +137,7 @@ class plgSlogin_authVkontakte extends JPlugin
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
         $controller = new SLoginController();
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=vkontakte');
+        $redirect = urlencode(JURI::base().'index.php?option=com_slogin&task=check&plugin=vkontakte');
 
         //подключение к API
         $params = array(

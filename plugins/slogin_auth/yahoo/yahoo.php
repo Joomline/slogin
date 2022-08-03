@@ -80,15 +80,15 @@ class plgSlogin_authYahoo extends JPlugin
             }
 
             $returnRequest = new SloginRequest();
-            $returnRequest->first_name  = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
-            $returnRequest->last_name   = isset($profile->profile->familyName) ? $profile->profile->familyName : '';
+            $returnRequest->first_name  = $profile->profile->givenName ?? $profile->profile->nickname;
+            $returnRequest->last_name   = $profile->profile->familyName ?? '';
             $returnRequest->email       = isset($profile->profile->emails)
                 && isset($profile->profile->emails[0])
                 && isset($profile->profile->emails[0]->handle)
                 ? $profile->profile->emails[0]->handle : '';
-            $returnRequest->id          = isset($profile->profile->guid) ? $profile->profile->guid : '';
-            $returnRequest->real_name   = isset($profile->profile->givenName) ? $profile->profile->givenName : $profile->profile->nickname;
-            $returnRequest->sex         = isset($profile->profile->gender) ? $profile->profile->gender : '';
+            $returnRequest->id          = $profile->profile->guid ?? '';
+            $returnRequest->real_name   = $profile->profile->givenName ?? $profile->profile->nickname;
+            $returnRequest->sex         = $profile->profile->gender ?? '';
             $returnRequest->display_name = $profile->profile->nickname;
             $returnRequest->all_request  = $profile->profile;
             return $returnRequest;

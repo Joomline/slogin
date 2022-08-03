@@ -91,6 +91,3 @@ class modSLoginHelper
         return array($attachedProviders, $unattachedProviders);
     }
 }
-
-
-?>

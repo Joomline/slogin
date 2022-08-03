@@ -3,15 +3,9 @@
 defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 
-	if ( version_compare( JVERSION, '3.0', '<' ) == 1) {             
-		JHtml::_('behavior.tooltip');	
-	 }
-	 else{
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.multiselect');
-		JHtml::_('dropdown.init');
-		JHtml::_('formbehavior.chosen', 'select');
-	 }
+JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 ?>
 <form
         action="<?php echo JRoute::_('index.php?option=com_slogin&view=users'); ?>"

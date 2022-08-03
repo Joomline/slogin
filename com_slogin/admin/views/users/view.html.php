@@ -1,5 +1,8 @@
 <?php
 // No direct access to this file
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\Input\Input;
+
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla view library
@@ -11,9 +14,7 @@ class SloginViewUsers extends JViewLegacy
 	function display($tpl = null) 
 	{
         $this->loadHelper('slogin');
-
-        // Load the submenu.
-        SLoginHelper::addSubmenu(JRequest::getCmd('view', 'settings'));
+		$input = new Input;
 
 		// Assign data to the view
 		$this->items = $this->get('Items');
@@ -24,8 +25,7 @@ class SloginViewUsers extends JViewLegacy
         // Check for errors.
         if (count($errors = $this->get('Errors')))
         {
-            JError::raiseError(500, implode('<br />', $errors));
-            return false;
+	        throw new GenericDataException(implode('<br />', $errors), 500);
         }
 
 		// Set the toolbar

@@ -26,7 +26,7 @@ class SLoginTableUsers extends JTable
         $query->delete('#__slogin_users');
         $query->where('user_id = '.(int)$userId);
         $db->setQuery((string)$query);
-        $db->query();
+        $db->execute();
 
         if ($db->getErrorNum()) {
             $this->setError($db->getErrorMsg());

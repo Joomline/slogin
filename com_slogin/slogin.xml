@@ -25,7 +25,14 @@
     <administration>
 
         <menu img="../media/com_slogin/icon_16x16.png">COM_SLOGIN_MAIN_MENU</menu>
-
+        <submenu>
+            <menu
+                    link="option=com_slogin"
+                    view="users"
+            >
+                COM_SLOGIN_USERS
+            </menu>
+        </submenu>
         <languages folder="languages/admin">
             <language tag="ru-RU">ru-RU/ru-RU.com_slogin.sys.ini</language>
             <language tag="ru-RU">ru-RU/ru-RU.com_slogin.ini</language>

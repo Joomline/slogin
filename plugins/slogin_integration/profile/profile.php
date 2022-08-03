@@ -104,7 +104,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($row->user_id));
         $query->where($db->quoteName('provider') . ' = ' . $db->quote($row->provider));
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
     }
 
     private function sloginServiceGetData($user, $provider, $info){
@@ -494,7 +494,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $q->set('`current_profile` = 0');
         $q->where('`user_id` = '.(int)$user->id);
         $db->setQuery($q);
-        $db->query();
+        $db->execute();
 
         $data->current_profile = 1;
 
@@ -573,7 +573,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $q->set('`current_profile` = 0');
         $q->where('`user_id` = '.(int)$user->id);
         $db->setQuery($q);
-        $db->query();
+        $db->execute();
 
         $q = $db->getQuery(true);
         $q->update('#__plg_slogin_profile');
@@ -581,7 +581,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $q->where('`user_id` = '.(int)$user->id);
         $q->where('`provider` = '.$db->quote($provider));
         $db->setQuery($q);
-        $db->query();
+        $db->execute();
     }
 
 
@@ -640,7 +640,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $q->where('`user_id` = '.(int)$user->id);
         $q->where('`provider` = '.$db->quote($provider));
         $db->setQuery($q);
-        if($db->query())
+        if($db->execute())
             return true;
         else
             return false;

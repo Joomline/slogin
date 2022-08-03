@@ -9,6 +9,8 @@
  */
 
 // No direct access
+use Joomla\Input\Input;
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
@@ -41,9 +43,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	{
         $this->loadHelper('slogin');
         $app = JFactory::getApplication();
-
-        // Load the submenu.
-        SLoginHelper::addSubmenu(JRequest::getCmd('view', 'settings'));
+		$input = new Input;
 
 		$this->component = JInstaller::parseXMLInstallFile(JPATH_COMPONENT.'/slogin.xml');
 
@@ -99,7 +99,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	 */
 	protected function addToolbar()
 	{
-		$doc = JFactory::getDocument();
+		$doc = JFactory::getApplication()->getDocument();
 		$doc->addStyleDeclaration('.icon-48-generic {background: url("../media/com_slogin/icon_48x48.png")}');
 		//include helper file
 		require_once JPATH_COMPONENT.'/helpers/slogin.php';
@@ -119,7 +119,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	}
 
 	protected function loadScripts($pieChartData){
-		$document = JFactory::getDocument();
+		$document = JFactory::getApplication()->getDocument();
 		$document->addScript(JUri::root().'libraries/amcharts/amcharts/amcharts.js');
 		$document->addScript(JUri::root().'libraries/amcharts/amcharts/pie.js');
 

@@ -9,6 +9,8 @@
  */
 
 // No direct access.
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die('(@)|(@)');
 
 //костыль для поддержки 2 и  3 джумлы
@@ -30,18 +32,16 @@ if(!class_exists('SLoginControllerParent')){
 class SLoginController extends SLoginControllerParent
 {
 	/**
-	 * Typical view method for MVC based architecture
+	 * @param $cachable
+	 * @param $urlparams
 	 *
-	 * This function is provide as a default implementation, in most cases
-	 * you will need to override it in your own controllers.
+	 * @return SLoginController|void
 	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 * @return	JController		This object to support chaining.
+	 * @throws Exception
+	 * @since version
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		//JRequest::setVar('view', JRequest::getCmd('view', '{viewname}s'));
 		$this->default_view = 'settings';
 		parent::display($cachable, $urlparams);
 	}
@@ -54,7 +54,7 @@ class SLoginController extends SLoginControllerParent
         $db = JFactory::getDbo();
         $query = 'TRUNCATE TABLE  `#__slogin_users`';
         $db->setQuery($query);
-        if (!$db->query()) {
+        if (!$db->execute()) {
             $msg = $db->getErrorMsg();
             $msgType = 'error';
         }
@@ -65,7 +65,8 @@ class SLoginController extends SLoginControllerParent
 
 
         $app = JFactory::getApplication();
-        $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
+	    $app->enqueueMessage($msg, $msgType);
+        $app->redirect('index.php?option=com_slogin&view=settings');
     }
     public function repair()
     {
@@ -82,7 +83,7 @@ class SLoginController extends SLoginControllerParent
             $query->delete('#__slogin_users');
             $query->where('user_id IN ('.implode(', ', $uids).')');
             $db->setQuery($query);
-            if (!$db->query()) {
+            if (!$db->execute()) {
                 $msg = $db->getErrorMsg();
                 $msgType = 'error';
             }
@@ -95,27 +96,26 @@ class SLoginController extends SLoginControllerParent
             $msgType = 'message';
         }
         $app = JFactory::getApplication();
-        $app->redirect(JRoute::_('index.php?option=com_slogin&view=settings'), $msg, $msgType);
+	    $app->enqueueMessage($msg, $msgType);
+        $app->redirect('index.php?option=com_slogin&view=settings');
 	}
 
     public function remove_slogin_users(){
-        $input = new JInput();
+        $input = new Joomla\Input\Input();
         JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
         $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
         $ids = $input->get('cid', array(), 'ARRAY');
         $model = $this->getModel('User', 'SloginModel');
         $table = $model->getTable();
         $errors = array();
         if(count($ids) > 0){
             foreach($ids as $id){
-                $dispatcher->trigger('onBeforeSloginDeleteSloginUser',array((int)$id));
+	            Factory::getApplication()->triggerEvent('onBeforeSloginDeleteSloginUser',array((int)$id));
                 if (!$table->delete((int)$id)) {
                     $errors[] = $table->getError();
                 }
                 else{
-                    $dispatcher->trigger('onAfterSloginDeleteSloginUser',array((int)$id));
+	                Factory::getApplication()->triggerEvent('onAfterSloginDeleteSloginUser',array((int)$id));
                 }
             }
         }
@@ -125,13 +125,13 @@ class SLoginController extends SLoginControllerParent
             $msg = implode('<br/>', $errors);
             $msgType = 'error';
         }
-        $app->redirect('index.php?option=com_slogin&view=users', $msg, $msgType);
+	    $app->enqueueMessage($msg, $msgType);
+	    $app->redirect('index.php?option=com_slogin&view=users');
     }
 
     public function remove_joomla_users(){
-        $input = new JInput();
+        $input = new Joomla\Input\Input();
         JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
         $app = JFactory::getApplication();
         $ids = $input->get('cid', array(), 'ARRAY');
         $model = $this->getModel('User', 'SloginModel');
@@ -147,7 +147,7 @@ class SLoginController extends SLoginControllerParent
                 $query->where('id = '.(int)$id);
                 $db->setQuery((string)$query, 0, 1);
                 $userId = $db->loadResult();
-                $dispatcher->trigger('onBeforeSloginDeleteUser',array($userId));
+	            Joomla\CMS\Factory::getApplication()->triggerEvent('onBeforeSloginDeleteUser',array($userId));
 
                 if (!$table->delete((int)$id)) {
                     $errors[] = $table->getError();
@@ -159,7 +159,7 @@ class SLoginController extends SLoginControllerParent
                         $errors[] = $table->getError();
                     }
                     else{
-                        $dispatcher->trigger('onAfterSloginDeleteUser',array($userId));
+	                    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginDeleteUser',array($userId));
                     }
                 }
             }
@@ -170,6 +170,7 @@ class SLoginController extends SLoginControllerParent
             $msg = implode('<br/>', $errors);
             $msgType = 'error';
         }
-        $app->redirect('index.php?option=com_slogin&view=users', $msg, $msgType);
+	    $app->enqueueMessage($msg, $msgType);
+	    $app->redirect('index.php?option=com_slogin&view=users');
     }
 }

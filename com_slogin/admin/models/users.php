@@ -10,7 +10,7 @@ class SloginModelUsers extends JModelList
     {
         // Initialise variables.
         $app = JFactory::getApplication();
-        $input = new JInput();
+        $input = new Joomla\Input\Input();
 
         // Adjust the context to support modal layouts.
         if ($layout = $input->getString('layout', 'default')) {

@@ -8,6 +8,8 @@
  * @license 	GNU/GPL v.3 or later.
  */
 
+use Joomla\CMS\MVC\View\GenericDataException;
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
@@ -54,7 +56,7 @@ class SloginModelComparison_user extends JModelForm
 	{
 		// Check the session for previously entered login form data.
 		$app	= JFactory::getApplication();
-        $input = new JInput;
+        $input = $app->getInput();
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first
@@ -104,20 +106,17 @@ class SloginModelComparison_user extends JModelForm
 		// Import the approriate plugin group.
 		JPluginHelper::importPlugin($group);
 
-		// Get the dispatcher.
-		$dispatcher	= JDispatcher::getInstance();
-
 		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		$results = Joomla\CMS\Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true)) {
 			// Get the last error.
-			$error = $dispatcher->getError();
+			$error = $this->getError();
 
 			// Convert to a JException if necessary.
-			if (!JError::isError($error)) {
-				throw new Exception($error);
+			if ($error) {
+				throw new GenericDataException($error, 500);
 			}
 		}
 	}

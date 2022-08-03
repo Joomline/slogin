@@ -16,7 +16,7 @@ class plgSlogin_authLive extends JPlugin
     public function onSloginAuth()
     {
         $uri = JRoute::_('index.php?option=com_slogin&task=check&plugin=live');
-        $uri = JString::substr($uri, 1);
+        $uri = mb_substr($uri, 1);
         $redirect = JURI::base().$uri;
 
         $scope = urlencode('wl.signin wl.basic wl.emails wl.photos');
@@ -32,7 +32,6 @@ class plgSlogin_authLive extends JPlugin
         $params = implode('&', $params);
 
         $url = 'https://login.live.com/oauth20_authorize.srf?'.$params;
-//echo '<pre>'; var_dump($url); echo '</pre>'; die;
         return $url;
     }
 
@@ -52,7 +51,7 @@ class plgSlogin_authLive extends JPlugin
 
             // get access_token for google API
             $uri = JRoute::_('index.php?option=com_slogin&task=check&plugin=live');
-            $uri = JString::substr($uri, 1);
+            $uri = mb_substr($uri, 1);
             $redirect = urlencode(JURI::base().$uri);
 
 

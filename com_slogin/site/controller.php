@@ -19,23 +19,13 @@ jimport('joomla.user.authentication');
 
 require_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
 
-//костыль для поддержки 2 и  3 джумлы
-if(!class_exists('SLoginControllerParent')){
-    if(class_exists('JControllerLegacy')){
-        class SLoginControllerParent extends JControllerLegacy{}
-    }
-    else{
-        class SLoginControllerParent extends JController{}
-    }
-}
-
 /**
  * SLogin Controller
  *
  * @package        Joomla.Site
  * @subpackage    com_slogin
  */
-class SLoginController extends SLoginControllerParent
+class SLoginController extends JControllerLegacy
 {
     protected
         $config,
@@ -98,11 +88,8 @@ class SLoginController extends SLoginControllerParent
         }
         else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            $dispatcher	= JDispatcher::getInstance();
-
             JPluginHelper::importPlugin('slogin_auth', $plugin);
-
-            $url = $dispatcher->trigger('onSloginAuth');
+            $url = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginAuth');
             $url = $url[0];
         }
         else{
@@ -125,7 +112,6 @@ class SLoginController extends SLoginControllerParent
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
         $input = JFactory::getApplication()->input;
-	    $dispatcher	= JDispatcher::getInstance();
 
         $plugin = $input->getString('plugin', '');
 
@@ -175,7 +161,7 @@ class SLoginController extends SLoginControllerParent
 
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $request = $dispatcher->trigger('onSloginCheck');
+            $request = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginCheck');
             $request = $request[0];
 
             if (isset($request->first_name))
@@ -205,7 +191,7 @@ class SLoginController extends SLoginControllerParent
         {
 	        JPluginHelper::importPlugin('slogin_integration');
 
-	        $dispatcher->trigger('onSloginBeforeStoreOrLogin', array(
+	        Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginBeforeStoreOrLogin', array(
 	            $this->provider,
 		        &$this->first_name,
 		        &$this->last_name,
@@ -329,7 +315,6 @@ class SLoginController extends SLoginControllerParent
         $db = JFactory::getDbo();
 
         JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
         $query = $db->getQuery(true);
         $query->select('id');
         $query->from('#__slogin_users');
@@ -342,16 +327,16 @@ class SLoginController extends SLoginControllerParent
             return false;
         }
 
-        $dispatcher->trigger('onBeforeSloginDeleteSloginUser',array($id));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onBeforeSloginDeleteSloginUser',array($id));
 
         $query = $db->getQuery(true);
         $query->delete();
         $query->from($db->quoteName('#__slogin_users'));
         $query->where($db->quoteName('id') . ' = ' . $db->quote($id));
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
 
-        $dispatcher->trigger('onAfterSloginDeleteSloginUser',array($id));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginDeleteSloginUser',array($id));
         return true;
     }
 
@@ -393,14 +378,14 @@ class SLoginController extends SLoginControllerParent
         $secret = $this->config->get('secret', '');
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $secret);
 
-        JFactory::getLanguage()->load('com_users');
+	    $app->getLanguage()->load('com_users');
 
-        JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
+        JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
         $model	= $this->getModel('Registration', 'UsersModel');
 
 		$username = $this->CheckUniqueName($this->username);
 		// добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
-		JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
+		JForm::addFormPath(JPATH_ROOT. '/components/com_users/forms');
 
 	    // Добвавляем валидацию joomla и тригер onUserBeforeDataValidation
 	    $form = $model->getForm();
@@ -474,8 +459,7 @@ class SLoginController extends SLoginControllerParent
 
         //вставка нового пользователя в таблицы других компонентов
         JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterSloginStoreUser',array(JFactory::getUser($userId), $this->provider, $this->rawRequest));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginStoreUser',array(JFactory::getUser($userId), $this->provider, $this->rawRequest));
 
         return $userId;
     }
@@ -505,8 +489,7 @@ class SLoginController extends SLoginControllerParent
         $app = JFactory::getApplication();
 
         JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
-        $dispatcher->trigger('onBeforeSloginLoginUser',array($user, $provider, $info));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onBeforeSloginLoginUser',array($user, $provider, $info));
 
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $this->config->get('secret',''));
 
@@ -527,7 +510,7 @@ class SLoginController extends SLoginControllerParent
             return false;
         }
 
-        $dispatcher->trigger('onAfterSloginLoginUser',array($user, $provider, $info));
+	    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginLoginUser',array($user, $provider, $info));
 
         return true;
     }
@@ -550,7 +533,8 @@ class SLoginController extends SLoginControllerParent
         }
         else{
             $app = JFactory::getApplication();
-            $app->redirect(JRoute::_($redirect), $msg, $msgType);
+	        $app->enqueueMessage($msg, $msgType);
+            $app->redirect(JRoute::_($redirect), 200);
         }
     }
 
@@ -672,26 +656,26 @@ class SLoginController extends SLoginControllerParent
         // Check for request forgeries.
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-        $input = new JInput;
+        $input = new \Joomla\Input\Input;
 
         $app = JFactory::getApplication();
         $appRedirect = $app->getUserState('com_slogin.return_url');
         $UserState = $app->getUserState('com_slogin.comparison_user.data');
 
         $msg = '';
-        $user_id = $input->Get('user_id', 0, 'INT');
-        $slogin_id = $input->Get('slogin_id', '', 'STRING');
-        $provider = $input->Get('provider', '', 'STRING');
+        $user_id = $input->get('user_id', 0, 'INT');
+        $slogin_id = $input->get('slogin_id', '', 'STRING');
+        $provider = $input->get('provider', '', 'STRING');
 
         // Populate the data array:
         $data = array();
         $return = base64_decode($appRedirect);
-        $data['username'] = $input->Get('username', '', 'username');
-        $data['password'] = $input->Get('password', '', JREQUEST_ALLOWRAW);
+        $data['username'] = $input->get('username', '', 'username');
+        $data['password'] = $input->get('password', '', 'STRING');
 
         // Get the log in options.
         $options = array();
-        $options['remember'] = $input->Get('remember', false);
+        $options['remember'] = $input->get('remember', false);
         $options['return'] = $return;
 
         // Get the log in credentials.
@@ -771,7 +755,7 @@ class SLoginController extends SLoginControllerParent
         // Check for request forgeries.
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         $app = JFactory::getApplication();
-        $input = new JInput;
+        $input = new Joomla\Input\Input;
 
         $data =         $app->getUserState('com_slogin.provider.data');
         $slogin_id =    $data['slogin_id'];
@@ -1019,8 +1003,15 @@ class SLoginController extends SLoginControllerParent
 
     public function detach_provider()
     {
-        $input = new JInput;
-        $provider = $input->Get('plugin', '', 'STRING');
+        $input = new Joomla\Input\Input;
+
+        $provider = $input->get('plugin', '', 'STRING');
+
+		if (!$provider) {
+			$router = Joomla\CMS\Router\Router::getInstance('site');
+			$provider = $router->getVar('plugin');
+		}
+
         //ид текущего пользователя
         $user_id = JFactory::getUser()->id;
 
@@ -1146,14 +1137,14 @@ class SLoginController extends SLoginControllerParent
 		
         $user = JFactory::getUser();
         $doc = JFactory::getDocument();
-        $input = new JInput;
+        $input = new Joomla\Input\Input;
 
         $params = new JRegistry;
         $params->loadString(JModuleHelper::getModule('mod_slogin')->params);
 
         JFactory::getLanguage()->load('mod_slogin');
 
-        $type	= modLoginHelper::getType();
+        $type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
 
         $callbackUrl = '';
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
@@ -1164,9 +1155,8 @@ class SLoginController extends SLoginControllerParent
             modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
         }
         else{
-        JPluginHelper::importPlugin('slogin_auth');
-        $dispatcher	= JDispatcher::getInstance();
-        $dispatcher->trigger('onCreateSloginLink', array(&$plugins, $callbackUrl));
+            JPluginHelper::importPlugin('slogin_auth');
+	        Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
         }
 
         $jll = (!modSLoginHelper::getalw($params))
@@ -1185,7 +1175,7 @@ class SLoginController extends SLoginControllerParent
             $path = Slogin_avatarHelper::getavatar($user->id);
             if(!empty($path['photo_src'])){
                 $avatar = $path['photo_src'];
-                if(JString::strpos($avatar, '/') !== 0)
+                if(mb_strpos($avatar, '/') !== 0)
                     $avatar = '/'.$avatar;
             }
             $profileLink = isset($path['profile']) ? $path['profile'] : '';

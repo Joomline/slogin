@@ -8,6 +8,8 @@
  * @license 	GNU/GPL v.3 or later.
  */
 
+use Joomla\CMS\MVC\View\GenericDataException;
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
@@ -104,20 +106,17 @@ class SloginModelLinking_user extends JModelForm
 		// Import the approriate plugin group.
 		JPluginHelper::importPlugin($group);
 
-		// Get the dispatcher.
-		$dispatcher	= JDispatcher::getInstance();
-
 		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		$results = Joomla\CMS\Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true)) {
 			// Get the last error.
-			$error = $dispatcher->getError();
+			$error = $this->getError();
 
 			// Convert to a JException if necessary.
-			if (!JError::isError($error)) {
-				throw new Exception($error);
+			if ($error) {
+				throw new GenericDataException($error, 500);
 			}
 		}
 	}
@@ -139,7 +138,7 @@ class SloginModelLinking_user extends JModelForm
 
             $db->setQuery($query);
             if ($link = $db->loadResult()) {
-                if ($router->getMode() == JROUTER_MODE_SEF) {
+                if (JFactory::getApplication()->getConfig()->getValue('config.sef', false)) {
                     $url = 'index.php?Itemid='.$itemid;
                 }
                 else {
@@ -158,7 +157,7 @@ class SloginModelLinking_user extends JModelForm
             $uri = clone JFactory::getURI();
             $vars = $router->parse($uri);
             unset($vars['lang']);
-            if ($router->getMode() == JROUTER_MODE_SEF)
+            if (JFactory::getApplication()->getConfig()->getValue('config.sef', false))
             {
                 if (isset($vars['Itemid']))
                 {
