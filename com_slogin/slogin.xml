@@ -25,12 +25,20 @@
     <administration>
 
         <menu img="../media/com_slogin/icon_16x16.png">COM_SLOGIN_MAIN_MENU</menu>
-        <submenu>
-            <menu
+		
+		
+        <submenu>		
+			<menu
                     link="option=com_slogin"
                     view="users"
             >
-                COM_SLOGIN_USERS
+                COM_SLOGIN_MAIN_MENU
+            </menu>
+            <menu
+                    link="option=com_slogin&amp;view=users"
+                    view="users"
+            >
+                COM_SLOGIN_USERES_MENU
             </menu>
         </submenu>
         <languages folder="languages/admin">
