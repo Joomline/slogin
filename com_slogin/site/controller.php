@@ -68,25 +68,7 @@ class SLoginController extends JControllerLegacy
 
         $this->localAuthDebug($redirect);
 
-        if($this->config->get('service_auth', 0))
-        {
-            $service_site_id = $this->config->get('service_site_id', 0);
-            $service_password = $this->config->get('service_password', '');
-
-            if(empty($service_site_id))
-            {
-                echo 'Empty Service Site ID';
-                exit;
-            }
-            if(empty($service_password))
-            {
-                echo 'Empty Service Password';
-                exit;
-            }
-
-            $url = 'http://api.slogin.info/index.php?action=token&site='.$service_site_id.'&pass='.$service_password.'&provider='.$plugin;
-        }
-        else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
             JPluginHelper::importPlugin('slogin_auth', $plugin);
             $url = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginAuth');
@@ -117,48 +99,8 @@ class SLoginController extends JControllerLegacy
 
         $this->localCheckDebug($plugin);
 
-        if($this->config->get('service_auth', 0))
+        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            $token = $input->getString('token', '');
-            $service_site_id = $this->config->get('service_site_id', 0);
-            $service_password = $this->config->get('service_password', '');
-
-            if(empty($service_site_id))
-            {
-                echo 'Empty Service Site ID';
-                exit;
-            }
-            if(empty($service_password))
-            {
-                echo 'Empty Service Password';
-                exit;
-            }
-            if(empty($token))
-            {
-                echo 'Empty Service token';
-                exit;
-            }
-
-            $url = 'http://api.slogin.info/index.php?action=get_user_data&site='.$service_site_id.'&pass='.$service_password.'&token='.$token;
-            $request = json_decode($this->open_http($url));
-
-            if(empty($request) || empty($request->provider_id)){
-               echo 'Empty user data';
-               exit;
-            }
-
-            $this->first_name   = !empty($request->f_name) ? $request->f_name : '';
-            $this->last_name    = !empty($request->l_name) ? $request->l_name : '';
-            $this->email        = !empty($request->email) ? $request->email : '';
-            $this->slogin_id    = !empty($request->provider_id) ? $request->provider_id : '';
-            $this->provider     = !empty($request->provider) ? $request->provider : '';
-            $this->rawRequest   = $request;
-            $ok = true;
-        }
-        else if(JPluginHelper::isEnabled('slogin_auth', $plugin))
-        {
-
-
             JPluginHelper::importPlugin('slogin_auth', $plugin);
 
             $request = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginCheck');
@@ -1151,13 +1093,8 @@ class SLoginController extends JControllerLegacy
 
         $plugins = array();
 
-        if($this->config->get('service_auth', 0)){
-            modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
-        }
-        else{
-            JPluginHelper::importPlugin('slogin_auth');
-	        Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
-        }
+		JPluginHelper::importPlugin('slogin_auth');
+		Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
         $jll = (!modSLoginHelper::getalw($params))
             ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'

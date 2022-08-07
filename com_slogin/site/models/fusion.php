@@ -67,15 +67,8 @@ class SloginModelFusion extends JModelForm
         $action = (JFactory::getUser()->id == 0) ? '' : '&action=fusion';
         $plugins = array();
 
-		if($config->get('service_auth', 0))
-		{
-			$plugins = SloginProvidersHelper::loadProviderLinks($action);
-		}
-		else
-		{
-			JPluginHelper::importPlugin('slogin_auth');
-			Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $action));
-		}
+		JPluginHelper::importPlugin('slogin_auth');
+		Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $action));
 
         return $plugins;
 	}

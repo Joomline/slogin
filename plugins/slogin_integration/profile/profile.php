@@ -30,21 +30,12 @@ class plgSlogin_integrationProfile extends JPlugin
     public function onAfterSloginLoginUser($user, $provider, $info)
     {
         $conf = JComponentHelper::getParams('com_slogin');
-        $serviceAuth = $conf->get('service_auth', 0);
 
-        if(!$serviceAuth && !method_exists($this, $provider."GetData")) return;
+        if(!method_exists($this, $provider."GetData")) return;
 
         if($this->issetProfile($user, $provider))
         {
-            if($serviceAuth)
-            {
-                $data = $this->sloginServiceGetData($user, $provider, $info);
-            }
-            else
-            {
-                $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
-            }
-
+			$data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
             $this->updateAvatar($user, $provider, $data->picture, $info);
             $this->updateCurrentProfile($user, $provider);
         }
@@ -464,20 +455,12 @@ class plgSlogin_integrationProfile extends JPlugin
 
 
         $conf = JComponentHelper::getParams('com_slogin');
-        $serviceAuth = $conf->get('service_auth', 0);
 
-        if (!$serviceAuth && !$provider) return;
+        if (!$provider) return;
 
-        if(!$serviceAuth && !method_exists($this, $provider."GetData")) return;
+        if(!method_exists($this, $provider."GetData")) return;
 
-        if($serviceAuth)
-        {
-            $data = $this->sloginServiceGetData($user, $provider, $info);
-        }
-        else
-        {
-            $data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
-        }
+		$data = call_user_func_array(array($this, $provider."GetData"), array($user, $provider, $info));
 
         if (isset($data->picture)){
             $origimage = $data->picture;

@@ -74,12 +74,7 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 
     $plugins = array();
     $config = JComponentHelper::getParams('com_slogin');
-    if($config->get('service_auth', 0)){
-        modSLoginHelper::loadLinks($plugins, $callbackUrl, $params);
-    }
-    else{
-	    Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
-    }
+	Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
     $profileLink = $avatar = '';
     if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
