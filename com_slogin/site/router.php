@@ -1,29 +1,14 @@
 <?php
 
-// task=check&plugin=google -> /provider/google/check
-// task=auth&plugin=google -> /provider/google/auth
-// task=detach_provider&plugin=google -> /provider/google/detach
-// task=auth&plugin=google&return=12345 -> /auth/google/12345
-
-// task=join_email -> /mail/join
-// task=check_mail -> /mail/check
-// view=mail -> /mail/view
-
-// task=user.login -> /user/login
-// &view=comparison_user -> /user/comparisson
-// view=linking_user -> /user/link
-
-// view=fusion -> /fussion
-
-// task=sredirect -> /redirect
+defined('_JEXEC') or die;
 
 function SLoginBuildRoute(& $query)
 {
-    // Declare static variables.
-    static $items;
-    static $itemId;
+	// Declare static variables.
+	static $items;
+	static $itemId;
 
-    $segments = array();
+	$segments = array();
 
 	if (isset($query['task'])) {
 		switch($query['task']) {
@@ -31,11 +16,11 @@ function SLoginBuildRoute(& $query)
 				$segments[] = 'redirect';
 				break;
 
-            case 'check':
-                $segments[] = 'callback';
-                $segments[] = $query['plugin'];
-                unset($query['plugin']);
-                break;
+			case 'check':
+				$segments[] = 'callback';
+				$segments[] = $query['plugin'];
+				unset($query['plugin']);
+				break;
 
 			case 'check_mail':
 				$segments[] = 'mail';
@@ -50,17 +35,6 @@ function SLoginBuildRoute(& $query)
 			case 'user.login':
 				$segments[] = 'user';
 				$segments[] = 'login';
-				break;
-
-			case 'check':
-				$segments[] = 'provider';
-
-				if (isset($query['plugin'])) {
-					$segments[] = $query['plugin'];
-					unset($query['plugin']);
-				}
-
-				$segments[] = 'check';
 				break;
 
 			case 'auth':
@@ -102,21 +76,21 @@ function SLoginBuildRoute(& $query)
 
 	if (isset($query['view'])) {
 
-        if (empty($items)) {
-            // Get all relevant menu items.
-            $app	= JFactory::getApplication();
-            $menu	= $app->getMenu();
-            $items	= $menu->getItems('component', 'com_slogin');
+		if (empty($items)) {
+			// Get all relevant menu items.
+			$app	= JFactory::getApplication();
+			$menu	= $app->getMenu();
+			$items	= $menu->getItems('component', 'com_slogin');
 
-            // Build an array of serialized query strings to menu item id mappings.
-            for ($i = 0, $n = count($items); $i < $n; $i++) {
-                // Check to see if we have found the reset menu item.
-                if (!empty($items[$i]->query['view']) && ($items[$i]->query['view'] == $query['view'])) {
-                    $itemId = $items[$i]->id;
-                    break;
-                }
-            }
-        }
+			// Build an array of serialized query strings to menu item id mappings.
+			for ($i = 0, $n = count($items); $i < $n; $i++) {
+				// Check to see if we have found the reset menu item.
+				if (!empty($items[$i]->query['view']) && ($items[$i]->query['view'] == $query['view'])) {
+					$itemId = $items[$i]->id;
+					break;
+				}
+			}
+		}
 		switch($query['view']) {
 			case 'comparison_user':
 				$segments[] = 'user';
@@ -129,14 +103,14 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'fusion':
-                if($itemId){
-                    unset ($query['view']);
-                    $query['Itemid'] = $itemId;
-                }
-                else{
-                    $segments[] = 'user';
-                    $segments[] = 'fusion';
-                }
+				if($itemId){
+					unset ($query['view']);
+					$query['Itemid'] = $itemId;
+				}
+				else{
+					$segments[] = 'user';
+					$segments[] = 'fusion';
+				}
 				break;
 
 			case 'mail':
@@ -151,7 +125,7 @@ function SLoginBuildRoute(& $query)
 	return $segments;
 }
 
-function SLoginParseRoute($segments)
+function SLoginParseRoute(&$segments)
 {
 	$vars = array();
 
@@ -159,29 +133,40 @@ function SLoginParseRoute($segments)
 		switch($segments[0]) {
 			case 'redirect':
 				$vars['task'] = 'sredirect';
+				unset($segments[0]);
 				break;
 
 			case 'callback':
-                $vars['task'] = 'check';
-                $vars['plugin'] = $segments[1];
+				$vars['task'] = 'check';
+				$vars['plugin'] = $segments[1];
+				unset($segments[0]);
+				unset($segments[1]);
 				break;
 
 			case 'user':
 				switch($segments[1]) {
 					case 'login':
 						$vars['task'] = 'user.login';
+						unset($segments[0]);
+						unset($segments[1]);
 						break;
-				
+
 					case 'link':
 						$vars['view'] = 'linking_user';
+						unset($segments[0]);
+						unset($segments[1]);
 						break;
 
 					case 'comparison':
 						$vars['view'] = 'comparison_user';
+						unset($segments[0]);
+						unset($segments[1]);
 						break;
 
 					case 'fusion':
 						$vars['view'] = 'fusion';
+						unset($segments[0]);
+						unset($segments[1]);
 						break;
 				}
 
@@ -191,41 +176,57 @@ function SLoginParseRoute($segments)
 				switch($segments[1]) {
 					case 'check':
 						$vars['task'] = 'check_mail';
-						break;
-				
-					case 'join':
-						$vars['task'] = 'join_mail';
+						unset($segments[0]);
+						unset($segments[1]);
 						break;
 
-                    case 'view':
-                    default:
+					case 'join':
+						$vars['task'] = 'join_mail';
+						unset($segments[0]);
+						unset($segments[1]);
+						break;
+
+					case 'view':
+					default:
+						unset($segments[0]);
 						$vars['view'] = 'mail';
 						break;
 				}
 				break;
-			
+
 			case 'provider':
 				if (isset($segments[2])) {
 					$vars['plugin'] = $segments[1];
 
 					switch($segments[2]) {
 						case 'detach':
+							unset($segments[0]);
+							unset($segments[1]);
+							unset($segments[2]);
 							$vars['task'] = 'detach_provider';
 							break;
-					
+
 						default:
 							$vars['task'] = $segments[2];
+							unset($segments[0]);
+							unset($segments[1]);
+							unset($segments[2]);
 							break;
 					}
 
 					if (isset($segments[3])) {
 						$vars['return'] = $segments[3];
+						unset($segments[0]);
+						unset($segments[1]);
+						unset($segments[2]);
+						unset($segments[3]);
 					}
 				}
 				break;
-            default:
-                $vars['task'] = $segments[0];
-                break;
+			default:
+				$vars['task'] = $segments[0];
+				unset($segments[0]);
+				break;
 		}
 	}
 
