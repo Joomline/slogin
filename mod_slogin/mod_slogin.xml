@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" method="upgrade" client="site">
+<extension type="module" version="3.8" method="upgrade" client="site">
 	<name>mod_slogin</name>
 	<author>SmokerMan, Arkadiy, Joomline</author>
-	<creationDate>14.10.2021</creationDate>
-	<copyright>© 2012-2021 All rights reserved.</copyright>
+	<creationDate>09.08.2022</creationDate>
+	<copyright>© 2012-2022 All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail>sale@joomline.ru</authorEmail>
 	<authorUrl>https://joomline.ru</authorUrl>
-	<version>2.7.0</version>
+	<version>3.0.0</version>
 	<description>MOD_SLOGIN_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_slogin">mod_slogin.php</filename>
