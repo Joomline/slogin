@@ -481,10 +481,17 @@ class plgSlogin_integrationProfile extends JPlugin
 
         $data->current_profile = 1;
 
+		if (empty($data->email) && !empty($user->email)) {
+			$data->email = $user->email;
+		}
+
         $table = new PlgSloginProfilesTable($db);
         $table->load();
         $table->bind($data);
-        $table->store();
+        if (!$table->store()) {
+			$app = JFactory::getApplication();
+	        $app->enqueueMessage($table->getError(), $app::MSG_ERROR);
+        }
 
         if($this->params->get('enable_userfields_integration', 0)){
         	$this->createUserFields($user->id, $data);
