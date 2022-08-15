@@ -83,7 +83,7 @@ class SloginModelFusion extends JModelForm
 	{
 		// Check the session for previously entered login form data.
 		$app	= JFactory::getApplication();
-        $input = $app->getInput();
+		$input =  new Joomla\Input\Input();
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first

@@ -12,7 +12,13 @@
 defined('_JEXEC') or die('(@)|(@)');
 
 //подключаем helper стандартного модуля авторизации, для ридеректа
-require_once JPATH_BASE.'/modules/mod_login/src/Helper/LoginHelper.php';
+$LoginHelperEnabled = false;
+if (is_file(JPATH_BASE.'/modules/mod_login/src/Helper/LoginHelper.php')) {
+	require_once JPATH_BASE.'/modules/mod_login/src/Helper/LoginHelper.php';
+	$LoginHelperEnabled = true;
+} else if(is_file(JPATH_BASE.'/modules/mod_login/helper.php')) {
+	require_once JPATH_BASE.'/modules/mod_login/helper.php';
+}
 require_once dirname(__FILE__).'/helper.php';
 
 $doc = JFactory::getDocument();
@@ -27,9 +33,13 @@ if ($params->get('load_js') != '1') { $doc->addScript(JURI::root().'media/com_sl
 
 if ($params->get('load_css') != '1') { $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=4'); }
 
-$type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
-
-$return	= Joomla\Module\Login\Site\Helper\LoginHelper::getReturnURL($params, $type);
+if ($LoginHelperEnabled) {
+	$type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
+	$return	= Joomla\Module\Login\Site\Helper\LoginHelper::getReturnURL($params, $type);
+} else {
+	$type	= modLoginHelper::getType();
+	$return	= modLoginHelper::getReturnURL($params, $type);
+}
 
 
 $input = JFactory::getApplication()->input;
