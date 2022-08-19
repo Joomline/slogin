@@ -11,7 +11,11 @@
 // No direct access to this file
 defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
-JHTML::_('behavior.formvalidation');
+if (version_compare(JVERSION, '4.0.0', '>=')) {
+	JHTML::_('behavior.formvalidator');
+} else {
+	JHTML::_('behavior.formvalidation');
+}
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=3');
 if($this->user->id == 0){

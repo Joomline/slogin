@@ -189,6 +189,7 @@ function SLoginParseRoute(&$segments)
 					case 'view':
 					default:
 						unset($segments[0]);
+						unset($segments[1]);
 						$vars['view'] = 'mail';
 						break;
 				}

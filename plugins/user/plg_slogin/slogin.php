@@ -32,15 +32,14 @@ class plgUserSlogin extends JPlugin
 		}
 		
 		JPluginHelper::importPlugin('slogin_integration');
-        $dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterSloginDeleteUser',array((int)$user['id']));
+		Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginDeleteUser',array((int)$user['id']));
 		
 		$db = JFactory::getDbo();
 		$db->setQuery(
 			'DELETE FROM '.$db->quoteName('#__slogin_users') .
 			' WHERE '.$db->quoteName('user_id').' = '.(int) $user['id']
 		);
-		$db->Query();
+		$db->execute();
 		return true;
 	}
 }

@@ -321,8 +321,12 @@ class SLoginController extends JControllerLegacy
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $secret);
 
 	    $app->getLanguage()->load('com_users');
+	    if (version_compare(JVERSION, '4.0.0', '>=')) {
+		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
+	    } else {
+		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
+	    }
 
-        JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
         $model	= $this->getModel('Registration', 'UsersModel');
 
 		$username = $this->CheckUniqueName($this->username);
