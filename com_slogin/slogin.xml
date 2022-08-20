@@ -2,12 +2,12 @@
 <extension type="component" version="3.8" method="upgrade">
     <name>com_slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
-    <creationDate>09.08.2022</creationDate>
+    <creationDate>20.08.2022</creationDate>
     <copyright>© 2012-2022 All rights reserved.</copyright>
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>sale@joomline.ru</authorEmail>
     <authoreUrl>https://joomline.ru</authoreUrl>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 
     <install> <!-- Runs on install -->
