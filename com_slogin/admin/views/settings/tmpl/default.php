@@ -58,7 +58,33 @@ $class = ( version_compare( JVERSION, '3.0', '<' ) == 1) ? 'width-50 fltlft' : '
             </div>
         </div>
         <div>
-
+            <div class="<?php echo $class; ?>">
+                <h2><?php echo JText::_('COM_SLOGIN_AUTH_PLUGINS'); ?></h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><?php echo JText::_('COM_SLOGIN_PLUGIN_NAME'); ?></th>
+                        <th><?php echo JText::_('COM_SLOGIN_PLUGIN_PUBLISHED'); ?></th>
+                        <th><?php echo JText::_('COM_SLOGIN_PLUGIN_SET'); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+			        <?php $i = 1; foreach($this->authPlugins as $plugin) : ?>
+                        <tr>
+                            <td><?php echo $i ?></td>
+                            <td>
+                                <a target="_blank" href="<?php echo JRoute::_('index.php?option=com_plugins&view=plugin&layout=edit&extension_id='.$plugin->extension_id); ?>">
+							        <?php echo $plugin->name ?>
+                                </a>
+                            </td>
+                            <td><?php echo $plugin->enabled ? JText::_('JYES') : JText::_('JNO'); ?></td>
+                            <td><?php echo $plugin->set ? JText::_('JYES') : JText::_('JNO'); ?></td>
+                        </tr>
+				        <?php $i++; endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="<?php echo $class; ?>">
                 <h2><?php echo JText::_('COM_SLOGIN_INTEGRATION_PLUGINS'); ?></h2>
                 <table class="table">
