@@ -52,7 +52,7 @@ class SLoginController extends JControllerLegacy
      */
     public function auth()
     {
-        $this->cache->clean();
+        $this->cache->clean('com_slogin');
         $this->cache->remove($this->cache->makeId(), 'page');
 
         $app	= JFactory::getApplication();
@@ -90,7 +90,7 @@ class SLoginController extends JControllerLegacy
      */
     public function check()
     {
-        $this->cache->clean();
+        $this->cache->clean('com_slogin');
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
         $input = JFactory::getApplication()->input;
@@ -323,15 +323,17 @@ class SLoginController extends JControllerLegacy
 	    $app->getLanguage()->load('com_users');
 	    if (version_compare(JVERSION, '4.0.0', '>=')) {
 		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
+		    // добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
+		    JForm::addFormPath(JPATH_ROOT. '/components/com_users/forms');
 	    } else {
 		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
+		    // добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
+		    JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
 	    }
 
         $model	= $this->getModel('Registration', 'UsersModel');
 
 		$username = $this->CheckUniqueName($this->username);
-		// добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
-		JForm::addFormPath(JPATH_ROOT. '/components/com_users/forms');
 
 	    // Добвавляем валидацию joomla и тригер onUserBeforeDataValidation
 	    $form = $model->getForm();
