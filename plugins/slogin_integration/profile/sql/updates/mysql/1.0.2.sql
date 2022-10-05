@@ -1,1 +1,0 @@
-ALTER TABLE `#__plg_slogin_profile` ADD COLUMN `birthday` date;

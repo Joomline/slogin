@@ -7,7 +7,7 @@
     <author>Arkadiy Sedelnikov, Joomline</author>
     <authorUrl>https://joomline.ru</authorUrl>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
     <!-- Runs on install/uninstall/update; New in 1.6 -->
     <scriptfile>script.php</scriptfile>
