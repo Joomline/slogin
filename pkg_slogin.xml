@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5" method="upgrade">
-    <name>Pkg Slogin</name>
+    <name>pkg_slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
 	<packagename>slogin</packagename>
-    <creationDate>20.08.2022</creationDate>
+    <creationDate>04.10.2022</creationDate>
     <copyright>© 2012 - 2022. All rights reserved.</copyright>
     <license>GNU/GPL v.3 or later.</license>
 	<packager>JoomLine</packager>
 	<packagerurl>https://joomline.ru</packagerurl>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
     <description>PLG_SLOGIN_DESC_ALL</description>
 	<scriptfile>script.php</scriptfile>
 	<files>
@@ -37,4 +37,5 @@
 		<file type="plugin" method="upgrade" id="telegram" group="slogin_auth" client="site">plg_SL_telegram.zip</file>
 		<file type="plugin" method="upgrade" id="slogin" group="authentication" client="site">plg_authentication_slogin.zip</file>
 	</files>
+	<updateservers><server type="extension" priority="1" name="Slogin">https://joomline.net/update.html?extension_id=1.xml</server></updateservers>
 </extension>

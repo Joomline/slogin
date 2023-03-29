@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `#__plg_slogin_profile` (
   `lng` varchar(50) NOT NULL,
   `avatar` varchar(100) NOT NULL,
   `current_profile` int(1) NOT NULL DEFAULT '1',
+  `birthday` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_prov` (`user_id`,`provider`),
   KEY `user_curr` (`user_id`,`current_profile`),

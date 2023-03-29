@@ -1,7 +1,7 @@
 <project name="slogin" default="dist" basedir=".">
 	<property name="build" value="build" />
 	<property name="dist" value="dist" />
-	<property name="filename" value="pkg_slogin_v3.0.1_j3_j4.zip" />
+	<property name="filename" value="pkg_slogin_v3.0.2_j3_j4.zip" />
 
 
 	<target name="init" depends="clean">
