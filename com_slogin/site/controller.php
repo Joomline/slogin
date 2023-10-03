@@ -82,6 +82,7 @@ class SLoginController extends JControllerLegacy
         header("Cache-Control: no-store, no-cache, must-revalidate");
         header("Expires: " . date("r"));
         header('Location:' . $url);
+        exit;
     }
 
     /**
