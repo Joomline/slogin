@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.8" method="upgrade">
+<extension type="component" version="5.0" method="upgrade">
     <name>com_slogin</name>
     <author>SmokerMan, Arkadiy, Joomline</author>
     <creationDate>04.10.2022</creationDate>
@@ -7,7 +7,8 @@
     <license>GNU/GPL v.3 or later.</license>
     <authorEmail>sale@joomline.ru</authorEmail>
     <authoreUrl>https://joomline.ru</authoreUrl>
-    <version>3.0.2</version>
+    <version>5.0.0</version>
+    <namespace path="src">Joomline\Component\Slogin</namespace>
     <description>COM_SLOGIN_XML_DESCRIPTION</description>
 
     <install> <!-- Runs on install -->

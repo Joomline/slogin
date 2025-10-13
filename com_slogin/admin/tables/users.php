@@ -1,14 +1,14 @@
 <?php
 // No direct access
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla table library
-jimport('joomla.database.table');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
  
 /**
- * Hello Table class
+ * SLogin Users Table class
  */
-class SLoginTableUsers extends JTable
+class SLoginTableUsers extends Table
 {
 	/**
 	 * Constructor
@@ -21,24 +21,17 @@ class SLoginTableUsers extends JTable
 	}
 
     function deleteUserRows($userId){
-//	    $db = JFactory::getContainer()->get('DatabaseDriver');
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->delete('#__slogin_users');
         $query->where('user_id = '.(int)$userId);
         $db->setQuery((string)$query);
-        $db->execute();
-		if (version_compare(JVERSION, '4.0.0', '>=')) {
-			if ($db->get('errorNum')) {
-				$this->setError($db->get('ErrorMsg'));
-				return false;
-			}
-	    } else {
-			if ($db->getErrorNum()) {
-				$this->setError($db->getErrorMsg());
-				return false;
-			}
-		}
+        try {
+            $db->execute();
+        } catch (\Exception $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
 	    return true;
     }
 }

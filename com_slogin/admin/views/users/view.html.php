@@ -61,7 +61,7 @@ class SloginViewUsers extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setDocument() 
+	public function setDocument() 
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_SLOGIN'));

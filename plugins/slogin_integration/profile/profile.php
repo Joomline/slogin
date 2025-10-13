@@ -2,7 +2,7 @@
 /**
  * SLogin Integration Plugin Profile
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,16 +11,19 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.image.image');
-jimport('joomla.date.date');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Image\Image;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/profiles.php';
 require_once JPATH_ROOT.'/plugins/slogin_integration/profile/lib/geo.php';
 require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
-class plgSlogin_integrationProfile extends JPlugin
+class plgSlogin_integrationProfile extends CMSPlugin
 {
     public function onAfterSloginStoreUser($user, $provider, $info)
     {
@@ -29,7 +32,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onAfterSloginLoginUser($user, $provider, $info)
     {
-        $conf = JComponentHelper::getParams('com_slogin');
+        $conf = ComponentHelper::getParams('com_slogin');
 
         if(!method_exists($this, $provider."GetData")) return;
 
@@ -46,7 +49,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onBeforeSloginDeleteSloginUser($id)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__slogin_users');
@@ -58,7 +61,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     public function onBeforeSloginDeleteUser($userId)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__slogin_users');
@@ -74,7 +77,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     private function deleteProfile($row)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('avatar');
         $query->from($db->quoteName('#__plg_slogin_profile'));
@@ -87,7 +90,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $file = JPATH_ROOT . '/' . $rootfolder . '/' . $avatar;
         if (is_file($file))
         {
-            JFile::delete($file);
+            File::delete($file);
         }
         $query->clear();
         $query->delete();
@@ -171,7 +174,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $data->l_name = $info->family_name ;
         $data->email = $info->email;
 		if(!empty($info->birthday)){
-			$date = new JDate($info->birthday);
+			$date = new Date($info->birthday);
 			$data->birthday = $date->toSql();
 		}
 		if (!isset($info->gender))
@@ -297,7 +300,7 @@ class plgSlogin_integrationProfile extends JPlugin
         else
             $data->gender = 0;
 		if(!empty($info->birthday)){
-			$date = new JDate($info->birthday);
+			$date = new Date($info->birthday);
 			$data->birthday = $date->toSql();
 		}
         $data->f_name = $info->first_name;
@@ -361,7 +364,7 @@ class plgSlogin_integrationProfile extends JPlugin
         else
             $data->gender = 0;
 		if(!empty($info->birthday)){
-			$date = new JDate($info->birthday);
+			$date = new Date($info->birthday);
 			$data->birthday = $date->toSql();
 		}
         $data->f_name = $info->first_name;
@@ -384,7 +387,7 @@ class plgSlogin_integrationProfile extends JPlugin
         elseif($info->sex == 1)
             $data->gender = 2;
 		if(!empty($info->birthday)){
-			$date = new JDate($info->birthday);
+			$date = new Date($info->birthday);
 			$data->birthday = $date->toSql();
 		}
         $data->f_name = $info->first_name;
@@ -471,7 +474,7 @@ class plgSlogin_integrationProfile extends JPlugin
             }
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $q = $db->getQuery(true);
         $q->update('#__plg_slogin_profile');
         $q->set('`current_profile` = 0');
@@ -489,7 +492,7 @@ class plgSlogin_integrationProfile extends JPlugin
         $table->load();
         $table->bind($data);
         if (!$table->store()) {
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 	        $app->enqueueMessage($table->getError(), $app::MSG_ERROR);
         }
 
@@ -557,7 +560,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     private function updateCurrentProfile($user, $provider)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $q = $db->getQuery(true);
         $q->update('#__plg_slogin_profile');
         $q->set('`current_profile` = 0');
@@ -577,7 +580,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     private function issetProfile($user, $provider)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $q = $db->getQuery(true);
         $q->select('COUNT(*)');
         $q->from('#__plg_slogin_profile');
@@ -623,7 +626,7 @@ class plgSlogin_integrationProfile extends JPlugin
 
     private function updateAvatarDB($user, $provider, $file_output)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $q = $db->getQuery(true);
         $q->update('#__plg_slogin_profile');
         $q->set('`avatar` = '.$db->quote($file_output));
@@ -657,8 +660,8 @@ class plgSlogin_integrationProfile extends JPlugin
         $height = $this->params->get('imgparam', 150);
 
         //если папка для складирования аватаров не существует создаем ее
-        if (!JFolder::exists(JPATH_ROOT . '/' . $rootfolder)) {
-            JFolder::create(JPATH_ROOT . '/' . $rootfolder);
+        if (!Folder::exists(JPATH_ROOT . '/' . $rootfolder)) {
+            Folder::create(JPATH_ROOT . '/' . $rootfolder);
             file_put_contents(JPATH_ROOT . '/' . $rootfolder . '/index.html', '');
         }
 
@@ -683,14 +686,14 @@ class plgSlogin_integrationProfile extends JPlugin
                     $width = $imageWidth;
                     $height = $imageHeight;
                 }
-                $image = new JImage($tmp_name);
-                $image->resize($width, $height, false, JImage::SCALE_INSIDE);
+                $image = new Image($tmp_name);
+                $image->resize($width, $height, false, Image::SCALE_INSIDE);
                 $image->toFile($output_name, IMAGETYPE_JPEG, array('quality'=>$img_quality));
             }
             unlink($tmp_name);
         }
 
-        $ret = (JFile::exists($output_name)) ? true : false;
+        $ret = (File::exists($output_name)) ? true : false;
         return $ret;
     }
 

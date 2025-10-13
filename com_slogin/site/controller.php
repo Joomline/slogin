@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,11 +11,19 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 
-// import Joomla controller library
-jimport('joomla.application.component.controller');
-
-jimport('joomla.environment.http');
-jimport('joomla.user.authentication');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Registry\Registry;
+use Joomla\Input\Input;
 
 require_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
 
@@ -25,7 +33,7 @@ require_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
  * @package        Joomla.Site
  * @subpackage    com_slogin
  */
-class SLoginController extends JControllerLegacy
+class SLoginController extends BaseController
 {
     protected
         $config,
@@ -43,8 +51,8 @@ class SLoginController extends JControllerLegacy
     public function __construct()
     {
         parent::__construct(array());
-        $this->cache = JFactory::getCache();
-        $this->config = JComponentHelper::getParams('com_slogin');
+        $this->cache = Factory::getCache();
+        $this->config = ComponentHelper::getParams('com_slogin');
     }
 
     /**
@@ -55,23 +63,23 @@ class SLoginController extends JControllerLegacy
         $this->cache->clean('com_slogin');
         $this->cache->remove($this->cache->makeId(), 'page');
 
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
         $input = $app->input;
         
-        JFactory::getSession()->set( 'socialConnectData', 'slogin' );
+        Factory::getSession()->set( 'socialConnectData', 'slogin' );
 
         $plugin = $input->getString('plugin', '');
 
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
 
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin='.$plugin;
+        $redirect = Uri::base().'?option=com_slogin&task=check&plugin='.$plugin;
 
         $this->localAuthDebug($redirect);
 
-        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        if(PluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            JPluginHelper::importPlugin('slogin_auth', $plugin);
-            $url = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginAuth');
+            PluginHelper::importPlugin('slogin_auth', $plugin);
+            $url = Factory::getApplication()->triggerEvent('onSloginAuth');
             $url = $url[0];
         }
         else{
@@ -93,17 +101,17 @@ class SLoginController extends JControllerLegacy
         $this->cache->clean('com_slogin');
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $plugin = $input->getString('plugin', '');
 
         $this->localCheckDebug($plugin);
 
-        if(JPluginHelper::isEnabled('slogin_auth', $plugin))
+        if(PluginHelper::isEnabled('slogin_auth', $plugin))
         {
-            JPluginHelper::importPlugin('slogin_auth', $plugin);
+            PluginHelper::importPlugin('slogin_auth', $plugin);
 
-            $request = Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginCheck');
+            $request = Factory::getApplication()->triggerEvent('onSloginCheck');
             $request = $request[0];
 
             if (isset($request->first_name))
@@ -124,16 +132,16 @@ class SLoginController extends JControllerLegacy
             exit;
         }
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $popup = $app->getUserState('com_slogin.popup', 'yes');
         $app->setUserState('com_slogin.popup', 'yes');
         $popup = ($popup == 'none') ? false : true;
 
         if ($ok == true)
         {
-	        JPluginHelper::importPlugin('slogin_integration');
+	        PluginHelper::importPlugin('slogin_integration');
 
-	        Joomla\CMS\Factory::getApplication()->triggerEvent('onSloginBeforeStoreOrLogin', array(
+	        Factory::getApplication()->triggerEvent('onSloginBeforeStoreOrLogin', array(
 	            $this->provider,
 		        &$this->first_name,
 		        &$this->last_name,
@@ -232,7 +240,7 @@ class SLoginController extends JControllerLegacy
 
     private function CheckUniqueName($username)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $uname = $username;
         $i = 0;
@@ -254,7 +262,7 @@ class SLoginController extends JControllerLegacy
     }
 
     private function deleteSloginUser($slogin_id, $provider){
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         JPluginHelper::importPlugin('slogin_integration');
         $query = $db->getQuery(true);
@@ -293,7 +301,7 @@ class SLoginController extends JControllerLegacy
      */
     protected function storeUser()
     {
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 
         //отсылаем на подверждение владения мылом если разрешено и найдено
         $userId = $this->CheckEmail($this->email);
@@ -312,7 +320,7 @@ class SLoginController extends JControllerLegacy
             );
         }
 
-        if(JComponentHelper::getParams('com_users')->get('useractivation') > 0)
+        if(ComponentHelper::getParams('com_users')->get('useractivation') > 0)
         {
             $this->setUserActivation();
         }
@@ -321,17 +329,11 @@ class SLoginController extends JControllerLegacy
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $secret);
 
 	    $app->getLanguage()->load('com_users');
-	    if (version_compare(JVERSION, '4.0.0', '>=')) {
-		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
-		    // добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
-		    JForm::addFormPath(JPATH_ROOT. '/components/com_users/forms');
-	    } else {
-		    JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_users/models');
-		    // добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
-		    JForm::addFormPath(JPATH_ROOT. '/components/com_users/models/forms');
-	    }
+	    BaseDatabaseModel::addIncludePath(JPATH_SITE.'/components/com_users/src/Model');
+	    // добавляем в список путей JForm пути форм com_users, т.к. при вызове модели не из родной компоненты форма не будет найдена
+	    \Joomla\CMS\Form\Form::addFormPath(JPATH_ROOT. '/components/com_users/forms');
 
-        $model	= $this->getModel('Registration', 'UsersModel');
+        $model	= BaseDatabaseModel::getInstance('Registration', 'UsersModel');
 
 		$username = $this->CheckUniqueName($this->username);
 
@@ -388,7 +390,7 @@ class SLoginController extends JControllerLegacy
 
         if ($userId == 0)
         {
-            $db = JFactory::getDbo();
+            $db = Factory::getDbo();
             $query = $db->getQuery(true);
             $query->select('`id`')
                 ->from('`#__users`')
@@ -406,19 +408,19 @@ class SLoginController extends JControllerLegacy
         $this->storeSloginUser($userId, $this->slogin_id, $this->provider);
 
         //вставка нового пользователя в таблицы других компонентов
-        JPluginHelper::importPlugin('slogin_integration');
-	    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginStoreUser',array(JFactory::getUser($userId), $this->provider, $this->rawRequest));
+        PluginHelper::importPlugin('slogin_integration');
+	    Factory::getApplication()->triggerEvent('onAfterSloginStoreUser',array(Factory::getUser($userId), $this->provider, $this->rawRequest));
 
         return $userId;
     }
 
     protected function setUserActivation($value=0)
     {
-        $params = JComponentHelper::getParams('com_users');
+        $params = ComponentHelper::getParams('com_users');
         // устанавливаем требуемое значение
         $params->set('useractivation', $value);
         // записываем измененные параметры в БД
-//        $db = JFactory::getDbo();
+//        $db = Factory::getDbo();
 //        $query = $db->getQuery(true);
 //        $query->update($db->quoteName('#__extensions'));
 //        $query->set($db->quoteName('params') . '= ' . $db->quote((string)$params));
@@ -433,11 +435,11 @@ class SLoginController extends JControllerLegacy
      */
     protected function loginUser($id, $provider, $info=array())
     {
-        $user = JUser::getInstance($id);
-        $app = JFactory::getApplication();
+        $user = User::getInstance($id);
+        $app = Factory::getApplication();
 
-        JPluginHelper::importPlugin('slogin_integration');
-	    Joomla\CMS\Factory::getApplication()->triggerEvent('onBeforeSloginLoginUser',array($user, $provider, $info));
+        PluginHelper::importPlugin('slogin_integration');
+	    Factory::getApplication()->triggerEvent('onBeforeSloginLoginUser',array($user, $provider, $info));
 
         $password = SloginPasswordHelper::generatePassword($this->slogin_id, $this->provider, $this->config->get('secret',''));
 
@@ -458,7 +460,7 @@ class SLoginController extends JControllerLegacy
             return false;
         }
 
-	    Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginLoginUser',array($user, $provider, $info));
+	    Factory::getApplication()->triggerEvent('onAfterSloginLoginUser',array($user, $provider, $info));
 
         return true;
     }
@@ -469,10 +471,10 @@ class SLoginController extends JControllerLegacy
     public function displayRedirect($redirect='/', $popup=false, $msg = '', $msgType = 'message')
     {
         if($popup){
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             $app->setUserState('com_slogin.msg', $msg);
             $app->setUserState('com_slogin.msgType', $msgType);
-            $session = JFactory::getSession();
+            $session = Factory::getSession();
             $redirect = base64_encode($redirect);
             $session->set('slogin_return', $redirect);
             $view = $this->getView('Redirect', 'html');
@@ -480,9 +482,9 @@ class SLoginController extends JControllerLegacy
             exit;
         }
         else{
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
 	        $app->enqueueMessage($msg, $msgType);
-            $app->redirect(JRoute::_($redirect), 200);
+            $app->redirect(Route::_($redirect), 200);
         }
     }
 
@@ -492,7 +494,7 @@ class SLoginController extends JControllerLegacy
      */
     public function setError($error, $popup=true)
     {
-        $session = JFactory::getSession();
+        $session = Factory::getSession();
         $session->set('slogin_errors', $error);
         $this->displayRedirect('/', $popup, $error, 'error');
         return false;
@@ -504,10 +506,10 @@ class SLoginController extends JControllerLegacy
      */
     public function sredirect()
     {
-        $session = JFactory::getSession();
-        $app = JFactory::getApplication();
+        $session = Factory::getSession();
+        $app = Factory::getApplication();
 
-        $redirect = JRoute::_(base64_decode($session->get('slogin_return', '')), false);
+        $redirect = Route::_(base64_decode($session->get('slogin_return', '')), false);
         $session->clear('slogin_return');
         if ($error = $session->get('slogin_errors', null)) {
             $session->clear('slogin_errors');
@@ -523,7 +525,7 @@ class SLoginController extends JControllerLegacy
     public function CheckEmail($email)
     {
         // Initialise some variables
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('id'));
         $query->from($db->quoteName('#__users'));
@@ -544,7 +546,7 @@ class SLoginController extends JControllerLegacy
     // проверить, не зарегистрирован ли уже пользователь с таким email
     public function GetUserId()
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('user_id'));
         $query->from($db->quoteName('#__slogin_users'));
@@ -584,7 +586,7 @@ class SLoginController extends JControllerLegacy
     public function GetSloginStringId($slogin_id, $user_id, $provider)
     {
         // Initialise some variables
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('id'));
         $query->from($db->quoteName('#__slogin_users'));
@@ -602,9 +604,9 @@ class SLoginController extends JControllerLegacy
     public function join_mail()
     {
         // Check for request forgeries.
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-        $input = new \Joomla\Input\Input;
+        $input = new Input;
 
         $app = JFactory::getApplication();
         $appRedirect = $app->getUserState('com_slogin.return_url');
@@ -644,7 +646,7 @@ class SLoginController extends JControllerLegacy
             if($user_id != $joomlaUserId){
 
                 //запрашиваем есть-ли у пользователя другие провайдеры
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $query = $db->getQuery(true);
                 $query->select('COUNT(*)');
                 $query->from($db->quoteName('#__slogin_users'));
@@ -669,27 +671,27 @@ class SLoginController extends JControllerLegacy
                 $msg = JText::_('ERROR_JOIN_MAIL');
             }
 
-            $app->redirect(JRoute::_($return, false), $msg);
+            $app->redirect(Route::_($return, false), $msg);
         }
         else
         {
             $app->setUserState('com_slogin.comparison_user.data', $UserState);
-            $app->redirect(JRoute::_('index.php?option=com_slogin&view=linking_user', false));
+            $app->redirect(Route::_('index.php?option=com_slogin&view=linking_user', false));
         }
     }
 
     public function recallpass(){
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
         $app->logout();
-        $app->redirect(JRoute::_('index.php?option=com_users&view=reset'));
+        $app->redirect(Route::_('index.php?option=com_users&view=reset'));
     }
 
     private function storeSloginUser($user_id, $slogin_id, $provider){
         if(empty($user_id) || empty($slogin_id) || empty($provider)){
             return false;
         }
-        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-        $SloginUser = JTable::getInstance('slogin_users', 'SloginTable');
+        Table::addIncludePath(JPATH_COMPONENT . '/tables');
+        $SloginUser = Table::getInstance('slogin_users', 'SloginTable');
         $SloginUser->user_id = $user_id;
         $SloginUser->slogin_id = $slogin_id;
         $SloginUser->provider = $provider;
@@ -973,7 +975,7 @@ class SLoginController extends JControllerLegacy
             $this->displayRedirect($link);
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('slogin_id'));
         $query->from($db->quoteName('#__slogin_users'));
@@ -1033,7 +1035,7 @@ class SLoginController extends JControllerLegacy
 
     protected function queryEmail($popup=false)
     {
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
         $data = array(
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -1045,7 +1047,7 @@ class SLoginController extends JControllerLegacy
     }
 
     private function getFreeMail($email){
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $umail = $email;
         $parts = explode('@', $email);
@@ -1067,7 +1069,7 @@ class SLoginController extends JControllerLegacy
     }
 
     private function getUserIdByMail($mail){
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select($db->quoteName('id'));
         $query->from($db->quoteName('#__users'));

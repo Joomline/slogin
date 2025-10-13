@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,23 +11,20 @@
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
 
-//костыль для поддержки 2 и  3 джумлы
-$className = (class_exists('JControllerLegacy')) ? 'JControllerLegacy' : 'JController';
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Uri\Uri;
 
 // Get an instance of the controller prefixed by SLogin
-//$controller = JController::getInstance('SLogin');
-$controller = call_user_func(array($className, 'getInstance'), 'SLogin');
+$controller = BaseController::getInstance('SLogin');
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $task = $app->input->get('task');
 $view = $app->input->get('view');
 
 if(!$view && !$task)
 {
-    $app->redirect(JURI::root());
+    $app->redirect(Uri::root());
 }
 
 // Perform the Request task

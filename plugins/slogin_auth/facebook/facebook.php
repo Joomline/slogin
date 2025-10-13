@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,13 +11,21 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authFacebook extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Plugin\CMSPlugin;
+
+class plgSlogin_authFacebook extends CMSPlugin
 {
     private $provider = 'facebook';
 
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=facebook';
+        $redirect = Uri::base().'?option=com_slogin&task=check&plugin=facebook';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
@@ -37,7 +45,7 @@ class plgSlogin_authFacebook extends JPlugin
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $request = null;
 
@@ -67,7 +75,7 @@ class plgSlogin_authFacebook extends JPlugin
 
             //сохраняем данные токена в сессию
             //expire - время устаревания скрипта, метка времени Unix
-            JFactory::getApplication()->setUserState('slogin.token', array(
+            Factory::getApplication()->setUserState('slogin.token', array(
                 'provider' => $this->provider,
                 'token' => $token['access_token'],
                 'expire' => (time() + $token['expires_in']),
@@ -89,11 +97,11 @@ class plgSlogin_authFacebook extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }
@@ -103,7 +111,7 @@ class plgSlogin_authFacebook extends JPlugin
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
         $controller = new SLoginController();
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=facebook');
+        $redirect = urlencode(Uri::base().'?option=com_slogin&task=check&plugin=facebook');
 
         //подключение к API
         $params = array(
@@ -133,6 +141,6 @@ class plgSlogin_authFacebook extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=facebook' . $add;
         $links[$i]['class'] = 'facebookslogin';
         $links[$i]['plugin_name'] = $this->provider;
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_FACEBOOK');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_FACEBOOK');
     }
 }

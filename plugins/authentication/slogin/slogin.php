@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,7 +11,13 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgAuthenticationSlogin extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\User;
+use Joomla\CMS\Authentication\Authentication;
+use Joomla\CMS\Plugin\CMSPlugin;
+
+class plgAuthenticationSlogin extends CMSPlugin
 {
 	/**
 	 * This method should handle any authentication and report back to the subject
@@ -29,8 +35,8 @@ class plgAuthenticationSlogin extends JPlugin
             include_once JPATH_ROOT . '/components/com_slogin/helpers/password.php';
         }
         else{
-            $response->status = JAuthentication::STATUS_FAILURE;
-            $response->error_message = JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', 'plgAuthenticationSlogin');
+            $response->status = Authentication::STATUS_FAILURE;
+            $response->error_message = Text::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', 'plgAuthenticationSlogin');
             return false;
         }
 
@@ -39,13 +45,13 @@ class plgAuthenticationSlogin extends JPlugin
 		// Joomla does not like blank passwords
 		if (empty($credentials['password']))
 		{
-			$response->status = JAuthentication::STATUS_FAILURE;
-			$response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
+			$response->status = Authentication::STATUS_FAILURE;
+			$response->error_message = Text::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
 			return false;
 		}
 
 		// Get a database object
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select('id')
@@ -59,11 +65,11 @@ class plgAuthenticationSlogin extends JPlugin
 
 			if (is_array($passwords) && in_array($credentials['password'], $passwords))
 			{
-				$user = JUser::getInstance($uid); // Bring this in line with the rest of the system
+				$user = User::getInstance($uid); // Bring this in line with the rest of the system
 				$response->email = $user->email;
 				$response->fullname = $user->name;
 
-				if (JFactory::getApplication()->isClient('administrator'))
+				if (Factory::getApplication()->isClient('administrator'))
 				{
 					$response->language = $user->getParam('admin_language');
 				}
@@ -71,19 +77,19 @@ class plgAuthenticationSlogin extends JPlugin
 				{
 					$response->language = $user->getParam('language');
 				}
-				$response->status = JAuthentication::STATUS_SUCCESS;
+				$response->status = Authentication::STATUS_SUCCESS;
 				$response->error_message = '';
 			}
 			else
 			{
-				$response->status = JAuthentication::STATUS_FAILURE;
-				$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
+				$response->status = Authentication::STATUS_FAILURE;
+				$response->error_message = Text::_('JGLOBAL_AUTH_INVALID_PASS');
 			}
 		}
 		else
 		{
-			$response->status = JAuthentication::STATUS_FAILURE;
-			$response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
+			$response->status = Authentication::STATUS_FAILURE;
+			$response->error_message = Text::_('JGLOBAL_AUTH_NO_USER');
 		}
 	}
 }

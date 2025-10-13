@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,7 +11,11 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class plgUserSlogin extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+
+class plgUserSlogin extends CMSPlugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -31,10 +35,10 @@ class plgUserSlogin extends JPlugin
 			return false;
 		}
 		
-		JPluginHelper::importPlugin('slogin_integration');
-		Joomla\CMS\Factory::getApplication()->triggerEvent('onAfterSloginDeleteUser',array((int)$user['id']));
+		PluginHelper::importPlugin('slogin_integration');
+		Factory::getApplication()->triggerEvent('onAfterSloginDeleteUser',array((int)$user['id']));
 		
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery(
 			'DELETE FROM '.$db->quoteName('#__slogin_users') .
 			' WHERE '.$db->quoteName('user_id').' = '.(int) $user['id']

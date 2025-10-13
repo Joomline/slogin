@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="library" version="2.5" method="upgrade">
+<extension type="library" version="5.0" method="upgrade">
     <name>amcharts</name>
     <libraryname>amcharts</libraryname>
-    <version>1.0</version>
+    <version>5.0.0</version>
     <creationDate>2014-04-21</creationDate>
     <author>Arkadiy Sedelnikov, Joomline</author>
     <authorUrl>https://joomline.ru</authorUrl>

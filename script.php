@@ -12,11 +12,13 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+use Joomla\CMS\Factory;
+
 class pkg_sloginInstallerScript
 {
 	public function postflight($type, $parent)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $query->update('`#__extensions`')
