@@ -9,6 +9,12 @@
  */
 
 // No direct access
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Input\Input;
 
 defined('_JEXEC') or die;
@@ -42,12 +48,12 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	public function display($tpl = null)
 	{
         $this->loadHelper('slogin');
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$input = new Input;
 
-		$this->component = JInstaller::parseXMLInstallFile(JPATH_COMPONENT.'/slogin.xml');
+		$this->component = Installer::parseXMLInstallFile(JPATH_COMPONENT.'/slogin.xml');
 
-		$this->module = JInstaller::parseXMLInstallFile(JPATH_SITE.'/modules/mod_slogin/mod_slogin.xml');
+		$this->module = Installer::parseXMLInstallFile(JPATH_SITE.'/modules/mod_slogin/mod_slogin.xml');
 
         $pIds = array();
 
@@ -81,7 +87,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
         }
 
         $this->comPlugins = $comPlugins;
-		$this->config = JComponentHelper::getParams('com_slogin');
+		$this->config = ComponentHelper::getParams('com_slogin');
 
         $app->setUserState('com_plugins.edit.plugin.id', $pIds);
 
@@ -99,7 +105,7 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	 */
 	protected function addToolbar()
 	{
-		$doc = JFactory::getApplication()->getDocument();
+		$doc = Factory::getApplication()->getDocument();
 		$doc->addStyleDeclaration('.icon-48-generic {background: url("../media/com_slogin/icon_48x48.png")}');
 		//include helper file
 		require_once JPATH_COMPONENT.'/helpers/slogin.php';
@@ -107,21 +113,21 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 		$canDo	= SLoginHelper::getActions();
 		
 		//set title
-		JToolBarHelper::title(JText::_('COM_SLOGIN'));
+		ToolbarHelper::title(Text::_('COM_SLOGIN'));
 		
 		//config
 		if ($canDo->get('core.admin')) {
-            JToolBarHelper::custom('repair', 'remove', 'remove', JText::_('COM_SLOGIN_REPAIR_TABLE'), false);
-            JToolBarHelper::custom('clean', 'delete', 'delete', JText::_('COM_SLOGIN_CLEAN_TABLE'), false);
-            JToolBarHelper::divider();
-            JToolBarHelper::preferences('com_slogin');
+            ToolbarHelper::custom('repair', 'remove', 'remove', Text::_('COM_SLOGIN_REPAIR_TABLE'), false);
+            ToolbarHelper::custom('clean', 'delete', 'delete', Text::_('COM_SLOGIN_CLEAN_TABLE'), false);
+            ToolbarHelper::divider();
+            ToolbarHelper::preferences('com_slogin');
 		}
 	}
 
 	protected function loadScripts($pieChartData){
-		$document = JFactory::getApplication()->getDocument();
-		$document->addScript(JUri::root().'libraries/amcharts/amcharts/amcharts.js');
-		$document->addScript(JUri::root().'libraries/amcharts/amcharts/pie.js');
+		$document = Factory::getApplication()->getDocument();
+		$document->addScript(Uri::root().'libraries/amcharts/amcharts/amcharts.js');
+		$document->addScript(Uri::root().'libraries/amcharts/amcharts/pie.js');
 
 		$script = <<<SCRIPT
             var chart;

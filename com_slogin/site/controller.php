@@ -264,7 +264,7 @@ class SLoginController extends BaseController
     private function deleteSloginUser($slogin_id, $provider){
         $db = Factory::getDbo();
 
-        JPluginHelper::importPlugin('slogin_integration');
+        PluginHelper::importPlugin('slogin_integration');
         $query = $db->getQuery(true);
         $query->select('id');
         $query->from('#__slogin_users');
@@ -608,7 +608,7 @@ class SLoginController extends BaseController
 
         $input = new Input;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $appRedirect = $app->getUserState('com_slogin.return_url');
         $UserState = $app->getUserState('com_slogin.comparison_user.data');
 
@@ -640,7 +640,7 @@ class SLoginController extends BaseController
             $app->setUserState('com_slogin.return_url', $appRedirect);
             $app->setUserState('com_slogin.comparison_user.data', $UserState);
 
-            $joomlaUserId = JFactory::getUser()->id;
+            $joomlaUserId = Factory::getUser()->id;
 
             //удаляем ненужного пользователя
             if($user_id != $joomlaUserId){
@@ -657,7 +657,7 @@ class SLoginController extends BaseController
 
                 //если других провайдеров нет, то удаляем пользователя
                 if($count == 0){
-                    $user_object = new JUser;
+                    $user_object = new User;
                     $user_object->id = $user_id;
                     $user_object->delete();
                 }
@@ -668,7 +668,7 @@ class SLoginController extends BaseController
             $store = $this->storeSloginUser($joomlaUserId, $slogin_id, $provider);
 
             if(!$store){
-                $msg = JText::_('ERROR_JOIN_MAIL');
+                $msg = Text::_('ERROR_JOIN_MAIL');
             }
 
             $app->redirect(Route::_($return, false), $msg);
@@ -703,9 +703,9 @@ class SLoginController extends BaseController
     public function check_mail()
     {
         // Check for request forgeries.
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-        $app = JFactory::getApplication();
-        $input = new Joomla\Input\Input;
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        $app = Factory::getApplication();
+        $input = new Input;
 
         $data =         $app->getUserState('com_slogin.provider.data');
         $slogin_id =    $data['slogin_id'];
@@ -720,11 +720,11 @@ class SLoginController extends BaseController
 
         //валидация
         if(!$validator->validateEmail($email)){
-            $msg  = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
+            $msg  = Text::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
             $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
         }
         else if(!$validator->checkUniqueEmail($email)){
-            $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
+            $msg = Text::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
             if($this->config->get('collate_users', 0) == 1)
             {
                 $data = array(
@@ -742,11 +742,11 @@ class SLoginController extends BaseController
             }
         }
         else if(!$validator->validateName($name)){
-            $msg = JText::_('COM_SLOGIN_ERROR_VALIATE_NAME');
+            $msg = Text::_('COM_SLOGIN_ERROR_VALIATE_NAME');
             $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
         }
         else if(!$validator->validateUserName($username)){
-            $msg = JText::_('COM_SLOGIN_ERROR_VALIATE_USERNAME');
+            $msg = Text::_('COM_SLOGIN_ERROR_VALIATE_USERNAME');
             $this->displayRedirect('index.php?option=com_slogin&view=mail', false, $msg, 'error');
         }
         else{
@@ -780,7 +780,7 @@ class SLoginController extends BaseController
 
         $msg = $msgType = '';
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $app->setUserState('com_slogin.provider.info', $this->rawRequest);
 
@@ -815,7 +815,7 @@ class SLoginController extends BaseController
             $reg_fields_edited = $app->getUserState('com_slogin.reg_fields_edited', 0);
             if($this->config->get('enable_edit_reg_fields', 0) && !$reg_fields_edited){
                 $this->queryEmail($popup);
-                $msg  = JText::_('COM_SLOGIN_EDIT_REG_FIELDS');
+                $msg  = Text::_('COM_SLOGIN_EDIT_REG_FIELDS');
                 $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg);
             }
 
@@ -826,11 +826,11 @@ class SLoginController extends BaseController
                 //маленькая валидация
 
                 if(!$validator->validateEmail($this->email)){
-                    $msg  = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
+                    $msg  = Text::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
                     $this->displayRedirect('index.php?option=com_slogin&view=mail', $popup, $msg, 'error');
                 }
                 else if(!$validator->checkUniqueEmail($this->email)){
-                    $msg = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
+                    $msg = Text::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
 
                     if($collate_users == 1)
                     {
@@ -868,7 +868,7 @@ class SLoginController extends BaseController
                     );
                     $app->setUserState('com_slogin.comparison_user.data', $data);
                     $return = 'index.php?option=com_slogin&view=comparison_user';
-                    $msg = JText::_('COM_SLOGIN_MAIL_NOT_FREE');
+                    $msg = Text::_('COM_SLOGIN_MAIL_NOT_FREE');
                     $this->displayRedirect($return, $popup, $msg);
                 }
                 else{
@@ -927,11 +927,11 @@ class SLoginController extends BaseController
      */
     protected function fusion($slogin_id= null, $provider= null, $popup=false)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $app->setUserState('com_slogin.action.data', '');
 
         //ид текущего пользователя
-        $user_id = JFactory::getUser()->id;
+        $user_id = Factory::getUser()->id;
 
         if((int)$user_id == 0 || !$slogin_id || !$provider){
             return;
@@ -944,7 +944,7 @@ class SLoginController extends BaseController
         $store = $this->storeSloginUser($user_id, $slogin_id, $provider);
 
         $link = 'index.php?option=com_slogin&view=fusion';
-        $redirect = JFactory::getApplication()->getUserState('com_slogin.return_url', '');
+        $redirect = Factory::getApplication()->getUserState('com_slogin.return_url', '');
         if(!empty($redirect)){
             $link = base64_decode($redirect);
         }
@@ -953,7 +953,7 @@ class SLoginController extends BaseController
 
     public function detach_provider()
     {
-        $input = new Joomla\Input\Input;
+        $input = new Input;
 
         $provider = $input->get('plugin', '', 'STRING');
 
@@ -963,10 +963,10 @@ class SLoginController extends BaseController
 		}
 
         //ид текущего пользователя
-        $user_id = JFactory::getUser()->id;
+        $user_id = Factory::getUser()->id;
 
         $link = 'index.php?option=com_slogin&view=fusion';
-        $redirect = JFactory::getApplication()->getUserState('com_slogin.return_url', '');
+        $redirect = Factory::getApplication()->getUserState('com_slogin.return_url', '');
         if(!empty($redirect)){
             $link = base64_decode($redirect);
         }
@@ -1012,8 +1012,8 @@ class SLoginController extends BaseController
 
     protected function localAuthDebug($redirect){
         if($this->config->get('local_debug', 0) == 1){
-            $app = JFactory::getApplication();
-            $app->redirect(JRoute::_($redirect));
+            $app = Factory::getApplication();
+            $app->redirect(Route::_($redirect));
         }
     }
 
@@ -1085,37 +1085,37 @@ class SLoginController extends BaseController
         require_once JPATH_BASE.'/modules/mod_login/helper.php';
 		require_once JPATH_BASE.'/modules/mod_slogin/helper.php';
 		
-        $user = JFactory::getUser();
-        $doc = JFactory::getDocument();
-        $input = new Joomla\Input\Input;
+        $user = Factory::getUser();
+        $doc = Factory::getDocument();
+        $input = new Input;
 
-        $params = new JRegistry;
-        $params->loadString(JModuleHelper::getModule('mod_slogin')->params);
+        $params = new Registry;
+        $params->loadString(ModuleHelper::getModule('mod_slogin')->params);
 
-        JFactory::getLanguage()->load('mod_slogin');
+        Factory::getLanguage()->load('mod_slogin');
 
-        $type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
+        $type	= LoginHelper::getType();
 
         $callbackUrl = '';
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
         $plugins = array();
 
-		JPluginHelper::importPlugin('slogin_auth');
+		PluginHelper::importPlugin('slogin_auth');
 		Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $callbackUrl));
 
         $jll = (!modSLoginHelper::getalw($params))
-            ? '<div style="text-align: right;">'.JText::_('MOD_SLOGIN_LINK').'</div>'
+            ? '<div style="text-align: right;">'.Text::_('MOD_SLOGIN_LINK').'</div>'
             : '';
 
         $profileLink = $avatar = '';
-        if(JPluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
+        if(PluginHelper::isEnabled('slogin_integration', 'profile') && $user->id > 0){
             require_once JPATH_BASE.'/plugins/slogin_integration/profile/helper.php';
             $profile = plgProfileHelper::getProfile($user->id);
             $avatar = isset($profile->avatar) ? $profile->avatar : '';
             $profileLink = isset($profile->social_profile_link) ? $profile->social_profile_link : '';
         }
-        else if(JPluginHelper::isEnabled('slogin_integration', 'slogin_avatar') && $user->id > 0){
+        else if(PluginHelper::isEnabled('slogin_integration', 'slogin_avatar') && $user->id > 0){
             require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/helper.php';
             $path = Slogin_avatarHelper::getavatar($user->id);
             if(!empty($path['photo_src'])){
@@ -1126,7 +1126,7 @@ class SLoginController extends BaseController
             $profileLink = isset($path['profile']) ? $path['profile'] : '';
         }
 
-        require JModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
+        require ModuleHelper::getLayoutPath('mod_slogin', $params->get('layout', 'default'));
         die;
     }
 }

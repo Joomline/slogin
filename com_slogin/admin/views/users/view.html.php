@@ -1,6 +1,9 @@
 <?php
 // No direct access to this file
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Input\Input;
 
 defined('_JEXEC') or die('Restricted access');
@@ -46,24 +49,27 @@ class SloginViewUsers extends JViewLegacy
         $this->loadHelper( 'slogin' );
         $canDo = SLoginHelper::getActions();
 
-        $doc = JFactory::getDocument();
+        $doc = Factory::getDocument();
         $doc->addStyleDeclaration('.icon-48-users {background: url("../media/com_slogin/icon_48x48.png")}');
 
-        JToolBarHelper::title(JText::_('COM_SLOGIN_USERS'), 'users');
+        ToolbarHelper::title(Text::_('COM_SLOGIN_USERS'), 'users');
 
         if($canDo->get('core.admin')){
-            JToolBarHelper::deleteList(JText::_('COM_SLOGIN_CONFIRM'), 'remove_slogin_users', 'COM_SLOGIN_DELETE_USERS');
-            JToolBarHelper::deleteList(JText::_('COM_SLOGIN_CONFIRM'), 'remove_joomla_users', 'COM_SLOGIN_DELETE_J_USERS');
+            ToolbarHelper::deleteList(Text::_('COM_SLOGIN_CONFIRM'), 'remove_slogin_users', 'COM_SLOGIN_DELETE_USERS');
+            ToolbarHelper::deleteList(Text::_('COM_SLOGIN_CONFIRM'), 'remove_joomla_users', 'COM_SLOGIN_DELETE_J_USERS');
         }
 	}
 	/**
 	 * Method to set up the document properties
 	 *
+	 * @param   \Joomla\CMS\Document\Document  $document  The document object
 	 * @return void
 	 */
-	public function setDocument() 
+	public function setDocument(?\Joomla\CMS\Document\Document $document = null): void
 	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SLOGIN'));
+		if ($document === null) {
+			$document = Factory::getDocument();
+		}
+		$document->setTitle(Text::_('COM_SLOGIN'));
 	}
 }

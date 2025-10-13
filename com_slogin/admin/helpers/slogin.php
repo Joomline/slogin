@@ -9,6 +9,9 @@
  */
 
 // No direct access.
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+
 defined('_JEXEC') or die('(@)|(@)');
 
 /**
@@ -22,8 +25,8 @@ class SLoginHelper
 	
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user	= Factory::getUser();
+		$result	= new Registry;
 		$assetName = 'com_slogin';
 		$actions = array('core.admin', 'core.manage');
 		foreach ($actions as $action) {

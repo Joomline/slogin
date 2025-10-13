@@ -9,6 +9,9 @@
  */
 
 // No direct access.
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die('(@)|(@)');
 
 class SloginPasswordHelper
@@ -26,7 +29,7 @@ class SloginPasswordHelper
     static function getPasswords($user_id)
     {
         $passwords = array();
-        $secret = JComponentHelper::getParams('com_slogin')->get('secret','');
+        $secret = ComponentHelper::getParams('com_slogin')->get('secret','');
 
         if(empty($secret))
         {
@@ -38,7 +41,7 @@ class SloginPasswordHelper
             return false;
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*')
             ->from('`#__slogin_users`')
@@ -61,12 +64,12 @@ class SloginPasswordHelper
         $component = 'com_slogin';
         $secret = self::generate_hash(15);
         // получаем параметры компонента com_users
-        $params = JComponentHelper::getParams($component);
+        $params = ComponentHelper::getParams($component);
         // устанавливаем требуемое значение
         $params->set('secret', $secret);
 
         // записываем измененные параметры в БД
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->update($db->quoteName('#__extensions'));
         $query->set($db->quoteName('params') . '= ' . $db->quote((string)$params));

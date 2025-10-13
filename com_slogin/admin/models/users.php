@@ -1,5 +1,9 @@
 <?php
 // No direct access to this file
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Input\Input;
+
 defined('_JEXEC') or die('Restricted access');
 // import the Joomla modellist library
 jimport('joomla.application.component.modellist');
@@ -9,8 +13,8 @@ class SloginModelUsers extends JModelList
     protected function populateState($ordering = null, $direction = null)
     {
         // Initialise variables.
-        $app = JFactory::getApplication();
-        $input = new Joomla\Input\Input();
+        $app = Factory::getApplication();
+        $input = new Input();
 
         // Adjust the context to support modal layouts.
         if ($layout = $input->getString('layout', 'default')) {
@@ -30,7 +34,7 @@ class SloginModelUsers extends JModelList
 
 	protected function getListQuery()
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('su.*, u.username, u.name');
 		$query->from('#__slogin_users as su');

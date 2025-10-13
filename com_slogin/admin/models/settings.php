@@ -7,6 +7,9 @@
  */
 
 // No direct access.
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
@@ -22,7 +25,7 @@ class sloginModelSettings  extends JModelList
 {
     public function getPieChartData()
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('provider')
             ->from('#__slogin_users');
@@ -84,7 +87,7 @@ class sloginModelSettings  extends JModelList
 
     private function getPlugins($folder)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('element')
             ->select('extension_id')
@@ -136,7 +139,7 @@ class sloginModelSettings  extends JModelList
     {
         $plugins = array();
 
-        if(JFolder::exists(JPATH_ROOT.'/components/com_comprofiler'))
+        if(Folder::exists(JPATH_ROOT.'/components/com_comprofiler'))
         {
             $plg = new stdClass();
             $plg->name = 'Social Login Integration Community Builder';
@@ -145,7 +148,7 @@ class sloginModelSettings  extends JModelList
             $plugins[] = $plg;
         }
 
-        if(JFolder::exists(JPATH_ROOT.'/components/com_jshopping'))
+        if(Folder::exists(JPATH_ROOT.'/components/com_jshopping'))
         {
             $plg = new stdClass();
             $plg->name = 'Social Login Integration JoomShopping';
@@ -154,7 +157,7 @@ class sloginModelSettings  extends JModelList
             $plugins[] = $plg;
         }
 
-        if(JFolder::exists(JPATH_ROOT.'/components/com_jomsocial'))
+        if(Folder::exists(JPATH_ROOT.'/components/com_jomsocial'))
         {
             $plg = new stdClass();
             $plg->name = 'Social Login Integration JoomSocial';
@@ -163,7 +166,7 @@ class sloginModelSettings  extends JModelList
             $plugins[] = $plg;
         }
 
-        if(JFolder::exists(JPATH_ROOT.'/components/com_k2'))
+        if(Folder::exists(JPATH_ROOT.'/components/com_k2'))
         {
             $plg = new stdClass();
             $plg->name = 'Social Login Integration k2';
@@ -172,7 +175,7 @@ class sloginModelSettings  extends JModelList
             $plugins[] = $plg;
         }
 
-        if(JFolder::exists(JPATH_ROOT.'/components/com_kunena'))
+        if(Folder::exists(JPATH_ROOT.'/components/com_kunena'))
         {
             $plg = new stdClass();
             $plg->name = 'Social Login Integration Kunena';

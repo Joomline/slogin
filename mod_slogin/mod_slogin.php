@@ -41,15 +41,15 @@ if ($params->get('load_js') != '1') { $doc->addScript(Uri::root().'media/com_slo
 if ($params->get('load_css') != '1') { $doc->addStyleSheet(Uri::root().'media/com_slogin/comslogin.min.css?v=4'); }
 
 if ($LoginHelperEnabled) {
-	$type	= Joomla\Module\Login\Site\Helper\LoginHelper::getType();
-	$return	= Joomla\Module\Login\Site\Helper\LoginHelper::getReturnURL($params, $type);
+	$type	= \Joomla\Module\Login\Site\Helper\LoginHelper::getType();
+	$return	= \Joomla\Module\Login\Site\Helper\LoginHelper::getReturnURL($params, $type);
 } else {
 	$type	= modLoginHelper::getType();
 	$return	= modLoginHelper::getReturnURL($params, $type);
 }
 
 
-$input = JFactory::getApplication()->input;
+$input = Factory::getApplication()->input;
 $task = $input->getCmd('task', '');
 $option = $input->getCmd('option', '');
 
