@@ -85,7 +85,7 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 
     $callbackUrl = '';
 
-    $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+    $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 
     PluginHelper::importPlugin('slogin_auth');
 
