@@ -4,23 +4,56 @@
  *
  * @version 	2.9.1
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2023. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authVkontakte extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
+class plgSlogin_authVkontakte extends CMSPlugin
 {
     private $provider = 'vkontakte';
 
+    /**
+     * Constructor
+     *
+     * @param  object  &$subject  The object to observe
+     * @param  array   $config    An optional associative array of configuration settings.
+     */
+    public function __construct(&$subject, $config = array())
+    {
+        parent::__construct($subject, $config);
+        $this->loadLanguage();
+    }
+
+    /**
+     * Generate the authentication URL for VKontakte
+     *
+     * @return string The authentication URL
+     */
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'index.php?option=com_slogin&task=check&plugin=vkontakte';
+        // Check if we should use menu item for redirect
+        $useMenuItem = (int)$this->params->get('use_menu_item', 0);
+        $menuItemId = (int)$this->params->get('menu_item_id', 0);
+
+        if ($useMenuItem && $menuItemId) {
+            // Generate redirect URL from menu item
+            $redirect = $this->getMenuItemUrl($menuItemId);
+        } else {
+            // Use default redirect URL
+            $redirect = Uri::base().'index.php?option=com_slogin&task=check&plugin=vkontakte';
+        }
 
         $scope = 'offline';
-		$scope .= ',email';
+        $scope .= ',email';
 
         if($this->params->get('repost_comments', 0))
         {
@@ -41,13 +74,19 @@ class plgSlogin_authVkontakte extends JPlugin
         return $url;
     }
 
+    /**
+     * Handle the authentication callback from VKontakte
+     *
+     * @return object|void The user data or void if error
+     */
     public function onSloginCheck()
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $app = Factory::getApplication();
+        $input = $app->input;
 
         $code = $input->get('code', null, 'STRING');
 
@@ -58,13 +97,13 @@ class plgSlogin_authVkontakte extends JPlugin
 
             if (empty($data->access_token) || isset($data->error)) {
                 echo '<pre>';
-				var_dump($data);
+                var_dump($data);
                 echo '</pre>';
                 die();
             }
 
-			$returnRequest->email = (!empty($data->email)) ? $data->email : '';
-			
+            $returnRequest->email = (!empty($data->email)) ? $data->email : '';
+            
 // 			Получение данных о пользователе поле fields
 // 			Нужное можно указать!
 // 			uid, first_name, last_name, nickname, screen_name, sex, bdate (birthdate), city, country,
@@ -92,18 +131,18 @@ class plgSlogin_authVkontakte extends JPlugin
             }
             else if(!empty($request->error)){
                 if(!empty($request->error->error_msg)){
-		            echo 'Error - '.$request->error->error_msg;
-		            exit;
-	            }
-	            echo 'Error - request error.';
-	            exit;
+                    echo 'Error - '.$request->error->error_msg;
+                    exit;
+                }
+                echo 'Error - request error.';
+                exit;
             }
             
             $request = $request->response[0];
             
             //сохраняем данные токена в сессию
             //expire - время устаревания скрипта, метка времени Unix
-            JFactory::getApplication()->setUserState('slogin.token', array(
+            Factory::getApplication()->setUserState('slogin.token', array(
                 'provider' => $this->provider,
                 'token' => $data->access_token,
                 'expire' => $data->expires_in,
@@ -113,7 +152,7 @@ class plgSlogin_authVkontakte extends JPlugin
                 'app_secret' => $this->params->get('password', 0)
             ));
 
-	        $returnRequest->provider = $this->provider;
+            $returnRequest->provider = $this->provider;
             $returnRequest->first_name  = $request->first_name;
             $returnRequest->last_name   = $request->last_name;
             $returnRequest->id          = $request->id;
@@ -132,19 +171,35 @@ class plgSlogin_authVkontakte extends JPlugin
         }
     }
 
+    /**
+     * Get access token from VKontakte
+     *
+     * @param string $code The authorization code
+     * @return object The token data
+     */
     public function getToken($code)
     {
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
         $controller = new SLoginController();
 
-        $redirect = urlencode(JURI::base().'index.php?option=com_slogin&task=check&plugin=vkontakte');
+        // Check if we should use menu item for redirect
+        $useMenuItem = (int)$this->params->get('use_menu_item', 0);
+        $menuItemId = (int)$this->params->get('menu_item_id', 0);
+
+        if ($useMenuItem && $menuItemId) {
+            // Generate redirect URL from menu item
+            $redirect = $this->getMenuItemUrl($menuItemId);
+        } else {
+            // Use default redirect URL
+            $redirect = Uri::base().'index.php?option=com_slogin&task=check&plugin=vkontakte';
+        }
 
         //подключение к API
         $params = array(
             'client_id=' . $this->params->get('id'),
             'client_secret=' . $this->params->get('password'),
             'code=' . $code,
-            'redirect_uri=' . $redirect
+            'redirect_uri=' . urlencode($redirect)
         );
         $params = implode('&', $params);
 
@@ -155,12 +210,74 @@ class plgSlogin_authVkontakte extends JPlugin
         return $data;
     }
 
+    /**
+     * Create social login link
+     *
+     * @param array $links Array of links
+     * @param string $add Additional query string
+     * @return void
+     */
     public function onCreateSloginLink(&$links, $add = '')
     {
         $i = count($links);
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=vkontakte' . $add;
         $links[$i]['class'] = 'vkontakteslogin';
         $links[$i]['plugin_name'] = $this->provider;
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_VK');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_VK');
+    }
+
+    /**
+     * AJAX handler for getting menu item URL
+     *
+     * @return void
+     */
+    public function onAjaxSlogin_auth_vkontakte()
+    {
+        $app = Factory::getApplication();
+        $menuItemId = $app->input->getInt('menuItemId', 0);
+
+        if ($menuItemId) {
+            try {
+                $url = $this->getMenuItemUrl($menuItemId);
+                return $url;
+            } catch (Exception $e) {
+                $app->enqueueMessage($e->getMessage(), 'error');
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the URL for a menu item
+     *
+     * @param int $menuItemId The menu item ID
+     * @return string The URL
+     */
+    protected function getMenuItemUrl($menuItemId)
+    {
+        $menu = Factory::getApplication()->getMenu();
+        $menuItem = $menu->getItem($menuItemId);
+
+        if (!$menuItem) {
+            throw new Exception(Text::_('PLG_SLOGIN_AUTH_VKONTAKTE_ERROR_MENU_ITEM_NOT_FOUND'));
+        }
+
+        // Generate the URL
+        $url = Route::_('index.php?Itemid=' . $menuItemId, false);
+        
+        // Convert to absolute URL if needed
+        if (strpos($url, 'http') !== 0) {
+            $url = Uri::root() . ltrim($url, '/');
+        }
+        
+        // Append provider name to the URL
+        if (substr($url, -1) !== '/') {
+            $url .= '/';
+        }
+        $url .= $this->provider;
+
+        return $url;
     }
 }

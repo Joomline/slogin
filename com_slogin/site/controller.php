@@ -71,7 +71,11 @@ class SLoginController extends BaseController
         $plugin = $input->getString('plugin', '');
 
         $app->setUserState('com_slogin.action.data', $input->getString('action', ''));
-
+        
+        // Store the plugin name in session for use in callback
+        $app->setUserState('com_slogin.plugin.name', $plugin);
+        
+        // Default redirect URL
         $redirect = Uri::base().'?option=com_slogin&task=check&plugin='.$plugin;
 
         $this->localAuthDebug($redirect);
@@ -101,9 +105,36 @@ class SLoginController extends BaseController
         $this->cache->clean('com_slogin');
         $this->cache->remove($this->cache->makeId(), 'page');
         $ok = false;
-        $input = Factory::getApplication()->input;
+        $app = Factory::getApplication();
+        $input = $app->input;
 
+        // Get plugin from input or from session (for menu item based redirects)
         $plugin = $input->getString('plugin', '');
+        
+        // Debug information
+        error_log('SLogin check method called. URL: ' . Uri::getInstance()->toString());
+        error_log('Plugin from input: ' . $plugin);
+        
+        if (empty($plugin)) {
+            $plugin = $app->getUserState('com_slogin.plugin.name', '');
+            error_log('Plugin from session: ' . $plugin);
+        }
+        
+        // If we still don't have a plugin, try to determine it from the URL segments
+        if (empty($plugin)) {
+            $uri = Uri::getInstance();
+            $path = $uri->getPath();
+            $segments = explode('/', $path);
+            $lastSegment = end($segments);
+            
+            // Check if the last segment is a valid plugin
+            if (PluginHelper::isEnabled('slogin_auth', $lastSegment)) {
+                $plugin = $lastSegment;
+                error_log('Plugin determined from URL path: ' . $plugin);
+                // Store it in session for future use
+                $app->setUserState('com_slogin.plugin.name', $plugin);
+            }
+        }
 
         $this->localCheckDebug($plugin);
 

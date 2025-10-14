@@ -2,6 +2,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 function SLoginBuildRoute(& $query)
 {
 	// Declare static variables.
@@ -78,7 +81,7 @@ function SLoginBuildRoute(& $query)
 
 		if (empty($items)) {
 			// Get all relevant menu items.
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$menu	= $app->getMenu();
 			$items	= $menu->getItems('component', 'com_slogin');
 
@@ -128,20 +131,38 @@ function SLoginBuildRoute(& $query)
 function SLoginParseRoute(&$segments)
 {
 	$vars = array();
-
 	if (isset($segments[0])) {
-		switch($segments[0]) {
-			case 'redirect':
-				$vars['task'] = 'sredirect';
-				unset($segments[0]);
-				break;
+		// Check if this is a provider name directly (for menu item based redirects)
+		// Get all enabled slogin_auth plugins dynamically
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('element'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+			->where($db->quoteName('folder') . ' = ' . $db->quote('slogin_auth'))
+			->where($db->quoteName('enabled') . ' = 1');
+		$db->setQuery($query);
+		$providers = $db->loadColumn();
+		
+		if (in_array($segments[0], $providers)) {
+			$vars['task'] = 'check';
+			$vars['plugin'] = $segments[0];
+			unset($segments[0]);
+		} else {
+			switch($segments[0]) {
+				case 'redirect':
+					$vars['task'] = 'sredirect';
+					unset($segments[0]);
+					break;
 
-			case 'callback':
-				$vars['task'] = 'check';
-				$vars['plugin'] = $segments[1];
-				unset($segments[0]);
-				unset($segments[1]);
-				break;
+				case 'callback':
+					$vars['task'] = 'check';
+					if (isset($segments[1])) {
+						$vars['plugin'] = $segments[1];
+						unset($segments[1]);
+					}
+					unset($segments[0]);
+					break;
 
 			case 'user':
 				switch($segments[1]) {
@@ -228,8 +249,8 @@ function SLoginParseRoute(&$segments)
 				$vars['task'] = $segments[0];
 				unset($segments[0]);
 				break;
+			}
 		}
 	}
-
 	return $vars;
 }

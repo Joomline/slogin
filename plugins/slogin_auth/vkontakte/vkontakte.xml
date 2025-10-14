@@ -26,6 +26,25 @@
                        description="Secret key"
                        label="Secret key"
                         />
+                <field
+                        name="menu_item_id"
+                        type="menuitem"
+                        label="PLG_SLOGIN_AUTH_VKONTAKTE_MENU_ITEM_LABEL"
+                        description="PLG_SLOGIN_AUTH_VKONTAKTE_MENU_ITEM_DESC"
+                        >
+                        <option value="">JSELECT</option>
+                </field>
+                <field
+                        name="use_menu_item"
+                        type="radio"
+                        label="PLG_SLOGIN_AUTH_VKONTAKTE_USE_MENU_ITEM_LABEL"
+                        description="PLG_SLOGIN_AUTH_VKONTAKTE_USE_MENU_ITEM_DESC"
+                        class="btn-group btn-group-yesno"
+                        default="0"
+                        >
+                        <option value="1">JYES</option>
+                        <option value="0">JNO</option>
+                </field>
           <!--	<field
                         name="repost_comments"
                         type="checkbox"
