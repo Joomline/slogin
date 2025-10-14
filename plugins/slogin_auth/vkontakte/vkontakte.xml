@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
-	<name>Social Login Vkontakte auth</name>
+	<name>PLG_SLOGIN_AUTH_VKONTAKTE</name>
 	<author>Arkadiy, Joomline</author>
 	<creationDate>28.01.2019</creationDate>
 	<copyright>(C) 2012-2019. All rights reserved.</copyright>
@@ -8,23 +8,24 @@
 	<authorEmail></authorEmail>
 	<authorUrl>https://joomline.ru</authorUrl>
 	<version>1.3.0</version>
-	<description>Vkontakte auth</description>
+	<description>PLG_SLOGIN_AUTH_VKONTAKTE_DESC</description>
 	<files>
 		<filename plugin="vkontakte">vkontakte.php</filename>
 		<filename>index.html</filename>
 		<folder>assets</folder>
 		<folder>element</folder>
+		<folder>language</folder>
 	</files>
     <config>
         <fields name="params">
             <fieldset name="basic" addfieldpath="plugins/slogin_auth/vkontakte/element">
                 <field name="id" type="text" default=""
-                       description="Application Id"
-                       label="Application Id"
+                       description="PLG_SLOGIN_AUTH_VKONTAKTE_APP_ID_DESC"
+                       label="PLG_SLOGIN_AUTH_VKONTAKTE_APP_ID_LABEL"
                         />
                 <field name="password" type="text" default=""
-                       description="Secret key"
-                       label="Secret key"
+                       description="PLG_SLOGIN_AUTH_VKONTAKTE_SECRET_KEY_DESC"
+                       label="PLG_SLOGIN_AUTH_VKONTAKTE_SECRET_KEY_LABEL"
                         />
                 <field
                         name="menu_item_id"
@@ -55,8 +56,8 @@
                 <field
                         name="callback_url"
                         type="callbackurl"
-                        label="Base Domain"
-                        description="Base Domain"
+                        label="PLG_SLOGIN_AUTH_VKONTAKTE_BASE_URL_LABEL"
+                        description="PLG_SLOGIN_AUTH_VKONTAKTE_BASE_URL_DESC"
                         filter="unset"
                         value=""
                         readonly="true"
@@ -65,4 +66,10 @@
             </fieldset>
         </fields>
     </config>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_slogin_auth_vkontakte.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_slogin_auth_vkontakte.sys.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_auth_vkontakte.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.plg_slogin_auth_vkontakte.sys.ini</language>
+    </languages>
 </extension>
