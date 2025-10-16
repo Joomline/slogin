@@ -1,16 +1,18 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
+
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <?php foreach($this->items as $i => $item): ?>
-	<tr class="row<?php echo $i % 2; ?>">
-		<td>
+	<tr>
+		<td class="text-center d-none d-md-table-cell">
 			<?php echo $item->id; ?>
 		</td>
-		<td>
-			<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+		<td class="text-center">
+			<?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->id); ?>
 		</td>
-		<td>
+		<td class="d-none d-md-table-cell">
 			<?php echo $item->user_id; ?>
 		</td>
 		<td>
@@ -19,10 +21,10 @@ defined('_JEXEC') or die('Restricted Access');
 		<td>
 			<?php echo $item->username; ?>
 		</td>
-		<td>
+		<td class="d-none d-md-table-cell">
 			<?php echo $item->provider; ?>
 		</td>
-		<td>
+		<td class="d-none d-md-table-cell">
 			<?php echo $item->slogin_id; ?>
 		</td>
 	</tr>

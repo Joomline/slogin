@@ -1,31 +1,30 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <tr>
-	<th width="5%">
-        <?php echo JText::_('ID'); ?>
+	<th scope="col" class="w-5 text-center d-none d-md-table-cell">
+        <?php echo Text::_('ID'); ?>
 	</th>
-	<th width="5%">
-        <?php if (version_compare(JVERSION, '3.0', 'ge')) : ?>
-            <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
-        <?php else : ?>
-            <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
-        <?php endif; ?>
+	<th scope="col" class="w-1 text-center">
+        <?php echo HTMLHelper::_('grid.checkall'); ?>
 	</th>
-	<th width="10%">
-        <?php echo JText::_('COM_SLOGIN_USER_ID'); ?>
+	<th scope="col" class="w-10 d-none d-md-table-cell">
+        <?php echo Text::_('COM_SLOGIN_USER_ID'); ?>
 	</th>
-	<th width="40%">
-        <?php echo JText::_('COM_SLOGIN_USER_NAME'); ?>
+	<th scope="col" class="w-40">
+        <?php echo Text::_('COM_SLOGIN_USER_NAME'); ?>
 	</th>
-	<th width="20%">
-        <?php echo JText::_('COM_SLOGIN_USER_USERNAME'); ?>
+	<th scope="col" class="w-20">
+        <?php echo Text::_('COM_SLOGIN_USER_USERNAME'); ?>
 	</th>
-	<th width="10%">
-        <?php echo JText::_('COM_SLOGIN_PROVIDER'); ?>
+	<th scope="col" class="w-15 d-none d-md-table-cell">
+        <?php echo Text::_('COM_SLOGIN_PROVIDER'); ?>
 	</th>
-	<th width="10%">
-        <?php echo JText::_('COM_SLOGIN_SLOGINID'); ?>
+	<th scope="col" class="w-10 d-none d-md-table-cell">
+        <?php echo Text::_('COM_SLOGIN_SLOGINID'); ?>
 	</th>
 </tr>
