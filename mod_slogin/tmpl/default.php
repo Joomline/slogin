@@ -38,7 +38,7 @@ use Joomla\CMS\Component\ComponentHelper;
 				<li><a href="<?php echo Route::_('index.php?option=com_users&view=profile&layout=edit'); ?>"><?php echo Text::_('MOD_SLOGIN_EDIT_YOUR_PROFILE'); ?></a></li>
 			<?php }	?>
 			<?php	if ($params->get('slogin_link_profile', 1) == 1) {?>
-			<li><a href="<?php echo Route::_('index.php?option=com_slogin&view=fusion'); ?>"><?php echo Text::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
+			<li><a href="<?php echo Route::_('index.php?option=com_slogin&view=fusion' . ($fusionItemId ? '&Itemid=' . $fusionItemId : '')); ?>"><?php echo Text::_('MOD_SLOGIN_EDIT_YOUR_SOCIAL_AUCH'); ?></a></li>
 			<?php }	?>
 
             <?php if ($show_fusion_form == 1) {?>
@@ -46,7 +46,7 @@ use Joomla\CMS\Component\ComponentHelper;
                     <p><?php echo Text::_('MOD_SLOGIN_DETACH_PROVIDERS_MODULE')?></p>
                     <div id="slogin-buttons-unattach" class="slogin-buttons slogin-compact">
                         <?php foreach($unattachedProviders as $provider) : ?>
-                            <a href="<?php echo Route::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
+                            <a href="<?php echo Route::_($provider['link'] . ($fusionItemId ? '&Itemid=' . $fusionItemId : '')); ?>" title="<?php echo $provider['plugin_title'];?>">
                                 <span class="<?php echo $provider['class'];?>">&nbsp;</span>
                             </a>
                         <?php endforeach; ?>
@@ -67,7 +67,7 @@ use Joomla\CMS\Component\ComponentHelper;
                                 }
                             }
                             ?>
-                            <a <?php echo $linkParams;?> href="<?php echo Route::_($provider['link']);?>" title="<?php echo $provider['plugin_title'];?>">
+                            <a <?php echo $linkParams;?> href="<?php echo Route::_($provider['link'] . ($fusionItemId ? '&Itemid=' . $fusionItemId : '')); ?>" title="<?php echo $provider['plugin_title'];?>">
                                 <span class="<?php echo $provider['class'];?>">&nbsp;</span>
                             </a>
                         <?php endforeach; ?>
@@ -103,7 +103,7 @@ use Joomla\CMS\Component\ComponentHelper;
             }
 			$title = (!empty($link['plugin_title'])) ? ' title="'.$link['plugin_title'].'"' : '';
             ?>
-            <a  rel="nofollow" class="link<?php echo $link['class'];?>" <?php echo $linkParams.$title;?> href="<?php echo Route::_($link['link']);?>"><span class="<?php echo $link['class'];?> slogin-ico">&nbsp;</span><span class="text-socbtn"><?php echo $link['plugin_title'];?></span></a>
+            <a  rel="nofollow" class="link<?php echo $link['class'];?>" <?php echo $linkParams.$title;?> href="<?php echo Route::_($link['link'] . ($fusionItemId ? '&Itemid=' . $fusionItemId : '')); ?>"><span class="<?php echo $link['class'];?> slogin-ico">&nbsp;</span><span class="text-socbtn"><?php echo $link['plugin_title'];?></span></a>
         <?php endforeach; ?>
     <?php endif; ?>
 

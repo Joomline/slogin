@@ -82,6 +82,20 @@ if(!($option == 'com_slogin' && ($task == 'auth' || $task == 'check')))
 //else{
     $user = Factory::getUser();
     $input = Factory::getApplication()->input;
+    $app = Factory::getApplication();
+    $menu = $app->getMenu();
+
+    // Найдем Itemid для представления fusion
+    $fusionItemId = 0;
+    $menuItems = $menu->getItems('component', 'com_slogin');
+    if ($menuItems) {
+        foreach ($menuItems as $item) {
+            if (isset($item->query['view']) && $item->query['view'] === 'fusion') {
+                $fusionItemId = $item->id;
+                break;
+            }
+        }
+    }
 
     $callbackUrl = '';
 
