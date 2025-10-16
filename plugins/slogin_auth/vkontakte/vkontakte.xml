@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
-	<name>PLG_SLOGIN_AUTH_VKONTAKTE</name>
+	<name>Social Login VKontakte auth</name>
 	<author>Arkadiy, Joomline</author>
 	<creationDate>28.01.2019</creationDate>
 	<copyright>(C) 2012-2019. All rights reserved.</copyright>
