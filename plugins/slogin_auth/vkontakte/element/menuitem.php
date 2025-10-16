@@ -43,7 +43,7 @@ class JFormFieldMenuitem extends MenuitemField
 
         // Add preview button to show the callback URL
         $html .= '<div class="mt-2">';
-        $html .= '<button type="button" class="btn btn-secondary" id="slogin-preview-callback-url">' . Text::_('PLG_SLOGIN_AUTH_VKONTAKTE_PREVIEW_URL') . '</button>';
+        $html .= '<button type="button" class="btn btn-outline-primary" id="slogin-preview-callback-url">' . Text::_('PLG_SLOGIN_AUTH_VKONTAKTE_PREVIEW_URL') . '</button>';
         $html .= '<div id="slogin-callback-url-preview" class="alert alert-info mt-2" style="display:none;"></div>';
         $html .= '</div>';
 

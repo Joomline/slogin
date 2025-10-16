@@ -33,7 +33,7 @@ class JFormFieldCallbackUrl extends JFormField
 	{
 		$task = !empty($this->element['value']) ? '?option=com_slogin&task=check&plugin=' . (string) $this->element['value'] : '';
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
-		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$class = $this->element['class'] ? ' class="form-control ' . (string) $this->element['class'] . '"' : ' class="form-control"';
 
 		$CallbackUrl = JURI::root().$task;
 
@@ -41,7 +41,9 @@ class JFormFieldCallbackUrl extends JFormField
              $CallbackUrl = substr($CallbackUrl, 0, -1);
         }
 		
-		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
+		$html = '<div class="input-group">';
+		$html .= '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" '. $class . $readonly .' />';
+		$html .= '</div>';
 		
 		return $html;
 	}

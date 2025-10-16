@@ -61,6 +61,15 @@
                         filter="unset"
                         value=""
                         readonly="true"
+                        class="readonly form-control"
+                        />
+                <field
+                        name="trusted_redirect_uri"
+                        type="trustedredirecturi"
+                        label="PLG_SLOGIN_AUTH_VKONTAKTE_TRUSTED_REDIRECT_URI_LABEL"
+                        description="PLG_SLOGIN_AUTH_VKONTAKTE_TRUSTED_REDIRECT_URI_DESC"
+                        filter="unset"
+                        readonly="true"
                         class="readonly"
                         />
             </fieldset>

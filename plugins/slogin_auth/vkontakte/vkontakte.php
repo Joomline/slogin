@@ -257,27 +257,44 @@ class plgSlogin_authVkontakte extends CMSPlugin
      */
     protected function getMenuItemUrl($menuItemId)
     {
-        $menu = Factory::getApplication()->getMenu();
-        $menuItem = $menu->getItem($menuItemId);
-
-        if (!$menuItem) {
-            throw new Exception(Text::_('PLG_SLOGIN_AUTH_VKONTAKTE_ERROR_MENU_ITEM_NOT_FOUND'));
-        }
-
-        // Generate the URL
-        $url = Route::_('index.php?Itemid=' . $menuItemId, false);
+        // Получаем базовый домен
+        $baseUrl = rtrim(Uri::root(), '/');
         
-        // Convert to absolute URL if needed
-        if (strpos($url, 'http') !== 0) {
-            $url = Uri::root() . ltrim($url, '/');
-        }
-        
-        // Append provider name to the URL
-        if (substr($url, -1) !== '/') {
-            $url .= '/';
-        }
-        $url .= $this->provider;
+        // Default URL (without menu item)
+        $defaultUrl = $baseUrl . '/index.php?option=com_slogin&task=check&plugin=' . $this->provider;
 
-        return $url;
+        try {
+            // Используем прямой запрос к базе данных для получения информации о пункте меню
+            $db = Factory::getDbo();
+            $query = $db->getQuery(true)
+                ->select('a.alias, a.path')
+                ->from('#__menu AS a')
+                ->where('a.id = ' . (int)$menuItemId);
+            
+            $db->setQuery($query);
+            $menuData = $db->loadObject();
+            
+            if (!$menuData) {
+                throw new Exception(Text::_('PLG_SLOGIN_AUTH_VKONTAKTE_ERROR_MENU_ITEM_NOT_FOUND'));
+            }
+            
+            if (!empty($menuData->alias)) {
+                // Формируем SEF URL напрямую из базы данных
+                $menuPath = $menuData->path;
+                
+                // Если есть путь меню, используем его
+                if (!empty($menuPath)) {
+                    return $baseUrl . '/' . $menuPath . '/' . $this->provider;
+                } else {
+                    // Иначе используем только алиас
+                    return $baseUrl . '/' . $menuData->alias . '/' . $this->provider;
+                }
+            }
+        } catch (Exception $e) {
+            // В случае ошибки возвращаем URL по умолчанию
+            return $defaultUrl;
+        }
+
+        return $defaultUrl;
     }
 }
