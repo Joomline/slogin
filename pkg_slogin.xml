@@ -22,7 +22,6 @@
 	    <file type="component" method="upgrade" id="com_slogin" client="site">com_slogin</file>
 	    <file type="module" method="upgrade" id="mod_slogin" client="site">mod_slogin</file>
 	    <file type="library" method="upgrade" id="slogin" client="site">libraries/slogin</file>
-		<file type="library" method="upgrade" id="amcharts" client="site">libraries/amcharts</file>
 	    <file type="plugin" method="upgrade" id="slogin" group="user" client="site">plugins/user/plg_slogin</file>
 	    <file type="plugin" method="upgrade" id="profile" group="slogin_integration" client="site">plugins/slogin_integration/profile</file> 
 		<file type="plugin" method="upgrade" id="facebook" group="slogin_auth"  client="site">plugins/slogin_auth/facebook</file>	

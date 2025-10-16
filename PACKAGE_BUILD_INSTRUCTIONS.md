@@ -16,7 +16,6 @@
 - `com_slogin/` - основной компонент SLogin
 - `mod_slogin/` - модуль SLogin
 - `libraries/slogin/` - библиотека SLogin OAuth
-- `libraries/amcharts/` - библиотека AmCharts
 
 ### Плагины
 - `plugins/authentication/slogin/` - плагин аутентификации
@@ -57,7 +56,6 @@ zip -r pkg_slogin.zip \
   com_slogin/ \
   mod_slogin/ \
   libraries/slogin/ \
-  libraries/amcharts/ \
   plugins/authentication/slogin/ \
   plugins/user/plg_slogin/ \
   plugins/slogin_integration/profile/ \

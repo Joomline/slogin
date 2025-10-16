@@ -19,9 +19,6 @@
 		<zip destfile="${build}/lib_slogin_oauth.zip" description="lib_slogin_oauth">
 			<fileset dir="libraries/slogin" />
 		</zip>
-		<zip destfile="${build}/lib_amcharts.zip" description="lib_amcharts">
-			<fileset dir="libraries/amcharts" />
-		</zip>
 
 		<!-- Plugins -->
 		<zip destfile="${build}/plg_slogin.zip" description="plg_slogin">

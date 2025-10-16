@@ -33,7 +33,32 @@ $sess = Factory::getSession();
         <div class="row">
             <div class="col-8">
                 <h2 class="text-center"><?php echo Text::_('COM_SLOGIN_USER_STRUCTURE'); ?></h2>
-                <div id="pie_chartdiv" style="width:100%; height:350px;"></div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><?php echo Text::_('COM_SLOGIN_PROVIDER_NAME'); ?></th>
+                            <th scope="col"><?php echo Text::_('COM_SLOGIN_PROVIDER_USERS'); ?></th>
+                            <th scope="col"><?php echo Text::_('COM_SLOGIN_PROVIDER_PERCENT'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($this->pieChartData)) : ?>
+                            <?php $i = 1; foreach($this->pieChartData as $provider) : ?>
+                                <tr>
+                                    <td><?php echo $i; ?></td>
+                                    <td><?php echo $provider->name; ?></td>
+                                    <td><?php echo $provider->value; ?></td>
+                                    <td><?php echo $provider->percents; ?>%</td>
+                                </tr>
+                            <?php $i++; endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="4" class="text-center"><?php echo Text::_('COM_SLOGIN_NO_DATA'); ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
             <div class="col-4">
                 <h2><?php echo Text::_('COM_SLOGIN'); ?></h2>
