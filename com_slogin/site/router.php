@@ -9,7 +9,7 @@ function SLoginBuildRoute(& $query)
 {
 	// Declare static variables.
 	static $items;
-	static $itemId;
+	static $itemId = null;
 
 	$segments = array();
 
@@ -87,7 +87,7 @@ function SLoginBuildRoute(& $query)
 
 			// Build an array of serialized query strings to menu item id mappings.
 			for ($i = 0, $n = count($items); $i < $n; $i++) {
-				// Check to see if we have found the reset menu item.
+				// Check to see if we have found the menu item for this view
 				if (!empty($items[$i]->query['view']) && ($items[$i]->query['view'] == $query['view'])) {
 					$itemId = $items[$i]->id;
 					break;
@@ -106,8 +106,8 @@ function SLoginBuildRoute(& $query)
 				break;
 
 			case 'fusion':
-				if($itemId){
-					unset ($query['view']);
+				if($itemId !== null){
+					unset($query['view']);
 					$query['Itemid'] = $itemId;
 				}
 				else{
