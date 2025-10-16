@@ -16,20 +16,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Input\Input;
+use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
-
-//костыль для поддержки 2 и  3 джумлы
-if(!class_exists('SLoginViewSettingsParent')){
-    if(class_exists('JViewLegacy')){
-        class SLoginViewSettingsParent extends JViewLegacy{}
-    }
-    else{
-        class SLoginViewSettingsParent extends JView{}
-    }
-}
 
 /**
  * View class for a list of SLogins
@@ -37,7 +26,7 @@ if(!class_exists('SLoginViewSettingsParent')){
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginViewSettings extends SLoginViewSettingsParent
+class SLoginViewSettings extends HtmlView
 {
 	protected $component;
 	protected $module;
@@ -106,19 +95,19 @@ class SLoginViewSettings extends SLoginViewSettingsParent
 	protected function addToolbar()
 	{
 		$doc = Factory::getApplication()->getDocument();
-		$doc->addStyleDeclaration('.icon-48-generic {background: url("../media/com_slogin/icon_48x48.png")}');
+		// Remove old icon style - not needed in Joomla 5
 		//include helper file
 		require_once JPATH_COMPONENT.'/helpers/slogin.php';
 		//actions example
 		$canDo	= SLoginHelper::getActions();
 		
 		//set title
-		ToolbarHelper::title(Text::_('COM_SLOGIN'));
+		ToolbarHelper::title(Text::_('COM_SLOGIN'), 'users');
 		
 		//config
 		if ($canDo->get('core.admin')) {
-            ToolbarHelper::custom('repair', 'remove', 'remove', Text::_('COM_SLOGIN_REPAIR_TABLE'), false);
-            ToolbarHelper::custom('clean', 'delete', 'delete', Text::_('COM_SLOGIN_CLEAN_TABLE'), false);
+            ToolbarHelper::custom('repair', 'refresh', 'refresh', Text::_('COM_SLOGIN_REPAIR_TABLE'), false);
+            ToolbarHelper::custom('clean', 'trash', 'trash', Text::_('COM_SLOGIN_CLEAN_TABLE'), false);
             ToolbarHelper::divider();
             ToolbarHelper::preferences('com_slogin');
 		}
