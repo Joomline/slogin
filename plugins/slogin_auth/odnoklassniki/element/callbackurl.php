@@ -11,7 +11,7 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-use Joomla\\CMS\\Form\\FormField;
+use Joomla\CMS\Form\FormField;
 
 class JFormFieldCallbackUrl extends FormField
 {
@@ -35,7 +35,7 @@ class JFormFieldCallbackUrl extends FormField
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-		$CallbackUrl = Joomla\\CMS\\Uri\\Uri::root().$task;
+		$CallbackUrl = Joomla\CMS\Uri\Uri::root().$task;
 
         if(substr($CallbackUrl, -1, 1) == '/'){
              $CallbackUrl = substr($CallbackUrl, 0, -1);

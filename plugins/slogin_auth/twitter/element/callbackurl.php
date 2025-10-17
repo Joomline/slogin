@@ -11,7 +11,7 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-use Joomla\\CMS\\Form\\FormField;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Router\SiteRouter;
 if(is_file(JPATH_ROOT . '/includes/router.php'))
 	require_once (JPATH_ROOT . '/includes/router.php');
@@ -43,7 +43,7 @@ class JFormFieldCallbackUrl extends FormField
         $router = new JRouterSite(array('mode' => 1));
 
         $route = $router->build('index.php?option=com_slogin&task=check&plugin=' . (string) $this->element['value']);
-        $CallbackUrl = Joomla\\CMS\\Uri\\Uri::root().str_replace('/administrator/', '', $route);
+        $CallbackUrl = Joomla\CMS\Uri\Uri::root().str_replace('/administrator/', '', $route);
 		
 		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
 		
