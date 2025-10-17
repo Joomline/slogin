@@ -2,14 +2,17 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access.
 defined('_JEXEC') or die('(@)|(@)');
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 
 class SloginProvidersHelper
 {
@@ -44,7 +47,7 @@ class SloginProvidersHelper
 
     static function getOrderedEnabledServiceProviders()
     {
-        $config = JComponentHelper::getParams('com_slogin');
+        $config = ComponentHelper::getParams('com_slogin');
         $providers = self::getServiceProviders();
         $enabled = array();
         $return = array();
@@ -84,7 +87,7 @@ class SloginProvidersHelper
                 'link' => 'index.php?option=com_slogin&task=auth&plugin=' . $provider . $add,
                 'class' => $provider.'slogin',
                 'plugin_name' => $provider,
-                'plugin_title' => JText::_('COM_SLOGIN_PROVIDER_'.strtoupper($provider))
+                'plugin_title' => Text::_('COM_SLOGIN_PROVIDER_'.strtoupper($provider))
             );
         }
         return $return;

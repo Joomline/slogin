@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,9 +11,9 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-jimport('joomla.form.formfield');
+use Joomla\\CMS\\Form\\FormField;
 
-class JFormFieldCallbackUrl extends JFormField
+class JFormFieldCallbackUrl extends FormField
 {
 	/**
 	 * The form field type.
@@ -35,7 +35,7 @@ class JFormFieldCallbackUrl extends JFormField
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-		$CallbackUrl = JURI::root().$task;
+		$CallbackUrl = Joomla\\CMS\\Uri\\Uri::root().$task;
 
         if(substr($CallbackUrl, -1, 1) == '/'){
              $CallbackUrl = substr($CallbackUrl, 0, -1);

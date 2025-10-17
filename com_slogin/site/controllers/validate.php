@@ -1,11 +1,16 @@
 <?php
 
+use Joomla\CMS\Input\Input;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\User\UserHelper;
+
 class SLoginControllerValidate
 {
     function validate(){
         $return = array('error'=>0, 'msg'=>array());
 
-        $input = new JInput();
+        $input = new Input();
         $ajax = $input->getInt('ajax', 0);
         $email = $input->getString('email', '');
         $name = $input->getString('name', '');
@@ -13,19 +18,19 @@ class SLoginControllerValidate
 
         if($email && !$this->validateEmail($email)){
             $return['error'] =+ 1;
-            $return['msg'][] = JText::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
+            $return['msg'][] = Text::_('COM_SLOGIN_ERROR_VALIDATE_MAIL');
         }
         if($email && !$this->checkUniqueEmail($email)){
             $return['error'] =+ 1;
-            $return['msg'][] = JText::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
+            $return['msg'][] = Text::_('COM_SLOGIN_ERROR_NOT_UNIQUE_MAIL');
         }
         if($name && !$this->validateName($name)){
             $return['error'] =+ 1;
-            $return['msg'][] = JText::_('COM_SLOGIN_ERROR_VALIATE_NAME');
+            $return['msg'][] = Text::_('COM_SLOGIN_ERROR_VALIATE_NAME');
         }
         if($username && !$this->validateUserName($username)){
             $return['error'] =+ 1;
-            $return['msg'][] = JText::_('COM_SLOGIN_ERROR_VALIATE_USERNAME');
+            $return['msg'][] = Text::_('COM_SLOGIN_ERROR_VALIATE_USERNAME');
         }
 
         if($ajax){

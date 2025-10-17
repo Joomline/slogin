@@ -287,7 +287,7 @@ class plgSlogin_integrationSlogin_avatar extends CMSPlugin
         $row = new stdclass();
 
         //Проверяем есть ли изображение в базе
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query = "SELECT COUNT(*) FROM #__plg_slogin_avatar WHERE userid=" . $data->user_id . " AND provider='" . $data->user_provider . "'";
         $db->setQuery($query);
@@ -321,7 +321,7 @@ class plgSlogin_integrationSlogin_avatar extends CMSPlugin
     {
 
         //проверяем приоритет аватара
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $q = "SELECT COUNT(*) FROM #__plg_slogin_avatar WHERE provider='" . $provider . "' AND userid=" . $userid . " AND main=1";
         $res = $db->setQuery($q)->loadResult();

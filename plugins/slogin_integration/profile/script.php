@@ -66,7 +66,7 @@ class plgSlogin_integrationProfileInstallerScript
 	 */
 	function postflight($type, $parent) 
 	{
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
 		switch($type){
             case 'install' :

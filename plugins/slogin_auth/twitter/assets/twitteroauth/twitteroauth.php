@@ -7,7 +7,7 @@
  */
 
 /* Load OAuth lib. You can find it at http://oauth.net */
-//jimport('slogin.slogin_oauth');
+//require_once JPATH_BASE.'/libraries/slogin/slogin_oauth.php';
 require_once JPATH_BASE.'/libraries/slogin/slogin_oauth.php';
 
 /**

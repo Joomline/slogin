@@ -15,7 +15,7 @@ class plgProfileHelper
 {
 	public static function getProfile($userid)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $q = $db->getQuery(true);
         $q->select('*');
         $q->from('#__plg_slogin_profile');

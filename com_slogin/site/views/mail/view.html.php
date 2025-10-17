@@ -53,7 +53,7 @@ class SloginViewMail extends HtmlView
         $this->name = $controller->setUserName();
         $this->username = $controller->setUserUserName();
         $this->email = $data['email'];
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
         $this->action = JRoute::_('index.php?option=com_slogin&task=check_mail');
 
 		// Display the view

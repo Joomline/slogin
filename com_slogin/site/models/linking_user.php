@@ -55,14 +55,14 @@ class SloginModelLinking_user extends FormModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered login form data.
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
         $input = new JInput;
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first
 		if ($return = $input->Get('return', '', 'BASE64')) {
 			$data['return'] = base64_decode($return);
-			if (!JURI::isInternal($data['return'])) {
+			if (!Uri::isInternal($data['return'])) {
 				$data['return'] = '';
 			}
 		}
@@ -86,7 +86,7 @@ class SloginModelLinking_user extends FormModel
 	protected function populateState()
 	{
 		// Get the application object.
-		$params	= JFactory::getApplication()->getParams('com_users');
+		$params	= Factory::getApplication()->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -123,12 +123,12 @@ class SloginModelLinking_user extends FormModel
 
     static function getReturnURL($params, $type)
     {
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
         $router = $app->getRouter();
         $url = null;
         if ($itemid =  $params->get($type))
         {
-            $db		= JFactory::getDbo();
+            $db		= Factory::getDbo();
             $query	= $db->getQuery(true);
 
             $query->select($db->quoteName('link'));
@@ -138,7 +138,7 @@ class SloginModelLinking_user extends FormModel
 
             $db->setQuery($query);
             if ($link = $db->loadResult()) {
-                if (JFactory::getApplication()->getConfig()->getValue('config.sef', false)) {
+                if (Factory::getApplication()->getConfig()->getValue('config.sef', false)) {
                     $url = 'index.php?Itemid='.$itemid;
                 }
                 else {
@@ -148,16 +148,16 @@ class SloginModelLinking_user extends FormModel
         }
         if (!$url)
         {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             $url = base64_decode($app->getUserState('com_slogin.return_url'));
         }
         if (!$url)
         {
             // stay on the same page
-            $uri = clone JFactory::getURI();
+            $uri = clone Factory::getApplication()->getUri();
             $vars = $router->parse($uri);
             unset($vars['lang']);
-            if (JFactory::getApplication()->getConfig()->getValue('config.sef', false))
+            if (Factory::getApplication()->getConfig()->getValue('config.sef', false))
             {
                 if (isset($vars['Itemid']))
                 {
@@ -169,17 +169,17 @@ class SloginModelLinking_user extends FormModel
                         $url = 'index.php?Itemid='.$itemid;
                     }
                     else {
-                        $url = 'index.php?'.JURI::buildQuery($vars).'&Itemid='.$itemid;
+                        $url = 'index.php?'.Uri::buildQuery($vars).'&Itemid='.$itemid;
                     }
                 }
                 else
                 {
-                    $url = 'index.php?'.JURI::buildQuery($vars);
+                    $url = 'index.php?'.Uri::buildQuery($vars);
                 }
             }
             else
             {
-                $url = 'index.php?'.JURI::buildQuery($vars);
+                $url = 'index.php?'.Uri::buildQuery($vars);
             }
         }
 

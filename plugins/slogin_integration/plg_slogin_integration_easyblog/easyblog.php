@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 class plgSlogin_integrationEasyblog extends CMSPlugin
 {
@@ -67,7 +68,7 @@ class plgSlogin_integrationEasyblog extends CMSPlugin
 
         if ($db->getErrorNum())
         {
-            echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $db->getErrorNum(), $db->getErrorMsg()).'<br />';
+            echo Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $db->getErrorNum(), $db->getErrorMsg()).'<br />';
             return;
         }
     }

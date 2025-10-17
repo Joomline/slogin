@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -119,26 +119,26 @@ use Joomla\CMS\Component\ComponentHelper;
     <?php endif; ?>
 
 <?php if ($params->get('show_login_form')): ?>
-    <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" >
+        <form action="<?php echo Route::_('index.php', true, $params->get('usesecure')); ?>" method="post" id="login-form" >
         <fieldset class="userdata">
             <p id="form-login-username">
-                <label for="modlgn-username"><?php echo JText::_('MOD_SLOGIN_VALUE_USERNAME') ?></label>
+                <label for="modlgn-username"><?php echo Text::_('MOD_SLOGIN_VALUE_USERNAME') ?></label>
                 <input id="modlgn-username" type="text" name="username" class="inputbox"  size="18" />
             </p>
             <p id="form-login-password">
-                <label for="modlgn-passwd"><?php echo JText::_('JGLOBAL_PASSWORD') ?></label>
+                <label for="modlgn-passwd"><?php echo Text::_('JGLOBAL_PASSWORD') ?></label>
                 <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
             </p>
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
             <p id="form-login-remember">
 				 <label for="modlgn-remember">
 				  	<input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
-				  	<?php echo JText::_('MOD_SLOGIN_REMEMBER_ME') ?>
+				  	<?php echo Text::_('MOD_SLOGIN_REMEMBER_ME') ?>
 				 </label>
 			</p>
 			<div class="slogin-clear"></div>
             <?php endif; ?>
-            <input type="submit" name="Submit" class="button" value="<?php echo JText::_('JLOGIN') ?>" />
+            <input type="submit" name="Submit" class="button" value="<?php echo Text::_('JLOGIN') ?>" />
             <input type="hidden" name="option" value="com_users" />
             <input type="hidden" name="task" value="user.login" />
             <input type="hidden" name="return" value="<?php echo $return; ?>" />
@@ -146,19 +146,19 @@ use Joomla\CMS\Component\ComponentHelper;
         </fieldset>
         <ul class="ul-jlslogin">
             <li>
-                <a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
-                    <?php echo JText::_('MOD_SLOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
+                <a  rel="nofollow" href="<?php echo Route::_('index.php?option=com_users&view=reset'); ?>">
+                    <?php echo Text::_('MOD_SLOGIN_FORGOT_YOUR_PASSWORD'); ?></a>
             </li>
             <li>
-                <a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
-                    <?php echo JText::_('MOD_SLOGIN_FORGOT_YOUR_USERNAME'); ?></a>
+                <a  rel="nofollow" href="<?php echo Route::_('index.php?option=com_users&view=remind'); ?>">
+                    <?php echo Text::_('MOD_SLOGIN_FORGOT_YOUR_USERNAME'); ?></a>
             </li>
             <?php
-            $usersConfig = JComponentHelper::getParams('com_users');
+            $usersConfig = ComponentHelper::getParams('com_users');
             if ($usersConfig->get('allowUserRegistration')) : ?>
                 <li>
-                    <a  rel="nofollow" href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
-                        <?php echo JText::_('MOD_SLOGIN_REGISTER'); ?></a>
+                    <a  rel="nofollow" href="<?php echo Route::_('index.php?option=com_users&view=registration'); ?>">
+                        <?php echo Text::_('MOD_SLOGIN_REGISTER'); ?></a>
                 </li>
                 <?php endif; ?>
         </ul>

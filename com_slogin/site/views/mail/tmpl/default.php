@@ -16,8 +16,8 @@ if (version_compare(JVERSION, '4.0.0', '>=')) {
 } else {
 	JHTML::_('behavior.formvalidation');
 }
-$doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::root().'media/com_slogin/comslogin.min.css?v=3');
+$doc = Factory::getDocument();
+$doc->addStyleSheet(Uri::root().'media/com_slogin/comslogin.min.css?v=3');
 if($this->user->id == 0){
 ?>
 <div class="login">

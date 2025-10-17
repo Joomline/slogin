@@ -457,7 +457,7 @@ class plgSlogin_integrationProfile extends CMSPlugin
     {
 
 
-        $conf = JComponentHelper::getParams('com_slogin');
+        $conf = ComponentHelper::getParams('com_slogin');
 
         if (!$provider) return;
 
@@ -532,7 +532,7 @@ class plgSlogin_integrationProfile extends CMSPlugin
 	}
 
 	private function insertUserFieldData($fieldId, $userId, $value){
-    	$db = JFactory::getDbo();
+    	$db = Factory::getDbo();
     	$query = $db->getQuery(true);
     	$query->select('COUNT(*)')
 	          ->from('#__fields_values')

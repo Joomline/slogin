@@ -54,7 +54,7 @@ class plgSlogin_authGoogle extends CMSPlugin
         if ($code) {
 
             // get access_token for google API
-            $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=google');
+            $redirect = urlencode(Uri::base().'?option=com_slogin&task=check&plugin=google');
             $scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 
             $params = array(

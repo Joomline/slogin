@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
+<extension version="5.0" type="plugin" method="upgrade" group="slogin_integration">
 	<name>Plugin profile Slogin</name>
 	<creationDate>20.11.2014</creationDate>
-	<copyright>© 2012 - 2020. All rights reserved.</copyright>
+	<copyright>© 2012 - 2025. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
     <author>Arkadiy Sedelnikov, Joomline</author>
     <authorUrl>https://joomline.ru</authorUrl>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
-	<version>1.0.3</version>
+	<version>5.0.0</version>
+	<namespace path="src">Joomla\Plugin\SloginIntegration\Profile</namespace>
 	<description>PLG_SLOGIN_PROFILE_DESC</description>
     <!-- Runs on install/uninstall/update; New in 1.6 -->
     <scriptfile>script.php</scriptfile>

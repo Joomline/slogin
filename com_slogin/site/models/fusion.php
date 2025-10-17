@@ -8,13 +8,13 @@
  * @license 	GNU/GPL v.3 or later.
  */
 
-use Joomla\CMS\MVC\View\GenericDataException;
-
-defined('_JEXEC') or die;
-
-use Joomla\CMS\MVC\Model\FormModel;
-use Joomla\CMS\Event\Dispatcher;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Input\Input;
+use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\MVC\View\GenericDataException;
 require_once JPATH_ROOT.'/components/com_slogin/helpers/providers.php';
 /**
  * Rest model class for Users.
@@ -49,7 +49,7 @@ class SloginModelFusion extends FormModel
 
     public function getFusionProviders()
 	{
-        $userId = JFactory::getUser()->id;
+        $userId = Factory::getUser()->id;
 
         $query =  $this->_db->getQuery(true);
         $query->select($this->_db->quoteName('provider'));
@@ -63,12 +63,12 @@ class SloginModelFusion extends FormModel
 
     public function getProviders()
 	{
-		$config = JComponentHelper::getParams('com_slogin');
-        $action = (JFactory::getUser()->id == 0) ? '' : '&action=fusion';
+		$config = ComponentHelper::getParams('com_slogin');
+        $action = (Factory::getUser()->id == 0) ? '' : '&action=fusion';
         $plugins = array();
 
-		JPluginHelper::importPlugin('slogin_auth');
-		Joomla\CMS\Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $action));
+		PluginHelper::importPlugin('slogin_auth');
+		Factory::getApplication()->triggerEvent('onCreateSloginLink', array(&$plugins, $action));
 
         return $plugins;
 	}
@@ -82,14 +82,14 @@ class SloginModelFusion extends FormModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered login form data.
-		$app	= JFactory::getApplication();
-		$input =  new Joomla\Input\Input();
+		$app	= Factory::getApplication();
+		$input =  new Input();
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first
 		if ($return = $input->Get('return', '', 'BASE64')) {
 			$data['return'] = base64_decode($return);
-			if (!JURI::isInternal($data['return'])) {
+			if (!Uri::isInternal($data['return'])) {
 				$data['return'] = '';
 			}
 		}
@@ -113,7 +113,7 @@ class SloginModelFusion extends FormModel
 	protected function populateState()
 	{
 		// Get the application object.
-		$params	= JFactory::getApplication()->getParams('com_users');
+		$params	= Factory::getApplication()->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -131,10 +131,10 @@ class SloginModelFusion extends FormModel
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
 		// Import the approriate plugin group.
-		JPluginHelper::importPlugin($group);
+		PluginHelper::importPlugin($group);
 
 		// Trigger the form preparation event.
-		$results = Joomla\CMS\Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
+		$results = Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true)) {

@@ -55,14 +55,14 @@ class SloginModelComparison_user extends FormModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered login form data.
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
         $input =  new Joomla\Input\Input();
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first
 		if ($return = $input->Get('return', '', 'BASE64')) {
 			$data['return'] = base64_decode($return);
-			if (!JURI::isInternal($data['return'])) {
+			if (!Uri::isInternal($data['return'])) {
 				$data['return'] = '';
 			}
 		}
@@ -86,7 +86,7 @@ class SloginModelComparison_user extends FormModel
 	protected function populateState()
 	{
 		// Get the application object.
-		$params	= JFactory::getApplication()->getParams('com_users');
+		$params	= Factory::getApplication()->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);

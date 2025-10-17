@@ -12,7 +12,7 @@ use Joomla\CMS\Filesystem\Folder;
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * Methods supporting a list of search terms.
@@ -21,7 +21,7 @@ jimport('joomla.application.component.modellist');
  * @subpackage	com_search
  * @since		1.6
  */
-class sloginModelSettings  extends JModelList
+class sloginModelSettings  extends ListModel
 {
     public function getPieChartData()
     {

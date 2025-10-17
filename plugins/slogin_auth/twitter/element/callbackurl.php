@@ -2,7 +2,7 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
  * @copyright	© 2012-2020. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
@@ -11,14 +11,14 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-jimport('joomla.form.formfield');
-jimport( 'joomla.application.router' );
+use Joomla\\CMS\\Form\\FormField;
+use Joomla\CMS\Router\SiteRouter;
 if(is_file(JPATH_ROOT . '/includes/router.php'))
 	require_once (JPATH_ROOT . '/includes/router.php');
 else if(is_file(JPATH_ROOT . '/libraries/cms/router/site.php'))
 	require_once (JPATH_ROOT . '/libraries/cms/router/site.php');
 
-class JFormFieldCallbackUrl extends JFormField
+class JFormFieldCallbackUrl extends FormField
 {
 	/**
 	 * The form field type.
@@ -43,7 +43,7 @@ class JFormFieldCallbackUrl extends JFormField
         $router = new JRouterSite(array('mode' => 1));
 
         $route = $router->build('index.php?option=com_slogin&task=check&plugin=' . (string) $this->element['value']);
-        $CallbackUrl = JURI::root().str_replace('/administrator/', '', $route);
+        $CallbackUrl = Joomla\\CMS\\Uri\\Uri::root().str_replace('/administrator/', '', $route);
 		
 		$html = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'.$CallbackUrl.'" size="70%" '. $class . $readonly .' />';
 		

@@ -2,10 +2,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 
-class SloginModelUser extends JModelAdmin
+class SloginModelUser extends AdminModel
 {
 	public function getTable($type = 'Users', $prefix = 'SLoginTable', $config = array())
 	{

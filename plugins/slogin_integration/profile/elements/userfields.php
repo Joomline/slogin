@@ -11,9 +11,12 @@
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldUserFields extends JFormField
+class JFormFieldUserFields extends FormField
 {
 	/**
 	 * The form field type.
@@ -31,7 +34,7 @@ class JFormFieldUserFields extends JFormField
 	 */
 	protected function getInput()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id as value, title as text')
 		      ->from('#__fields')
@@ -40,7 +43,7 @@ class JFormFieldUserFields extends JFormField
 		;
 		$options = $db->setQuery($query)->loadObjectList();
 
-		$fieldOptions = array(JHtml::_('select.option', '', JText::_('JSELECT')));
+		$fieldOptions = array(HTMLHelper::_('select.option', '', Text::_('JSELECT')));
 		$fieldOptions = array_merge($fieldOptions, $options);
 
 		$query = 'SHOW COLUMNS FROM #__plg_slogin_profile';
@@ -59,8 +62,8 @@ class JFormFieldUserFields extends JFormField
 
 			$html .= '
 			<tr>
-				<td>'.JText::_('PLG_SLOGIN_PROFILE_FIELD_'.strtoupper($profileField->Field)).'</td>
-				<td>'.JHTML::_('select.genericlist', $fieldOptions, $this->name.'['.$profileField->Field.']', ' class="inputbox"', 'value', 'text', $value).'</td>
+				<td>'.Text::_('PLG_SLOGIN_PROFILE_FIELD_'.strtoupper($profileField->Field)).'</td>
+				<td>'.HTMLHelper::_('select.genericlist', $fieldOptions, $this->name.'['.$profileField->Field.']', ' class="inputbox"', 'value', 'text', $value).'</td>
 			</tr>';
 		}
 		$html .= '</table>';

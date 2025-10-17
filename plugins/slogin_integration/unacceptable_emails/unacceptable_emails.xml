@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
+<extension version="5.0" type="plugin" method="upgrade" group="slogin_integration">
 	<name>PLG_SLOGIN_UNACCEPTABLE_EMAILS</name>
 	<creationDate>15.01.2018</creationDate>
-	<copyright>(C) 2018. All rights reserved.</copyright>
+	<copyright>(C) 2018-2025. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
     <author>Arkadiy Sedelnikov, Joomline</author>
     <authorUrl>https://joomline.ru</authorUrl>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
-	<version>1.0.0</version>
+	<version>5.0.0</version>
+	<namespace path="src">Joomla\Plugin\SloginIntegration\UnacceptableEmails</namespace>
 	<description>PLG_SLOGIN_UNACCEPTABLE_EMAILS_DESC</description>
 	<files>
 		<filename>index.html</filename>
