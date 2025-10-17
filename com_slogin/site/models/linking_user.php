@@ -9,12 +9,15 @@
  */
 
 use Joomla\CMS\MVC\View\GenericDataException;
-
-defined('_JEXEC') or die;
-
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\Event\Dispatcher;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Input\Input;
+
+defined('_JEXEC') or die;
 /**
  * Rest model class for Users.
  *
@@ -32,7 +35,7 @@ class SloginModelLinking_user extends FormModel
 	 *
 	 * @param	array	$data		An optional array of data for the form to interogate.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
+	 * @return	Form	A Form object on success, false on failure
 	 * @since	1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -56,7 +59,7 @@ class SloginModelLinking_user extends FormModel
 	{
 		// Check the session for previously entered login form data.
 		$app	= Factory::getApplication();
-        $input = new JInput;
+        $input = new Input;
 		$data	= $app->getUserState('slogin.login.form.data', array());
 
 		// check for return URL from the request first
@@ -101,13 +104,13 @@ class SloginModelLinking_user extends FormModel
 	 * @throws	Exception if there is an error in the form event.
 	 * @since	1.6
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'user')
+	protected function preprocessForm(Form $form, $data, $group = 'user')
 	{
 		// Import the approriate plugin group.
-		JPluginHelper::importPlugin($group);
+		PluginHelper::importPlugin($group);
 
 		// Trigger the form preparation event.
-		$results = Joomla\CMS\Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
+		$results = Factory::getApplication()->triggerEvent('onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true)) {

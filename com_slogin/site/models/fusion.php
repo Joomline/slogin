@@ -15,6 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\Form\Form;
 require_once JPATH_ROOT.'/components/com_slogin/helpers/providers.php';
 /**
  * Rest model class for Users.
@@ -33,7 +34,7 @@ class SloginModelFusion extends FormModel
 	 *
 	 * @param	array	$data		An optional array of data for the form to interogate.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
+	 * @return	Form	A Form object on success, false on failure
 	 * @since	1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -128,7 +129,7 @@ class SloginModelFusion extends FormModel
 	 * @throws	Exception if there is an error in the form event.
 	 * @since	1.6
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'user')
+	protected function preprocessForm(Form $form, $data, $group = 'user')
 	{
 		// Import the approriate plugin group.
 		PluginHelper::importPlugin($group);

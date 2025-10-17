@@ -129,7 +129,7 @@ use Joomla\CMS\Component\ComponentHelper;
                 <label for="modlgn-passwd"><?php echo Text::_('JGLOBAL_PASSWORD') ?></label>
                 <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
             </p>
-            <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+            <?php if (PluginHelper::isEnabled('system', 'remember')) : ?>
             <p id="form-login-remember">
 				 <label for="modlgn-remember">
 				  	<input id="modlgn-remember" type="checkbox" name="remember" class="inputbox" value="yes"/>
