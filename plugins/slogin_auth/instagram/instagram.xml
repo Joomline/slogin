@@ -36,7 +36,7 @@
                         filter="unset"
                         value="instagram"
                         readonly="true"
-                        class="readonly"
+                        class="readonly form-control"
                         />
 
             </fieldset>

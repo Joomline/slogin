@@ -53,7 +53,8 @@
 					type="list"
 					default="1"
 					label="MOD_SLOGIN_FIELD_EDIT_YOUR_PROFILE_LABEL"
-					description="MOD_SLOGIN_FIELD_EDIT_YOUR_PROFILE_DESC">
+					description="MOD_SLOGIN_FIELD_EDIT_YOUR_PROFILE_DESC"
+					class="form-select">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
@@ -62,7 +63,8 @@
 					type="list"
 					default="1"
 					label="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_LABEL"
-					description="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_DESC">
+					description="MOD_SLOGIN_FIELD_EDIT_YOUR_AUCH_DESC"
+					class="form-select">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
@@ -73,7 +75,8 @@
 					cols="30"
 					rows="5"
 					label="MOD_SLOGIN_FIELD_INIT_TEXT_LABEL"
-					description="MOD_SLOGIN_FIELD_INIT_TEXT_DESC" />
+					description="MOD_SLOGIN_FIELD_INIT_TEXT_DESC"
+					class="form-control" />
 				<field
 					name="pretext"
 					type="textarea"
@@ -81,7 +84,8 @@
 					cols="30"
 					rows="5"
 					label="MOD_SLOGIN_FIELD_PRE_TEXT_LABEL"
-					description="MOD_SLOGIN_FIELD_PRE_TEXT_DESC" />
+					description="MOD_SLOGIN_FIELD_PRE_TEXT_DESC"
+					class="form-control" />
 				<field
 					name="posttext"
 					type="textarea"
@@ -89,13 +93,15 @@
 					cols="30"
 					rows="5"
 					label="MOD_SLOGIN_FIELD_POST_TEXT_LABEL"
-					description="MOD_SLOGIN_FIELD_POST_TEXT_DESC" />
+					description="MOD_SLOGIN_FIELD_POST_TEXT_DESC"
+					class="form-control" />
 				<field
 					name="login"
 					type="menuitem"
 					disable="separator"
 					label="MOD_SLOGIN_FIELD_LOGIN_REDIRECTURL_LABEL"
-					description="MOD_SLOGIN_FIELD_LOGIN_REDIRECTURL_DESC" >
+					description="MOD_SLOGIN_FIELD_LOGIN_REDIRECTURL_DESC"
+					class="form-select" >
 					<option
 						value="">JDEFAULT</option>
 				</field>					
@@ -104,7 +110,8 @@
 					type="menuitem"
 					disable="separator"
 					label="MOD_SLOGIN_FIELD_LOGOUT_REDIRECTURL_LABEL"
-					description="MOD_SLOGIN_FIELD_LOGOUT_REDIRECTURL_DESC" >
+					description="MOD_SLOGIN_FIELD_LOGOUT_REDIRECTURL_DESC"
+					class="form-select" >
 					<option
 						value="">JDEFAULT</option>
 				</field>			
@@ -116,18 +123,21 @@
 					name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+					class="form-select" />
 				<field
 					name="moduleclass_sfx"
 					type="text"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+					class="form-control" />
 				<field
 					name="cache"
 					type="list"
 					default="0"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC">
+					description="COM_MODULES_FIELD_CACHING_DESC"
+					class="form-select">
 					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
 				<field
@@ -135,7 +145,8 @@
 					type="list"
 					default="0"
 					label="MOD_SLOGIN_FIELD_LOAD_CSS_LABEL"
-					description="MOD_SLOGIN_FIELD_LOAD_CSS_DESC">
+					description="MOD_SLOGIN_FIELD_LOAD_CSS_DESC"
+					class="form-select">
 					<option value="0">JYES</option>
 					<option value="1">JNO</option>
 				</field>
@@ -144,7 +155,8 @@
 					type="list"
 					default="0"
 					label="MOD_SLOGIN_FIELD_LOAD_JS_LABEL"
-					description="MOD_SLOGIN_FIELD_LOAD_JS_DESC">
+					description="MOD_SLOGIN_FIELD_LOAD_JS_DESC"
+					class="form-select">
 					<option value="0">JYES</option>
 					<option value="1">JNO</option>
 				</field>

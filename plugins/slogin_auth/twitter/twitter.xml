@@ -42,7 +42,7 @@
                         filter="unset"
                         value="twitter"
                         readonly="true"
-                        class="readonly"
+                        class="readonly form-control"
                         />
             </fieldset>
         </fields>

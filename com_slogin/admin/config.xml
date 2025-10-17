@@ -508,7 +508,7 @@
 			name="rules"
 			type="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
+			class="form-control"
 			validate="rules"
 			filter="rules"
 			component="com_slogin"
