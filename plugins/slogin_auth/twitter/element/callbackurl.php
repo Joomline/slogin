@@ -40,7 +40,7 @@ class JFormFieldCallbackUrl extends FormField
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-        $router = new JRouterSite(array('mode' => 1));
+        $router = new SiteRouter(array('mode' => 1));
 
         $route = $router->build('index.php?option=com_slogin&task=check&plugin=' . (string) $this->element['value']);
         $CallbackUrl = Joomla\CMS\Uri\Uri::root().str_replace('/administrator/', '', $route);

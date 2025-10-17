@@ -36,8 +36,6 @@ class JFormFieldCallbackUrl extends FormField
 		$readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
-		use Joomla\CMS\Router\SiteRouter;
-
 		$router = new SiteRouter(array('mode' => 1));
 
 		$route = $router->build('index.php?option=com_slogin&task=check&plugin=live');
