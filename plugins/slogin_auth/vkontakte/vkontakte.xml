@@ -62,7 +62,7 @@
                         filter="unset"
                         value=""
                         readonly="true"
-                        class="form-control-plaintext"
+                        class="readonly form-control"
                         />
                 <field
                         name="trusted_redirect_uri"
@@ -71,7 +71,7 @@
                         description="PLG_SLOGIN_AUTH_VKONTAKTE_TRUSTED_REDIRECT_URI_DESC"
                         filter="unset"
                         readonly="true"
-                        class="form-control-plaintext"
+                        class="readonly form-control"
                         />
             </fieldset>
         </fields>
