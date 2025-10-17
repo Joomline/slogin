@@ -2,20 +2,25 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authGoogle extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+
+class plgSlogin_authGoogle extends CMSPlugin
 {
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=google';
+        $redirect = Uri::base().'?option=com_slogin&task=check&plugin=google';
 
         $scope = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
 
@@ -40,7 +45,7 @@ class plgSlogin_authGoogle extends JPlugin
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $code = $input->get('code', null, 'STRING');
 

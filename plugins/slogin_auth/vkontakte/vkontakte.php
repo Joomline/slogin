@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2023. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -162,11 +162,11 @@ class plgSlogin_authVkontakte extends CMSPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = \Joomla\CMS\Component\ComponentHelper::getParams('com_slogin');
+            \Joomla\CMS\MVC\Model\BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = \Joomla\CMS\MVC\Model\BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = \Joomla\CMS\MVC\Controller\BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }

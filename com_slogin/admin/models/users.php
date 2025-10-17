@@ -1,14 +1,13 @@
 <?php
 // No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Input\Input;
+use Joomla\CMS\MVC\Model\ListModel;
 
-defined('_JEXEC') or die('Restricted access');
-// import the Joomla modellist library
-jimport('joomla.application.component.modellist');
-
-class SloginModelUsers extends JModelList
+class SloginModelUsers extends ListModel
 {
     protected function populateState($ordering = null, $direction = null)
     {

@@ -2,30 +2,33 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// import Joomla view library
-jimport('joomla.application.component.view');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Input\Input;
 
 /**
- * HTML View class for the HelloWorld Component
+ * HTML View class for the SLogin Component
  */
-class SloginViewFusion extends JViewLegacy
+class SloginViewFusion extends HtmlView
 {
 	// Overwriting JView display method
 	function display($tpl = null) 
 	{
-        $input = new JInput;
+        $input = new Input;
 
-        $this->params       = JComponentHelper::getParams('com_users');
-        $this->user		    = JFactory::getUser();
+        $this->params       = ComponentHelper::getParams('com_users');
+        $this->user		    = Factory::getUser();
 
         $this->form		    = $this->get('Form');
 
@@ -45,9 +48,9 @@ class SloginViewFusion extends JViewLegacy
             }
         }
 
-        $document = JFactory::getDocument();
-     //   $document->addStyleSheet( JURI::root().'modules/mod_slogin/tmpl/compact/slogin.css');
-        $document->addScript(JURI::root().'modules/mod_slogin/media/slogin.js?v=1');
+        $document = Factory::getDocument();
+     //   $document->addStyleSheet( Uri::root().'modules/mod_slogin/tmpl/compact/slogin.css');
+        $document->addScript(Uri::root().'modules/mod_slogin/media/slogin.js?v=1');
 		// Display the view
 		parent::display($tpl);
 	}
