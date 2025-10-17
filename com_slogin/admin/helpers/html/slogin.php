@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -18,6 +18,6 @@ defined('_JEXEC') or die('(@)|(@)');
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class JHtmlSLogin
+class HtmlSLogin
 {
 }

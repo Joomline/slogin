@@ -23,7 +23,7 @@ class plgSlogin_integrationSlogin_avatar extends CMSPlugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-        JPlugin::loadLanguage('plg_slogin_integration_slogin_avatar', JPATH_ADMINISTRATOR);
+        Factory::getLanguage()->load('plg_slogin_integration_slogin_avatar', JPATH_ADMINISTRATOR);
     }
 
     public function onAfterSloginLoginUser($instance, $provider, $info)
