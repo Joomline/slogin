@@ -2,34 +2,32 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// import Joomla view library
-jimport('joomla.application.component.view');
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * HTML View class for the HelloWorld Component
  */
-class SloginViewMail extends JViewLegacy
+class SloginViewMail extends HtmlView
 {
 	protected $name, $username, $email, $action, $user;
 	// Overwriting JView display method
 	function display($tpl = null) 
 	{
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 
         $data = $app->getUserState('com_slogin.provider.data');
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $msg = $app->getUserState('com_slogin.msg', '');
         $msgType = $app->getUserState('com_slogin.msgType', '');
@@ -42,7 +40,7 @@ class SloginViewMail extends JViewLegacy
         }
 
         //костыль для поддержки 2 и  3 джумлы
-        $className = (class_exists('JControllerLegacy')) ? 'JControllerLegacy' : 'JController';
+        $className = (class_exists('BaseController')) ? 'BaseController' : 'JController';
 
         // Get an instance of the controller prefixed by SLogin
         $controller = call_user_func(array($className, 'getInstance'), 'SLogin');

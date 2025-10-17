@@ -2,16 +2,24 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authTelegram extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authTelegram extends CMSPlugin
 {
     private $provider = 'telegram';
 
@@ -19,8 +27,8 @@ class plgSlogin_authTelegram extends JPlugin
     public function onCreateSloginLink(&$links, $add = '')
     {
         $action = '';
-        $doc = JFactory::getDocument();
-        $app	= JFactory::getApplication('site');
+        $doc = Factory::getDocument();
+        $app	= Factory::getApplication('site');
 
         if(!empty($add)){
             $parts = explode('&', $add);
@@ -34,9 +42,9 @@ class plgSlogin_authTelegram extends JPlugin
         }
         if(!defined('TWIDGETLOGINLOADED')){
             define('TWIDGETLOGINLOADED', 1);
-            $url = JURI::root().'?option=com_slogin&task=check&plugin=telegram';
+            $url = Uri::root().'?option=com_slogin&task=check&plugin=telegram';
             $js = '
-                TWidgetLogin.init("twidget_login", '.$this->params->get('id').', {"origin":"'.JURI::base().'","embed":1}, false, "ru");
+                TWidgetLogin.init("twidget_login", '.$this->params->get('id').', {"origin":"'.Uri::base().'","embed":1}, false, "ru");
                 SloginTelegram.url = "'.$url.'";
             ';
             $doc->addScriptDeclaration($js);
@@ -52,14 +60,14 @@ class plgSlogin_authTelegram extends JPlugin
             'id'=>'twidget_login',
             'onclick'=>'TWidgetLogin.auth(); return false;',
         );
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_TELEGRAM');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_TELEGRAM');
     }
 
     public function onSloginAuth(){}
 
     public function onSloginCheck()
     {
-        $input = new JInput;
+        $input = Factory::getApplication()->input;
         $data = $input->getString('data', '');
         $request = json_decode($data, true);
         $error = 0;
@@ -75,7 +83,7 @@ class plgSlogin_authTelegram extends JPlugin
 
         if (!$error)
         {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             $app->setUserState('com_slogin.popup', 'none');
             $returnRequest = new SloginRequest();
             $returnRequest->first_name      = $request['auth_data']['first_name'];
@@ -88,18 +96,18 @@ class plgSlogin_authTelegram extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
             return false;
         }
     }
 
     function checkTelegramAuthorization($auth_data) {
-        $app = JFactory::getApplication('site');
+        $app = Factory::getApplication('site');
         $check_hash = $auth_data['hash'];
         unset($auth_data['hash']);
         $data_check_arr = [];

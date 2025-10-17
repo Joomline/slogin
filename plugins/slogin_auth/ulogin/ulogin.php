@@ -2,16 +2,24 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authUlogin extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authUlogin extends CMSPlugin
 {
 	public function onSloginAuth()
 	{
@@ -24,9 +32,9 @@ class plgSlogin_authUlogin extends JPlugin
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 
         $request = null;
 
@@ -40,7 +48,7 @@ class plgSlogin_authUlogin extends JPlugin
             // get access_token from API
             $params = array(
                 'token=' . $token,
-                'host=' . JURI::base(true)
+                'host=' . Uri::base(true)
             );
             $params = implode('&', $params);
             $url = 'http://ulogin.ru/token.php?' . $params;
@@ -63,27 +71,27 @@ class plgSlogin_authUlogin extends JPlugin
             $returnRequest->network = isset($request->network) ? $request->network: '';
             $returnRequest->all_request  = $request;
 
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             $app->setUserState('com_slogin.popup', 'none');
 
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
 	}
 
     public function onCreateSloginLink(&$links, $add = '')
     {
-        $doc = JFactory::getDocument();
+        $doc = Factory::getDocument();
         $doc->addScript('//ulogin.ru/js/ulogin.js');
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=ulogin'.$add);
+        $redirect = urlencode(Uri::base().'?option=com_slogin&task=check&plugin=ulogin'.$add);
 
         $i = count($links);
         $links[$i]['link'] = '#';
@@ -93,6 +101,6 @@ class plgSlogin_authUlogin extends JPlugin
            'id'=>'uLogin',
            'data-ulogin'=>'display=window;fields=first_name,last_name,email,photo,sex;redirect_uri=' . $redirect
         );
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_ULOGIN');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_ULOGIN');
     }
 }

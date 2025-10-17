@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	2012-2016. All rights reserved.
+ * @copyright	2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -12,6 +12,8 @@
 defined('_JEXEC') or die;
 
 require_once JPATH_ROOT . '/components/com_slogin/helpers/providers.php';
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 class modSLoginHelper
 {
@@ -69,8 +71,8 @@ class modSLoginHelper
 
     static function getFusionProviders()
     {
-        JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_slogin/models', 'SloginModel');
-        $model = JModelLegacy::getInstance('fusion', 'SloginModel');
+        BaseDatabaseModel::addIncludePath(JPATH_SITE.'/components/com_slogin/models', 'SloginModel');
+        $model = BaseDatabaseModel::getInstance('fusion', 'SloginModel');
         $providers = $model->getProviders();
 
         $attachedProviders = array();

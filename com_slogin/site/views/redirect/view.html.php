@@ -2,23 +2,25 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // защита от прямого доступа
 defined('_JEXEC') or die('@-_-@');
 
-jimport( 'joomla.application.component.view');
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 /**
  * Вид для редиректа и закрытия popup окна
  * @author Николай
  *
  */
-class SLoginViewRedirect extends JViewLegacy
+class SLoginViewRedirect extends HtmlView
 {
 
 	/**
@@ -27,9 +29,9 @@ class SLoginViewRedirect extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-        $session = JFactory::getSession();
+        $session = Factory::getSession();
 
-        $this->url = JRoute::_('index.php?option=com_slogin&amp;task=sredirect');
+        $this->url = Route::_('index.php?option=com_slogin&amp;task=sredirect');
 
 		parent::display($tpl);
 	}

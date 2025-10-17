@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" method="upgrade" group="slogin_auth">
+<extension version="5.0" type="plugin" method="upgrade" group="slogin_auth">
 	<name>Social Login BitBucket auth</name>
 	<author>Arkadiy, Joomline</author>
 	<creationDate>18.04.2020</creationDate>
-	<copyright>© 2012 - 2020. All rights reserved.</copyright>
+	<copyright>© 2012 - 2025. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>https://joomline.ru</authorUrl>
-	<version>1.0</version>
+	<version>5.0.0</version>
 	<description>BitBucket auth</description>
+	<namespace path="src">Joomla\Plugin\SloginAuth\BitBucket</namespace>
 	<files>
 		<filename plugin="bitbucket">bitbucket.php</filename>
 		<filename>index.html</filename>

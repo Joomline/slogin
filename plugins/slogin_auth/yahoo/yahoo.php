@@ -2,15 +2,23 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authYahoo extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authYahoo extends CMSPlugin
 {
     var $key,
         $secret,
@@ -22,7 +30,7 @@ class plgSlogin_authYahoo extends JPlugin
 		$this->key = $this->params->get('key');
 		$this->secret = $this->params->get('secret');
 		$this->app_id = '';
-		$this->callback = JURI::base().'?option=com_slogin&task=check&plugin=yahoo';
+		$this->callback = Uri::base().'?option=com_slogin&task=check&plugin=yahoo';
 	}
     public function onSloginAuth()
     {
@@ -40,7 +48,7 @@ class plgSlogin_authYahoo extends JPlugin
 
     public function onSloginCheck()
     {
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
         $code = $input->getString('code', null);
 
 
@@ -94,11 +102,11 @@ class plgSlogin_authYahoo extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }
@@ -109,7 +117,7 @@ class plgSlogin_authYahoo extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yahoo' . $add;
         $links[$i]['class'] = 'yahooslogin';
         $links[$i]['plugin_name'] = 'yahoo';
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_YAHOO');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_YAHOO');
     }
 
     private function getUserData($token)

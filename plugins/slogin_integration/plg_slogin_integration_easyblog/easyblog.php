@@ -2,16 +2,19 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_integrationEasyblog extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+
+class plgSlogin_integrationEasyblog extends CMSPlugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -43,7 +46,7 @@ class plgSlogin_integrationEasyblog extends JPlugin
 
     private function getEasyUser($userId)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
         $query->from($db->quoteName('#__easyblog_users'));
@@ -54,7 +57,7 @@ class plgSlogin_integrationEasyblog extends JPlugin
 
     private function createEasyUser($user)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->insert('#__easyblog_users');
         $query->columns(array($db->quoteName('id'), $db->quoteName('nickname'), $db->quoteName('avatar'), $db->quoteName('published'), $db->quoteName('permalink')));

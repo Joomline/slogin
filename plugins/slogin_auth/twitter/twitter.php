@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -13,7 +13,14 @@ defined('_JEXEC') or die;
 
 require_once JPATH_BASE.'/plugins/slogin_auth/twitter/assets/twitteroauth/twitteroauth.php';
 
-class plgSlogin_authTwitter extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authTwitter extends CMSPlugin
 {
     private $provider = 'twitter';
 
@@ -28,7 +35,7 @@ class plgSlogin_authTwitter extends JPlugin
         }
 
         //установка значений в сессию
-        $session = JFactory::getSession();
+        $session = Factory::getApplication()->getSession();
         $session->set('oauth_token', $request_token['oauth_token']);
         $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
 
@@ -40,7 +47,7 @@ class plgSlogin_authTwitter extends JPlugin
 
     public function onSloginCheck()
     {
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $request = null;
 
@@ -51,7 +58,7 @@ class plgSlogin_authTwitter extends JPlugin
         if ($code) {
 
             //получение значений из сессии
-            $session = JFactory::getSession();
+            $session = Factory::getApplication()->getSession();
             $oauth_token = $session->get('oauth_token');
             $oauth_token_secret = $session->get('oauth_token_secret');
 
@@ -85,7 +92,7 @@ class plgSlogin_authTwitter extends JPlugin
 
                 //сохраняем данные токена в сессию
                 //expire - время устаревания скрипта, метка времени Unix
-                JFactory::getApplication()->setUserState('slogin.token', array(
+                Factory::getApplication()->setUserState('slogin.token', array(
                     'provider' => $this->provider,
                     'token' => $access_token,
 //                    'expire' => (time() + $token['expires']),
@@ -109,11 +116,11 @@ class plgSlogin_authTwitter extends JPlugin
             }
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }
@@ -124,6 +131,6 @@ class plgSlogin_authTwitter extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=twitter' . $add;
         $links[$i]['class'] = 'twitterslogin';
         $links[$i]['plugin_name'] = $this->provider;
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_TWITTER');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_TWITTER');
     }
 }

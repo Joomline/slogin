@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" method="upgrade" group="slogin_integration">
+<extension version="5.0" type="plugin" method="upgrade" group="slogin_integration">
 	<name>PLG_SLOGIN_AVATAR</name>
 	<author>Andrew Zahalski</author>
 	<creationDate>29.07.2013</creationDate>
-	<copyright>© 2012 - 2020. All rights reserved.</copyright>
+	<copyright>© 2012 - 2025. All rights reserved.</copyright>
 	<license>GNU/GPL v.3 or later.</license>
 	<authorEmail></authorEmail>
 	<authorUrl>http://mlife-media.by</authorUrl>
-	<version>1.6</version>
+	<version>5.0.0</version>
 	<description>PLG_SLOGIN_AVATAR_DESC</description>
+	<namespace path="src">Joomla\Plugin\SloginIntegration\Avatar</namespace>
 	<files>
 		<filename plugin="slogin_avatar">slogin_avatar.php</filename>
 		<filename>index.html</filename>

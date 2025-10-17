@@ -2,16 +2,19 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_integrationCombuilder extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+
+class plgSlogin_integrationCombuilder extends CMSPlugin
 {
 	/**
 	 * Remove all sessions for the user name
@@ -43,7 +46,7 @@ class plgSlogin_integrationCombuilder extends JPlugin
 
     private function getUser($userId)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
         $query->from($db->quoteName('#__comprofiler'));
@@ -57,7 +60,7 @@ class plgSlogin_integrationCombuilder extends JPlugin
         $name = explode(' ', $user->get('name'));
         $name[1] = (!empty($name[1])) ? $name[1] : '';
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->insert('#__comprofiler');
         $query->columns(array(

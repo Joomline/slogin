@@ -2,16 +2,23 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authYandex extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authYandex extends CMSPlugin
 {
 	public function onSloginAuth()
 	{
@@ -24,18 +31,18 @@ class plgSlogin_authYandex extends JPlugin
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $error = $input->getString('error', '');
         if($error == 'access_denied'){
-            $config = JComponentHelper::getParams('com_slogin');
+            $config = ComponentHelper::getParams('com_slogin');
 
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
 
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
 
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
 
@@ -95,11 +102,11 @@ class plgSlogin_authYandex extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
 	}
@@ -110,6 +117,6 @@ class plgSlogin_authYandex extends JPlugin
        $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=yandex' . $add;
        $links[$i]['class'] = 'yandexslogin';
        $links[$i]['plugin_name'] = 'yandex';
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_YANDEX');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_YANDEX');
     }
 }

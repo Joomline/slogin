@@ -2,9 +2,9 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
@@ -12,9 +12,9 @@ use Joomla\CMS\MVC\View\GenericDataException;
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelform');
-jimport('joomla.event.dispatcher');
-jimport('joomla.plugin.helper');
+use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Event\Dispatcher;
+use Joomla\CMS\Plugin\PluginHelper;
 /**
  * Rest model class for Users.
  *
@@ -22,7 +22,7 @@ jimport('joomla.plugin.helper');
  * @subpackage	com_users
  * @since		1.6
  */
-class SloginModelLinking_user extends JModelForm
+class SloginModelLinking_user extends FormModel
 {
 	/**
 	 * Method to get the login form.

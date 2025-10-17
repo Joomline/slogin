@@ -2,16 +2,18 @@
 /**
  * SLogin Integration Plugin Profile
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_integrationUnacceptable_emails extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+
+class plgSlogin_integrationUnacceptable_emails extends CMSPlugin
 {
     public function onSloginBeforeStoreOrLogin( $provider, &$first_name, &$last_name, &$email, &$slogin_id, &$rawRequest )
     {

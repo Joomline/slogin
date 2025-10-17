@@ -2,21 +2,23 @@
 /**
  * SLogin Avatar
  *
- * @version    1.5
+ * @version    5.0.0
  * @author        Andrew Zahalski
- * @copyright    © 2013. All rights reserved.
+ * @copyright    © 2013-2025. All rights reserved.
  * @license    GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
 require_once JPATH_BASE.'/plugins/slogin_integration/slogin_avatar/easyphpthumbnail.php';
 require_once JPATH_BASE.'/components/com_slogin/controller.php';
 
-class plgSlogin_integrationSlogin_avatar extends JPlugin
+class plgSlogin_integrationSlogin_avatar extends CMSPlugin
 {
     public function __construct(&$subject, $config)
     {
@@ -136,7 +138,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
     public function onAfterSloginDeleteSloginUser($id)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__slogin_users');
@@ -149,7 +151,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
     public function onAfterSloginDeleteUser($userId)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__slogin_users');
@@ -165,7 +167,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
     private function deleteAvatar($row)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $rootfolder = $this->params->get('rootfolder', 'images/avatar');
@@ -173,7 +175,7 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
 
         if (is_file($file))
         {
-            JFile::delete($file);
+            File::delete($file);
         }
 
         $query->delete();
@@ -222,8 +224,8 @@ class plgSlogin_integrationSlogin_avatar extends JPlugin
         $imgcr = $this->params->get('imgcr', 80);
 
         //если папка для складирования аватаров не существует создаем ее
-        if (!JFolder::exists(JPATH_BASE . '/' . $rootfolder)) {
-            JFolder::create(JPATH_BASE . '/' . $rootfolder);
+        if (!Folder::exists(JPATH_BASE . '/' . $rootfolder)) {
+            Folder::create(JPATH_BASE . '/' . $rootfolder);
             file_put_contents(JPATH_BASE . '/' . $rootfolder . '/index.html', '');
         }
 

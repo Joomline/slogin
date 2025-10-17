@@ -2,31 +2,32 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		SmokerMan, Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// import Joomla view library
-jimport('joomla.application.component.view');
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * HTML View class for the HelloWorld Component
  */
-class SloginViewComparison_user extends JViewLegacy
+class SloginViewComparison_user extends HtmlView
 {
 	// Overwriting JView display method
 	function display($tpl = null) 
 	{
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 		$data = $app->getUserState('com_slogin.comparison_user.data');
 
-        $this->params       = JComponentHelper::getParams('com_users');
-        $this->user		    = JFactory::getUser();
+        $this->params       = ComponentHelper::getParams('com_users');
+        $this->user		    = Factory::getUser();
 
         $this->form		    = $this->get('Form');
 

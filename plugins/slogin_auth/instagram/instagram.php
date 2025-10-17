@@ -2,22 +2,30 @@
 /**
  * SLogin
  *
- * @version 	2.9.1
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012-2020. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authInstagram extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authInstagram extends CMSPlugin
 {
     private $provider = 'instagram';
 
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=instagram';
+        $redirect = Uri::base().'?option=com_slogin&task=check&plugin=instagram';
 
         $scope = 'basic';
 
@@ -40,7 +48,7 @@ class plgSlogin_authInstagram extends JPlugin
 
         $controller = new SLoginController();
 
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $request = null;
 
@@ -68,7 +76,7 @@ class plgSlogin_authInstagram extends JPlugin
 
             //сохраняем данные токена в сессию
             //expire - время устаревания скрипта, метка времени Unix
-            JFactory::getApplication()->setUserState('slogin.token', array(
+            Factory::getApplication()->setUserState('slogin.token', array(
                 'provider' => $this->provider,
                 'token' => $data->access_token,
                 'expire' => '',
@@ -87,11 +95,11 @@ class plgSlogin_authInstagram extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-            JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+            BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }
@@ -101,7 +109,7 @@ class plgSlogin_authInstagram extends JPlugin
         require_once JPATH_BASE.'/components/com_slogin/controller.php';
         $controller = new SLoginController();
 
-        $redirect = urlencode(JURI::base().'?option=com_slogin&task=check&plugin=instagram');
+        $redirect = urlencode(Uri::base().'?option=com_slogin&task=check&plugin=instagram');
 
         //подключение к API
         $params = array(
@@ -136,6 +144,6 @@ class plgSlogin_authInstagram extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=instagram' . $add;
         $links[$i]['class'] = 'instagramslogin';
         $links[$i]['plugin_name'] = $this->provider;
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_INSTAGRAM');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_INSTAGRAM');
     }
 }

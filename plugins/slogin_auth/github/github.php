@@ -2,20 +2,28 @@
 /**
  * SLogin
  *
- * @version 	1.0
+ * @version 	5.0.0
  * @author		Arkadiy, Joomline
- * @copyright	© 2012. All rights reserved.
+ * @copyright	© 2012-2025. All rights reserved.
  * @license 	GNU/GPL v.3 or later.
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-class plgSlogin_authGitHub extends JPlugin
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+
+class plgSlogin_authGitHub extends CMSPlugin
 {
     public function onSloginAuth()
     {
-        $redirect = JURI::base().'?option=com_slogin&task=check&plugin=github';
+        $redirect = Uri::base().'?option=com_slogin&task=check&plugin=github';
 
         $params = array(
             'client_id=' . $this->params->get('id'),
@@ -31,7 +39,7 @@ class plgSlogin_authGitHub extends JPlugin
 
     public function onSloginCheck()
     {
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
 
         $error = $input->getString('error', '');
 
@@ -50,7 +58,7 @@ class plgSlogin_authGitHub extends JPlugin
             }
 
             // get access_token for google API
-            $redirect = JURI::base().'?option=com_slogin&task=check&plugin=github';
+            $redirect = Uri::base().'?option=com_slogin&task=check&plugin=github';
 
             $params = array(
                 'client_id' => $this->params->get('id'),
@@ -112,11 +120,11 @@ class plgSlogin_authGitHub extends JPlugin
             return $returnRequest;
         }
         else{
-            $config = JComponentHelper::getParams('com_slogin');
-	        JModelLegacy::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
-            $model = JModelLegacy::getInstance('Linking_user', 'SloginModel');
+            $config = ComponentHelper::getParams('com_slogin');
+	        BaseDatabaseModel::addIncludePath(JPATH_ROOT.'/components/com_slogin/models');
+            $model = BaseDatabaseModel::getInstance('Linking_user', 'SloginModel');
             $redirect = base64_decode($model->getReturnURL($config, 'failure_redirect'));
-            $controller = JControllerLegacy::getInstance('SLogin');
+            $controller = BaseController::getInstance('SLogin');
             $controller->displayRedirect($redirect, true);
         }
     }
@@ -127,6 +135,6 @@ class plgSlogin_authGitHub extends JPlugin
         $links[$i]['link'] = 'index.php?option=com_slogin&task=auth&plugin=github' . $add;
         $links[$i]['class'] = 'githubslogin';
         $links[$i]['plugin_name'] = 'github';
-        $links[$i]['plugin_title'] = JText::_('COM_SLOGIN_PROVIDER_GITHUB');
+        $links[$i]['plugin_title'] = Text::_('COM_SLOGIN_PROVIDER_GITHUB');
     }
 }
