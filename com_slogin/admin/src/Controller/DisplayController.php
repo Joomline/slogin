@@ -1,4 +1,7 @@
 <?php
+
+namespace Joomline\Component\Slogin\Administrator\Controller;
+
 /**
  * SLogin
  *
@@ -18,18 +21,18 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\User;
 
 /**
- * SLogin Main Controller (Legacy compatibility)
+ * SLogin Main Controller
  *
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
  */
-class SLoginController extends BaseController
+class DisplayController extends BaseController
 {
 	/**
 	 * @param $cachable
 	 * @param $urlparams
 	 *
-	 * @return SLoginController|void
+	 * @return DisplayController|void
 	 *
 	 * @throws Exception
 	 * @since version
@@ -61,7 +64,6 @@ class SLoginController extends BaseController
 	    $app->enqueueMessage($msg, $msgType);
         $app->redirect('index.php?option=com_slogin&view=settings');
     }
-    
     public function repair()
     {
         $db = Factory::getDbo();
@@ -99,7 +101,7 @@ class SLoginController extends BaseController
         \Joomla\CMS\Plugin\PluginHelper::importPlugin('slogin_integration');
         $app = Factory::getApplication();
         $ids = $input->get('cid', array(), 'ARRAY');
-        $model = $this->getModel('User', 'SloginModel');
+        $model = $this->getModel('User', 'Joomline\Component\Slogin\Administrator\Model');
         $table = $model->getTable();
         $errors = array();
         if(count($ids) > 0){
@@ -128,7 +130,7 @@ class SLoginController extends BaseController
         \Joomla\CMS\Plugin\PluginHelper::importPlugin('slogin_integration');
         $app = Factory::getApplication();
         $ids = $input->get('cid', array(), 'ARRAY');
-        $model = $this->getModel('User', 'SloginModel');
+        $model = $this->getModel('User', 'Joomline\Component\Slogin\Administrator\Model');
         $table = $model->getTable();
         $errors = array();
         $db = Factory::getDbo();

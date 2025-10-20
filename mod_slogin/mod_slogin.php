@@ -27,6 +27,7 @@ if (is_file(JPATH_BASE.'/modules/mod_login/src/Helper/LoginHelper.php')) {
 	require_once JPATH_BASE.'/modules/mod_login/helper.php';
 }
 require_once dirname(__FILE__).'/helper.php';
+use Joomline\Module\Slogin\Site\Helper\SloginHelper;
 
 $doc = Factory::getDocument();
 
@@ -36,9 +37,14 @@ $layout = $params->get('layout', 'default');
 
 $layout = (strpos($layout, '_:') === false) ? $layout : substr($layout, 2);
 
-if ($params->get('load_js') != '1') { $doc->addScript(Uri::root().'media/com_slogin/slogin.min.js?v=4'); }
-
-if ($params->get('load_css') != '1') { $doc->addStyleSheet(Uri::root().'media/com_slogin/comslogin.min.css?v=4'); }
+// Load assets using Web Assets Manager
+$wa = $doc->getWebAssetManager();
+if ($params->get('load_js') != '1') { 
+    $wa->useScript('com_slogin.js'); 
+}
+if ($params->get('load_css') != '1') { 
+    $wa->useStyle('com_slogin.css'); 
+}
 
 if ($LoginHelperEnabled) {
 	$type	= \Joomla\Module\Login\Site\Helper\LoginHelper::getType();
@@ -57,7 +63,7 @@ $fusionProviders = null;
 $show_fusion_form = $params->get('show_fusion_form', 0);
 if($show_fusion_form)
 {
-    list($attachedProviders, $unattachedProviders) = modSLoginHelper::getFusionProviders();
+    list($attachedProviders, $unattachedProviders) = SloginHelper::getFusionProviders();
     Factory::getLanguage()->load('com_slogin');
 }
 
