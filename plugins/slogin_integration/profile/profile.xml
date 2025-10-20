@@ -47,31 +47,35 @@
 				<field
                         name="rootfolder"
                         type="text"
+						class="form-control"
 						label="PLG_SLOGIN_PROFILE_AVATAR_FOLDER_LABEL"
                         description="PLG_SLOGIN_PROFILE_AVATAR_FOLDER_DESC"
                         default="images/avatar"/>
 				<field
                         name="img_quality"
                         type="text"
+						class="form-control"
 						label="PLG_SLOGIN_PROFILE_IMG_QUALITY_LABEL"
                         description="PLG_SLOGIN_PROFILE_IMG_QUALITY_DESC"
                         default="80"/>
 				<field
                         name="imgparam"
                         type="text"
+						class="form-control"
 						label="PLG_SLOGIN_PROFILE_IMG_SIZE_LABEL"
                         description="PLG_SLOGIN_PROFILE_IMG_SIZE_DESC"
                         default="150"/>
 				<field
                         name="updatetime"
                         type="text"
+						class="form-control"
 						label="PLG_SLOGIN_PROFILE_UPDATETIME_LABEL"
                         description="PLG_SLOGIN_PROFILE_UPDATETIME_DESC"
                         default="86400"/>
                 <field
                         name="enable_geo"
                         type="radio"
-						class="btn-group"
+						class="btn-group btn-group-toggle"
 						label="PLG_SLOGIN_PROFILE_GEO_LABEL"
                         description="PLG_SLOGIN_PROFILE_GEO_DESC"
                         default="1">
@@ -83,7 +87,7 @@
 				<field
 						name="enable_userfields_integration"
 						type="radio"
-						class="btn-group"
+						class="btn-group btn-group-toggle"
 						label="PLG_SLOGIN_PROFILE_ENABLE_USERFIELDS_INTEGRATION"
 						description="PLG_SLOGIN_PROFILE_ENABLE_USERFIELDS_INTEGRATION_DESC"
 						default="0">

@@ -51,7 +51,15 @@ class JFormFieldUserFields extends FormField
 
 		$disabledFields = array('id', 'user_id', 'slogin_id', 'provider', 'current_profile');
 
-		$html = '<table>';
+		$html = '<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th class="col-md-6">'.Text::_('PLG_SLOGIN_PROFILE_FIELD_LABEL').'</th>
+						<th class="col-md-6">'.Text::_('PLG_SLOGIN_PROFILE_FIELD_MAPPING').'</th>
+					</tr>
+				</thead>
+				<tbody>';
 		foreach ( $profileFields as $profileField )
 		{
 			if(in_array($profileField->Field, $disabledFields)){
@@ -61,12 +69,21 @@ class JFormFieldUserFields extends FormField
 			$value = isset($this->value[$profileField->Field]) ? $this->value[$profileField->Field] : '';
 
 			$html .= '
-			<tr>
-				<td>'.Text::_('PLG_SLOGIN_PROFILE_FIELD_'.strtoupper($profileField->Field)).'</td>
-				<td>'.HTMLHelper::_('select.genericlist', $fieldOptions, $this->name.'['.$profileField->Field.']', ' class="inputbox"', 'value', 'text', $value).'</td>
-			</tr>';
+				<tr>
+					<td class="col-md-6">
+						<label for="'.$this->name.'['.$profileField->Field.']" class="form-label">
+							'.Text::_('PLG_SLOGIN_PROFILE_FIELD_'.strtoupper($profileField->Field)).'
+						</label>
+					</td>
+					<td class="col-md-6">
+						'.HTMLHelper::_('select.genericlist', $fieldOptions, $this->name.'['.$profileField->Field.']', 'class="form-select"', 'value', 'text', $value).'
+					</td>
+				</tr>';
 		}
-		$html .= '</table>';
+		$html .= '
+				</tbody>
+			</table>
+		</div>';
 
 		return $html;
 	}
