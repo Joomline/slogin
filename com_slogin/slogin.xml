@@ -25,7 +25,7 @@
 
     <administration>
 
-        <menu>COM_SLOGIN_MAIN_MENU</menu>
+        <menu img="../media/com_slogin/icon_16x16.png">COM_SLOGIN_MAIN_MENU</menu>
 		
 		
         <submenu>		
@@ -58,8 +58,6 @@
         </languages>
 
         <files folder="admin">
-            <folder>src</folder>
-            <folder>services</folder>
             <folder>helpers</folder>
             <folder>models</folder>
             <folder>sql</folder>
@@ -77,7 +75,6 @@
     <media destination="com_slogin" folder="media">
         <filename>slogin.min.js</filename>
 		<filename>comslogin.min.css</filename>
-		<filename>joomla.asset.json</filename>
     </media>
 
     <languages folder="languages/site">
@@ -89,7 +86,6 @@
     </languages>
 
     <files folder="site">
-        <folder>src</folder>
         <folder>controllers</folder>
 		<folder>helpers</folder>
         <folder>models</folder>

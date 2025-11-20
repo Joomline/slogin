@@ -13,14 +13,12 @@
 	<files>
 		<filename plugin="facebook">facebook.php</filename>
 		<filename>index.html</filename>
-		<folder>src</folder>
-		<folder>services</folder>
 		<folder>assets</folder>
 		<folder>element</folder>
 	</files>
     <config>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="plugins/slogin_auth/facebook/src/Field">
+            <fieldset name="basic" addfieldpath="plugins/slogin_auth/facebook/element">
                 <field name="id" type="text" default=""
                        description="Facebook Application Id"
                        label="App ID/API Key"

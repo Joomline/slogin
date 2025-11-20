@@ -2,7 +2,6 @@
 <extension type="library" version="5.0" method="upgrade">
   <name>slogin</name>
   <libraryname>slogin</libraryname>
-  <namespace path="src">Joomline\Library\Slogin</namespace>
   <version>5.0.0</version>
 	<creationDate>28.01.2019</creationDate>
 	<copyright>© 2012-2020 All rights reserved.</copyright>
@@ -15,7 +14,6 @@
   ]]>
   </description>
   <files>
-    <folder>src</folder>
     <file>slogin_oauth.php</file>
   </files>
 </extension>

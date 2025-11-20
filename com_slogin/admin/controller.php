@@ -18,7 +18,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\User;
 
 /**
- * SLogin Main Controller (Legacy compatibility)
+ * SLogin Main Controller
  *
  * @package		Joomla.Administrator
  * @subpackage	com_slogin
@@ -61,7 +61,6 @@ class SLoginController extends BaseController
 	    $app->enqueueMessage($msg, $msgType);
         $app->redirect('index.php?option=com_slogin&view=settings');
     }
-    
     public function repair()
     {
         $db = Factory::getDbo();

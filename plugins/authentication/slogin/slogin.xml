@@ -13,7 +13,5 @@
 	<files>
 		<filename plugin="slogin">slogin.php</filename>
 		<filename>index.html</filename>
-		<folder>src</folder>
-		<folder>services</folder>
 	</files>
 </extension>
